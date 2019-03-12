@@ -1,0 +1,5 @@
+./maestro-v1.0.0-midi.zip
+./data/*
+*.midi
+*.mid
+__pycache__/

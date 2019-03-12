@@ -1,0 +1,1807 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.0 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nyt/global//global/global}
+    \entry{borji_pros_2018}{article}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,uniquepart=base,hash=ac96d0501ac3e57fa3d92d318b45fc31}{%
+           family={Borji},
+           familyi={B\bibinitperiod},
+           given={Ali},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{language}{1}{%
+        {en}%
+      }
+      \strng{namehash}{ac96d0501ac3e57fa3d92d318b45fc31}
+      \strng{fullhash}{ac96d0501ac3e57fa3d92d318b45fc31}
+      \strng{bibnamehash}{ac96d0501ac3e57fa3d92d318b45fc31}
+      \strng{authorbibnamehash}{ac96d0501ac3e57fa3d92d318b45fc31}
+      \strng{authornamehash}{ac96d0501ac3e57fa3d92d318b45fc31}
+      \strng{authorfullhash}{ac96d0501ac3e57fa3d92d318b45fc31}
+      \field{sortinit}{B}
+      \field{sortinithash}{276475738cc058478c1677046f857703}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Generative models, in particular generative adversarial networks (GANs), have gained significant attention in recent years. A number of GAN variants have been proposed and have been utilized in many applications. Despite large strides in terms of theoretical progress, evaluating and comparing GANs remains a daunting task. While several measures have been introduced, as of yet, there is no consensus as to which measure best captures strengths and limitations of models and should be used for fair model comparison. As in other areas of computer vision and machine learning, it is critical to settle on one or few good measures to steer the progress in this field. In this paper, I review and critically discuss more than 24 quantitative and 5 qualitative measures for evaluating generative models with a particular emphasis on GAN-derived models. I also provide a set of 7 desiderata followed by an evaluation of whether a given measure or a family of measures is compatible with them.}
+      \field{eprintclass}{cs}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1802.03446 [cs]}
+      \field{month}{2}
+      \field{title}{Pros and {{Cons}} of {{GAN Evaluation Measures}}}
+      \field{year}{2018}
+      \verb{eprint}
+      \verb 1802.03446
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/9WNNJ7Q5/Borji - 2018 - Pros and Cons of GAN Evaluation Measures.pdf
+      \endverb
+      \keyw{Computer Science - Computer Vision and Pattern Recognition}
+    \endentry
+    \entry{chen_adversarial_2018}{article}{}
+      \name{author}{8}{}{%
+        {{uniquename=1,uniquepart=given,hash=f469b01c091ec9c602a5fe895f64dc71}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Liqun},
+           giveni={L\bibinitperiod},
+           givenun=1}}%
+        {{uniquename=0,uniquepart=base,hash=3bd578f735ac63907f1649ca2fddff8f}{%
+           family={Dai},
+           familyi={D\bibinitperiod},
+           given={Shuyang},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=b50d14fb504d358f88e02fc312717d64}{%
+           family={Tao},
+           familyi={T\bibinitperiod},
+           given={Chenyang},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=251f83f071c401b8df3adfac0a7f0617}{%
+           family={Shen},
+           familyi={S\bibinitperiod},
+           given={Dinghan},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=5b515539cd1aa9307a2fe06f4e0aa59f}{%
+           family={Gan},
+           familyi={G\bibinitperiod},
+           given={Zhe},
+           giveni={Z\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=0b700ede8c64b558ca32569fc772ee11}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Haichao},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=12215371b56b185ded5f779c1f119110}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Yizhe},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=ce681750caa3045d8bb30c05a70f10d7}{%
+           family={Carin},
+           familyi={C\bibinitperiod},
+           given={Lawrence},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{f7e564523ceea43f6deb8f250995bbd2}
+      \strng{fullhash}{5c5867610b18c08b4753002a9d0bec60}
+      \strng{bibnamehash}{f82414ac25d235fda82218f2e7065516}
+      \strng{authorbibnamehash}{f82414ac25d235fda82218f2e7065516}
+      \strng{authornamehash}{f7e564523ceea43f6deb8f250995bbd2}
+      \strng{authorfullhash}{5c5867610b18c08b4753002a9d0bec60}
+      \field{sortinit}{C}
+      \field{sortinithash}{963e9d84a3da2344e8833203de5aed05}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Generative adversarial networks (GANs) have achieved significant success in generating real-valued data. However, the discrete nature of text hinders the application of GAN to text-generation tasks. Instead of using the standard GAN objective, we propose to improve text-generation GAN via a novel approach inspired by optimal transport. Specifically, we consider matching the latent feature distributions of real and synthetic sentences using a novel metric, termed the feature-mover's distance (FMD). This formulation leads to a highly discriminative critic and easy-to-optimize objective, overcoming the mode-collapsing and brittle-training problems in existing methods. Extensive experiments are conducted on a variety of tasks to evaluate the proposed model empirically, including unconditional text generation, style transfer from non-parallel text, and unsupervised cipher cracking. The proposed model yields superior performance, demonstrating wide applicability and effectiveness.}
+      \field{eprintclass}{cs}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1809.06297 [cs]}
+      \field{month}{9}
+      \field{title}{Adversarial {{Text Generation}} via {{Feature}}-{{Mover}}'s {{Distance}}}
+      \field{year}{2018}
+      \verb{eprint}
+      \verb 1809.06297
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/M94MQRLW/Chen et al. - 2018 - Adversarial Text Generation via Feature-Mover's Di.pdf;/home/spacewhisky/Zotero/storage/DXTHIK2U/1809.html
+      \endverb
+      \keyw{Computer Science - Computation and Language}
+    \endentry
+    \entry{chen_closer_2018}{article}{}
+      \name{author}{5}{}{%
+        {{uniquename=1,uniquepart=given,hash=632c16fa730c4c82e1e94885720d67df}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Wei-Yu},
+           giveni={W\bibinithyphendelim Y\bibinitperiod},
+           givenun=1}}%
+        {{uniquename=0,uniquepart=base,hash=8175bd5062ba0951a7ca3e08e967eea0}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Yen-Cheng},
+           giveni={Y\bibinithyphendelim C\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=9a85d4ca9990da7199352928654a0439}{%
+           family={Kira},
+           familyi={K\bibinitperiod},
+           given={Zsolt},
+           giveni={Z\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=30fbdca7e71d7057f555552e9b1fd80c}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Yu-Chiang\bibnamedelima Frank},
+           giveni={Y\bibinithyphendelim C\bibinitperiod\bibinitdelim F\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=1d6b1cd30772081b71930383df11aa17}{%
+           family={Huang},
+           familyi={H\bibinitperiod},
+           given={Jia-Bin},
+           giveni={J\bibinithyphendelim B\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{fd73534af51862bc80b31fe1d2504673}
+      \strng{fullhash}{01b96b04964bc04518d02af1ee3a53d7}
+      \strng{bibnamehash}{01b96b04964bc04518d02af1ee3a53d7}
+      \strng{authorbibnamehash}{01b96b04964bc04518d02af1ee3a53d7}
+      \strng{authornamehash}{fd73534af51862bc80b31fe1d2504673}
+      \strng{authorfullhash}{01b96b04964bc04518d02af1ee3a53d7}
+      \field{sortinit}{C}
+      \field{sortinithash}{963e9d84a3da2344e8833203de5aed05}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Few-shot classification aims to learn a classifier to recognize unseen classes during training with limited labeled examples. While significant progress has been made, the growing complexity of...}
+      \field{month}{9}
+      \field{title}{A {{Closer Look}} at {{Few}}-Shot {{Classification}}}
+      \field{year}{2018}
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/6TK4VPV3/Chen et al. - 2018 - A Closer Look at Few-shot Classification.pdf;/home/spacewhisky/Zotero/storage/BDH8GVVR/forum.html
+      \endverb
+    \endentry
+    \entry{clouatre_figr_2019}{article}{}
+      \name{author}{2}{}{%
+        {{uniquename=0,uniquepart=base,hash=d34b235c2dd56bf3e7cde06b69f79d33}{%
+           family={Clouâtre},
+           familyi={C\bibinitperiod},
+           given={Louis},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=8f1ed92ddcda9bd1ef1b0e2d40be41c5}{%
+           family={Demers},
+           familyi={D\bibinitperiod},
+           given={Marc},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{14eafea4ad7dc94375ef61c61c81c8c8}
+      \strng{fullhash}{14eafea4ad7dc94375ef61c61c81c8c8}
+      \strng{bibnamehash}{14eafea4ad7dc94375ef61c61c81c8c8}
+      \strng{authorbibnamehash}{14eafea4ad7dc94375ef61c61c81c8c8}
+      \strng{authornamehash}{14eafea4ad7dc94375ef61c61c81c8c8}
+      \strng{authorfullhash}{14eafea4ad7dc94375ef61c61c81c8c8}
+      \field{sortinit}{C}
+      \field{sortinithash}{963e9d84a3da2344e8833203de5aed05}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{Generative Adversarial Networks (GAN) boast impressive capacity to generate realistic images. However, like much of the field of deep learning, they require an inordinate amount of data to produce results, thereby limiting their usefulness in generating novelty. In the same vein, recent advances in meta-learning have opened the door to many few-shot learning applications. In the present work, we propose Few-shot Image Generation using Reptile (FIGR), a GAN meta-trained with Reptile. Our model successfully generates novel images on both MNIST and Omniglot with as little as 4 images from an unseen class. We further contribute FIGR-8, a new dataset for few-shot image generation, which contains 1,548,944 icons categorized in over 18,409 classes. Trained on FIGR-8, initial results show that our model can generalize to more advanced concepts (such as "bird" and "knife") from as few as 8 samples from a previously unseen class of images and as little as 10 training steps through those 8 images. This work demonstrates the potential of training a GAN for few-shot image generation and aims to set a new benchmark for future work in the domain.}
+      \field{eprintclass}{cs, stat}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1901.02199 [cs, stat]}
+      \field{month}{1}
+      \field{shorttitle}{{{FIGR}}}
+      \field{title}{{{FIGR}}: {{Few}}-Shot {{Image Generation}} with {{Reptile}}}
+      \field{year}{2019}
+      \verb{eprint}
+      \verb 1901.02199
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/U87HHCVB/Clouâtre and Demers - 2019 - FIGR Few-shot Image Generation with Reptile.pdf;/home/spacewhisky/Zotero/storage/QXK8SRCS/1901.html
+      \endverb
+      \keyw{Statistics - Machine Learning,Computer Science - Machine Learning,Computer Science - Computer Vision and Pattern Recognition}
+    \endentry
+    \entry{dong_musegan_2017}{article}{}
+      \name{author}{4}{}{%
+        {{uniquename=0,uniquepart=base,hash=6751443f76464a3da827b0d4a72d67c2}{%
+           family={Dong},
+           familyi={D\bibinitperiod},
+           given={Hao-Wen},
+           giveni={H\bibinithyphendelim W\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=f47bb192428e72b66eb056ce28de7dda}{%
+           family={Hsiao},
+           familyi={H\bibinitperiod},
+           given={Wen-Yi},
+           giveni={W\bibinithyphendelim Y\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=cc80ffa76f7ac0c6e82d6b8af9da996e}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={Li-Chia},
+           giveni={L\bibinithyphendelim C\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=dc4d44f6814797864181d8ee2756517f}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={Yi-Hsuan},
+           giveni={Y\bibinithyphendelim H\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{d5b158ff6ea2d3ce62a0b35e62ac00d3}
+      \strng{fullhash}{b5e87cc06239773a0b68881fccb62c43}
+      \strng{bibnamehash}{b5e87cc06239773a0b68881fccb62c43}
+      \strng{authorbibnamehash}{b5e87cc06239773a0b68881fccb62c43}
+      \strng{authornamehash}{d5b158ff6ea2d3ce62a0b35e62ac00d3}
+      \strng{authorfullhash}{b5e87cc06239773a0b68881fccb62c43}
+      \field{sortinit}{D}
+      \field{sortinithash}{2ef1bd9a78cc71eb74d7231c635177b8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{Generating music has a few notable differences from generating images and videos. First, music is an art of time, necessitating a temporal model. Second, music is usually composed of multiple instruments/tracks with their own temporal dynamics, but collectively they unfold over time interdependently. Lastly, musical notes are often grouped into chords, arpeggios or melodies in polyphonic music, and thereby introducing a chronological ordering of notes is not naturally suitable. In this paper, we propose three models for symbolic multi-track music generation under the framework of generative adversarial networks (GANs). The three models, which differ in the underlying assumptions and accordingly the network architectures, are referred to as the jamming model, the composer model and the hybrid model. We trained the proposed models on a dataset of over one hundred thousand bars of rock music and applied them to generate piano-rolls of five tracks: bass, drums, guitar, piano and strings. A few intra-track and inter-track objective metrics are also proposed to evaluate the generative results, in addition to a subjective user study. We show that our models can generate coherent music of four bars right from scratch (i.e. without human inputs). We also extend our models to human-AI cooperative music generation: given a specific track composed by human, we can generate four additional tracks to accompany it. All code, the dataset and the rendered audio samples are available at https://salu133445.github.io/musegan/ .}
+      \field{eprintclass}{cs, eess}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1709.06298 [cs, eess]}
+      \field{month}{9}
+      \field{shorttitle}{{{MuseGAN}}}
+      \field{title}{{{MuseGAN}}: {{Multi}}-Track {{Sequential Generative Adversarial Networks}} for {{Symbolic Music Generation}} and {{Accompaniment}}}
+      \field{year}{2017}
+      \verb{eprint}
+      \verb 1709.06298
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/EDA42E8I/Dong et al. - 2017 - MuseGAN Multi-track Sequential Generative Adversa.pdf;/home/spacewhisky/Zotero/storage/9788KI3U/1709.html
+      \endverb
+      \keyw{Computer Science - Artificial Intelligence,Computer Science - Sound,Electrical Engineering and Systems Science - Audio and Speech Processing,Computer Science - Machine Learning}
+    \endentry
+    \entry{finn_model-agnostic_2017}{article}{}
+      \name{author}{3}{}{%
+        {{uniquename=0,uniquepart=base,hash=058e82495825ae376c6a96a12169e6ee}{%
+           family={Finn},
+           familyi={F\bibinitperiod},
+           given={Chelsea},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=e28d4ee199593959d8c29980a64f1974}{%
+           family={Abbeel},
+           familyi={A\bibinitperiod},
+           given={Pieter},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=c9545da54b33744da25943cdf66eadac}{%
+           family={Levine},
+           familyi={L\bibinitperiod},
+           given={Sergey},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{b3dd7571ba2bb4d894e5df990c32064a}
+      \strng{fullhash}{8fd1a9b285463d1536dcb64b4011a015}
+      \strng{bibnamehash}{8fd1a9b285463d1536dcb64b4011a015}
+      \strng{authorbibnamehash}{8fd1a9b285463d1536dcb64b4011a015}
+      \strng{authornamehash}{b3dd7571ba2bb4d894e5df990c32064a}
+      \strng{authorfullhash}{8fd1a9b285463d1536dcb64b4011a015}
+      \field{sortinit}{F}
+      \field{sortinithash}{669c706c6f1fbf3b5a83d26f1d9e9e72}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We propose an algorithm for meta-learning that is model-agnostic, in the sense that it is compatible with any model trained with gradient descent and applicable to a variety of different learning problems, including classification, regression, and reinforcement learning. The goal of meta-learning is to train a model on a variety of learning tasks, such that it can solve new learning tasks using only a small number of training samples. In our approach, the parameters of the model are explicitly trained such that a small number of gradient steps with a small amount of training data from a new task will produce good generalization performance on that task. In effect, our method trains the model to be easy to fine-tune. We demonstrate that this approach leads to state-of-the-art performance on two few-shot image classification benchmarks, produces good results on few-shot regression, and accelerates fine-tuning for policy gradient reinforcement learning with neural network policies.}
+      \field{eprintclass}{cs}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1703.03400 [cs]}
+      \field{month}{3}
+      \field{title}{Model-{{Agnostic Meta}}-{{Learning}} for {{Fast Adaptation}} of {{Deep Networks}}}
+      \field{year}{2017}
+      \verb{eprint}
+      \verb 1703.03400
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/99WXNR6I/Finn et al. - 2017 - Model-Agnostic Meta-Learning for Fast Adaptation o.pdf;/home/spacewhisky/Zotero/storage/9UWYXSYU/1703.html
+      \endverb
+      \keyw{Computer Science - Artificial Intelligence,Computer Science - Machine Learning,Computer Science - Computer Vision and Pattern Recognition,Computer Science - Neural and Evolutionary Computing}
+    \endentry
+    \entry{goodfellow_nips_2016}{article}{}
+      \name{author}{1}{}{%
+        {{uniquename=1,uniquepart=given,hash=5d2585c11210cf1d4512e6e0a03ec315}{%
+           family={Goodfellow},
+           familyi={G\bibinitperiod},
+           given={Ian},
+           giveni={I\bibinitperiod},
+           givenun=1}}%
+      }
+      \strng{namehash}{5d2585c11210cf1d4512e6e0a03ec315}
+      \strng{fullhash}{5d2585c11210cf1d4512e6e0a03ec315}
+      \strng{bibnamehash}{5d2585c11210cf1d4512e6e0a03ec315}
+      \strng{authorbibnamehash}{5d2585c11210cf1d4512e6e0a03ec315}
+      \strng{authornamehash}{5d2585c11210cf1d4512e6e0a03ec315}
+      \strng{authorfullhash}{5d2585c11210cf1d4512e6e0a03ec315}
+      \field{sortinit}{G}
+      \field{sortinithash}{5e8d2bf9d38de41b1528bd307546008f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{This report summarizes the tutorial presented by the author at NIPS 2016 on generative adversarial networks (GANs). The tutorial describes: (1) Why generative modeling is a topic worth studying, (2) how generative models work, and how GANs compare to other generative models, (3) the details of how GANs work, (4) research frontiers in GANs, and (5) state-of-the-art image models that combine GANs with other methods. Finally, the tutorial contains three exercises for readers to complete, and the solutions to these exercises.}
+      \field{eprintclass}{cs}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1701.00160 [cs]}
+      \field{month}{12}
+      \field{shorttitle}{{{NIPS}} 2016 {{Tutorial}}}
+      \field{title}{{{NIPS}} 2016 {{Tutorial}}: {{Generative Adversarial Networks}}}
+      \field{year}{2016}
+      \verb{eprint}
+      \verb 1701.00160
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/SV5NZ8XA/Goodfellow - 2016 - NIPS 2016 Tutorial Generative Adversarial Network.pdf;/home/spacewhisky/Zotero/storage/THHTG27M/1701.html
+      \endverb
+      \keyw{Computer Science - Machine Learning}
+    \endentry
+    \entry{goodfellow_generative_2014}{article}{}
+      \name{author}{8}{}{%
+        {{uniquename=1,uniquepart=given,hash=d4f74ef4c79f3bb1e51e378184d8850e}{%
+           family={Goodfellow},
+           familyi={G\bibinitperiod},
+           given={Ian\bibnamedelima J.},
+           giveni={I\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=1}}%
+        {{uniquename=0,uniquepart=base,hash=a341d25f80a8118cdbb90b272adc8b4f}{%
+           family={{Pouget-Abadie}},
+           familyi={P\bibinitperiod},
+           given={Jean},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=9e80f4779b032f68a6106e1424345450}{%
+           family={Mirza},
+           familyi={M\bibinitperiod},
+           given={Mehdi},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=743dd6cdaa6639320289d219d351d7b7}{%
+           family={Xu},
+           familyi={X\bibinitperiod},
+           given={Bing},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=e8151f1b8f85a048cacb34f374ec922b}{%
+           family={{Warde-Farley}},
+           familyi={W\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=9ca00ffd7cc35f7cfb8f698aa9239c76}{%
+           family={Ozair},
+           familyi={O\bibinitperiod},
+           given={Sherjil},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=ccec1ccd2e1aa86960eb2e872c6b7020}{%
+           family={Courville},
+           familyi={C\bibinitperiod},
+           given={Aaron},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=40a8e4774982146adc2688546f54efb2}{%
+           family={Bengio},
+           familyi={B\bibinitperiod},
+           given={Yoshua},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{8b5c7065f4df4f81627df9460343f166}
+      \strng{fullhash}{5afe3eb3246d0b46f32cdc5ff3e9d6b8}
+      \strng{bibnamehash}{e263a4e567bbe2cd446ba68e51dbd1a6}
+      \strng{authorbibnamehash}{e263a4e567bbe2cd446ba68e51dbd1a6}
+      \strng{authornamehash}{8b5c7065f4df4f81627df9460343f166}
+      \strng{authorfullhash}{5afe3eb3246d0b46f32cdc5ff3e9d6b8}
+      \field{sortinit}{G}
+      \field{sortinithash}{5e8d2bf9d38de41b1528bd307546008f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We propose a new framework for estimating generative models via an adversarial process, in which we simultaneously train two models: a generative model G that captures the data distribution, and a discriminative model D that estimates the probability that a sample came from the training data rather than G. The training procedure for G is to maximize the probability of D making a mistake. This framework corresponds to a minimax two-player game. In the space of arbitrary functions G and D, a unique solution exists, with G recovering the training data distribution and D equal to 1/2 everywhere. In the case where G and D are defined by multilayer perceptrons, the entire system can be trained with backpropagation. There is no need for any Markov chains or unrolled approximate inference networks during either training or generation of samples. Experiments demonstrate the potential of the framework through qualitative and quantitative evaluation of the generated samples.}
+      \field{eprintclass}{cs, stat}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1406.2661 [cs, stat]}
+      \field{month}{6}
+      \field{title}{Generative {{Adversarial Networks}}}
+      \field{year}{2014}
+      \verb{eprint}
+      \verb 1406.2661
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/IS9B2BJ7/Goodfellow et al. - 2014 - Generative Adversarial Networks.pdf;/home/spacewhisky/Zotero/storage/7MSH4SYQ/1406.html
+      \endverb
+      \keyw{Statistics - Machine Learning,Computer Science - Machine Learning}
+    \endentry
+    \entry{goodfellow_deep_2016}{book}{}
+      \name{author}{4}{}{%
+        {{uniquename=1,uniquepart=given,hash=5d2585c11210cf1d4512e6e0a03ec315}{%
+           family={Goodfellow},
+           familyi={G\bibinitperiod},
+           given={Ian},
+           giveni={I\bibinitperiod},
+           givenun=1}}%
+        {{uniquename=0,uniquepart=base,hash=40a8e4774982146adc2688546f54efb2}{%
+           family={Bengio},
+           familyi={B\bibinitperiod},
+           given={Yoshua},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=ccec1ccd2e1aa86960eb2e872c6b7020}{%
+           family={Courville},
+           familyi={C\bibinitperiod},
+           given={Aaron},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=93da2819ab01d8a5e7bae39ce6f17c1f}{%
+           family={Bach},
+           familyi={B\bibinitperiod},
+           given={Francis},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{language}{1}{%
+        {English}%
+      }
+      \list{location}{1}{%
+        {Cambridge, Massachusetts}%
+      }
+      \list{publisher}{1}{%
+        {The MIT Press}%
+      }
+      \strng{namehash}{d17e6557c5836d2d978179999ea1037f}
+      \strng{fullhash}{2d5bbdca420838073105d6c823d88af5}
+      \strng{bibnamehash}{2d5bbdca420838073105d6c823d88af5}
+      \strng{authorbibnamehash}{2d5bbdca420838073105d6c823d88af5}
+      \strng{authornamehash}{d17e6557c5836d2d978179999ea1037f}
+      \strng{authorfullhash}{2d5bbdca420838073105d6c823d88af5}
+      \field{sortinit}{G}
+      \field{sortinithash}{5e8d2bf9d38de41b1528bd307546008f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{An introduction to a broad range of topics in deep learning, covering mathematical and conceptual background, deep learning techniques used in industry, and research perspectives.``Written by three experts in the field, Deep Learning is the only comprehensive book on the subject.''\rule{1em}{1pt}Elon Musk, cochair of OpenAI; cofounder and CEO of Tesla and SpaceXDeep learning is a form of machine learning that enables computers to learn from experience and understand the world in terms of a hierarchy of concepts. Because the computer gathers knowledge from experience, there is no need for a human computer operator to formally specify all the knowledge that the computer needs. The hierarchy of concepts allows the computer to learn complicated concepts by building them out of simpler ones; a graph of these hierarchies would be many layers deep. This book introduces a broad range of topics in deep learning. The text offers mathematical and conceptual background, covering relevant concepts in linear algebra, probability theory and information theory, numerical computation, and machine learning. It describes deep learning techniques used by practitioners in industry, including deep feedforward networks, regularization, optimization algorithms, convolutional networks, sequence modeling, and practical methodology; and it surveys such applications as natural language processing, speech recognition, computer vision, online recommendation systems, bioinformatics, and videogames. Finally, the book offers research perspectives, covering such theoretical topics as linear factor models, autoencoders, representation learning, structured probabilistic models, Monte Carlo methods, the partition function, approximate inference, and deep generative models. Deep Learning can be used by undergraduate or graduate students planning careers in either industry or research, and by software engineers who want to begin using deep learning in their products or platforms. A website offers supplementary material for both readers and instructors.}
+      \field{isbn}{978-0-262-03561-3}
+      \field{month}{11}
+      \field{title}{Deep {{Learning}}}
+      \field{year}{2016}
+    \endentry
+    \entry{hawthorne_enabling_2018}{article}{}
+      \name{author}{9}{}{%
+        {{uniquename=0,uniquepart=base,hash=4102bf268c4922002c51584dbb63c959}{%
+           family={Hawthorne},
+           familyi={H\bibinitperiod},
+           given={Curtis},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=bd9ccff49b29cb00d6855ab66232a1ab}{%
+           family={Stasyuk},
+           familyi={S\bibinitperiod},
+           given={Andriy},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=243c03e5ae8031582d6af9fcbc70f629}{%
+           family={Roberts},
+           familyi={R\bibinitperiod},
+           given={Adam},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=0b461ec7764bb41a6287a8d0716006a0}{%
+           family={Simon},
+           familyi={S\bibinitperiod},
+           given={Ian},
+           giveni={I\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=9406d3118ff06a9e9b1fc218f4106061}{%
+           family={Huang},
+           familyi={H\bibinitperiod},
+           given={Cheng-Zhi\bibnamedelima Anna},
+           giveni={C\bibinithyphendelim Z\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=a133b469b21b870786119a47b1b691eb}{%
+           family={Dieleman},
+           familyi={D\bibinitperiod},
+           given={Sander},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=6aa92a937d4d30dd0b5ec0eecbad1bf1}{%
+           family={Elsen},
+           familyi={E\bibinitperiod},
+           given={Erich},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=84488af703576ab131f87436b63aeef0}{%
+           family={Engel},
+           familyi={E\bibinitperiod},
+           given={Jesse},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=b2c4631ad93e93115d9b3ceea6587550}{%
+           family={Eck},
+           familyi={E\bibinitperiod},
+           given={Douglas},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{dc875fb44266eb3f98e6aa2c898eaf27}
+      \strng{fullhash}{d7b3447bf817650a9fae3d8e5c821a04}
+      \strng{bibnamehash}{658f3bce7809ffae29a65a26102b8303}
+      \strng{authorbibnamehash}{658f3bce7809ffae29a65a26102b8303}
+      \strng{authornamehash}{dc875fb44266eb3f98e6aa2c898eaf27}
+      \strng{authorfullhash}{d7b3447bf817650a9fae3d8e5c821a04}
+      \field{sortinit}{H}
+      \field{sortinithash}{5f15a7bc777ad49ff15aa4d2831b1681}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Generating musical audio directly with neural networks is notoriously difficult because it requires coherently modeling structure at many different timescales. Fortunately, most music is also highly structured and can be represented as discrete note events played on musical instruments. Herein, we show that by using notes as an intermediate representation, we can train a suite of models capable of transcribing, composing, and synthesizing audio waveforms with coherent musical structure on timescales spanning six orders of magnitude (\textasciitilde{}0.1 ms to \textasciitilde{}100 s), a process we call Wave2Midi2Wave. This large advance in the state of the art is enabled by our release of the new MAESTRO (MIDI and Audio Edited for Synchronous TRacks and Organization) dataset, composed of over 172 hours of virtuosic piano performances captured with fine alignment (\textasciitilde{}3 ms) between note labels and audio waveforms. The networks and the dataset together present a promising approach toward creating new expressive and interpretable neural models of music.}
+      \field{eprintclass}{cs, eess, stat}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1810.12247 [cs, eess, stat]}
+      \field{month}{10}
+      \field{title}{Enabling {{Factorized Piano Music Modeling}} and {{Generation}} with the {{MAESTRO Dataset}}}
+      \field{year}{2018}
+      \verb{eprint}
+      \verb 1810.12247
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/RPCRL6MZ/Hawthorne et al. - 2018 - Enabling Factorized Piano Music Modeling and Gener.pdf;/home/spacewhisky/Zotero/storage/HRMNFCWT/1810.html
+      \endverb
+      \keyw{Computer Science - Sound,Electrical Engineering and Systems Science - Audio and Speech Processing,Statistics - Machine Learning,Computer Science - Machine Learning}
+    \endentry
+    \entry{hochreiter_long_1997}{article}{}
+      \name{author}{2}{}{%
+        {{uniquename=0,uniquepart=base,hash=41b31e29fb2bdbf9f5c9c1b0d5b3e815}{%
+           family={Hochreiter},
+           familyi={H\bibinitperiod},
+           given={Sepp},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=c3a004dc2b8b6fb4dd79c5b8c1469da7}{%
+           family={Schmidhuber},
+           familyi={S\bibinitperiod},
+           given={Jurgen},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{ed8d27cce26f5380dbdf235ccef1a4f6}
+      \strng{fullhash}{ed8d27cce26f5380dbdf235ccef1a4f6}
+      \strng{bibnamehash}{ed8d27cce26f5380dbdf235ccef1a4f6}
+      \strng{authorbibnamehash}{ed8d27cce26f5380dbdf235ccef1a4f6}
+      \strng{authornamehash}{ed8d27cce26f5380dbdf235ccef1a4f6}
+      \strng{authorfullhash}{ed8d27cce26f5380dbdf235ccef1a4f6}
+      \field{sortinit}{H}
+      \field{sortinithash}{5f15a7bc777ad49ff15aa4d2831b1681}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Addresses the problem of storing information over extended time intervals by recurrent backpropagation. Introduction of a novel, efficient, gradient-based method called long short-term memory; Results of experiments with artificial data.}
+      \field{issn}{08997667}
+      \field{journaltitle}{Neural Computation}
+      \field{month}{11}
+      \field{number}{8}
+      \field{title}{Long Short-Term Memory}
+      \field{volume}{9}
+      \field{year}{1997}
+      \field{pages}{1735}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1162/neco.1997.9.8.1735
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/DZBKLDCM/Hochreiter and Schmidhuber - 1997 - Long short-term memory.pdf
+      \endverb
+      \keyw{BACK propagation,INFORMATION retrieval,SHORT-term memory}
+    \endentry
+    \entry{isola_image--image_2016}{article}{}
+      \name{author}{4}{}{%
+        {{uniquename=0,uniquepart=base,hash=cae9f806bc99a5f19fadea538fc2db04}{%
+           family={Isola},
+           familyi={I\bibinitperiod},
+           given={Phillip},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=9fbb4b31963f07f34a13b375b4997338}{%
+           family={Zhu},
+           familyi={Z\bibinitperiod},
+           given={Jun-Yan},
+           giveni={J\bibinithyphendelim Y\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=fbb5fac74ecd20c0f90a3884d6a93cdf}{%
+           family={Zhou},
+           familyi={Z\bibinitperiod},
+           given={Tinghui},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=5a663b27298722834a8cf09bb93d8c94}{%
+           family={Efros},
+           familyi={E\bibinitperiod},
+           given={Alexei\bibnamedelima A.},
+           giveni={A\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{dd9b478c7b76d20d978868251cf3ad35}
+      \strng{fullhash}{18664a8c078ce7dff4c499de4e40bf2f}
+      \strng{bibnamehash}{18664a8c078ce7dff4c499de4e40bf2f}
+      \strng{authorbibnamehash}{18664a8c078ce7dff4c499de4e40bf2f}
+      \strng{authornamehash}{dd9b478c7b76d20d978868251cf3ad35}
+      \strng{authorfullhash}{18664a8c078ce7dff4c499de4e40bf2f}
+      \field{sortinit}{I}
+      \field{sortinithash}{320bc8fe8101b9376f9f21cd507de0e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We investigate conditional adversarial networks as a general-purpose solution to image-to-image translation problems. These networks not only learn the mapping from input image to output image, but also learn a loss function to train this mapping. This makes it possible to apply the same generic approach to problems that traditionally would require very different loss formulations. We demonstrate that this approach is effective at synthesizing photos from label maps, reconstructing objects from edge maps, and colorizing images, among other tasks. Indeed, since the release of the pix2pix software associated with this paper, a large number of internet users (many of them artists) have posted their own experiments with our system, further demonstrating its wide applicability and ease of adoption without the need for parameter tweaking. As a community, we no longer hand-engineer our mapping functions, and this work suggests we can achieve reasonable results without hand-engineering our loss functions either.}
+      \field{eprintclass}{cs}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1611.07004 [cs]}
+      \field{month}{11}
+      \field{title}{Image-to-{{Image Translation}} with {{Conditional Adversarial Networks}}}
+      \field{year}{2016}
+      \verb{eprint}
+      \verb 1611.07004
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/HX5VT6P6/Isola et al. - 2016 - Image-to-Image Translation with Conditional Advers.pdf;/home/spacewhisky/Zotero/storage/NHPQCY5S/1611.html
+      \endverb
+      \keyw{Computer Science - Computer Vision and Pattern Recognition}
+    \endentry
+    \entry{karras_style-based_2018}{article}{}
+      \name{author}{3}{}{%
+        {{uniquename=0,uniquepart=base,hash=9c6cb97b8c2c22b41d64c2c4f4520c11}{%
+           family={Karras},
+           familyi={K\bibinitperiod},
+           given={Tero},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=e83c74e19bcc032813595328513ebd5c}{%
+           family={Laine},
+           familyi={L\bibinitperiod},
+           given={Samuli},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=70c1210f7c167faac22c68d1db1d9175}{%
+           family={Aila},
+           familyi={A\bibinitperiod},
+           given={Timo},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{338fbd4c2ccae5bf5e00de7691045566}
+      \strng{fullhash}{ed3d2bdb10a6f295a440707814f6393e}
+      \strng{bibnamehash}{ed3d2bdb10a6f295a440707814f6393e}
+      \strng{authorbibnamehash}{ed3d2bdb10a6f295a440707814f6393e}
+      \strng{authornamehash}{338fbd4c2ccae5bf5e00de7691045566}
+      \strng{authorfullhash}{ed3d2bdb10a6f295a440707814f6393e}
+      \field{sortinit}{K}
+      \field{sortinithash}{9fd838a31ba64d981e8f44562bd33f89}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We propose an alternative generator architecture for generative adversarial networks, borrowing from style transfer literature. The new architecture leads to an automatically learned, unsupervised separation of high-level attributes (e.g., pose and identity when trained on human faces) and stochastic variation in the generated images (e.g., freckles, hair), and it enables intuitive, scale-specific control of the synthesis. The new generator improves the state-of-the-art in terms of traditional distribution quality metrics, leads to demonstrably better interpolation properties, and also better disentangles the latent factors of variation. To quantify interpolation quality and disentanglement, we propose two new, automated methods that are applicable to any generator architecture. Finally, we introduce a new, highly varied and high-quality dataset of human faces.}
+      \field{eprintclass}{cs, stat}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1812.04948 [cs, stat]}
+      \field{month}{12}
+      \field{title}{A {{Style}}-{{Based Generator Architecture}} for {{Generative Adversarial Networks}}}
+      \field{year}{2018}
+      \verb{eprint}
+      \verb 1812.04948
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/ZAZT67GJ/Karras et al. - 2018 - A Style-Based Generator Architecture for Generativ.pdf;/home/spacewhisky/Zotero/storage/LSHUFP26/1812.html
+      \endverb
+      \keyw{Statistics - Machine Learning,Computer Science - Machine Learning,Computer Science - Neural and Evolutionary Computing}
+    \endentry
+    \entry{krizhevsky_imagenet_2012}{incollection}{}
+      \name{author}{3}{}{%
+        {{uniquename=0,uniquepart=base,hash=c5e3a676e2ac1164b3afcd539c131fc9}{%
+           family={Krizhevsky},
+           familyi={K\bibinitperiod},
+           given={Alex},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=8d569d1d5b8b5a7836017a98b430f959}{%
+           family={Sutskever},
+           familyi={S\bibinitperiod},
+           given={Ilya},
+           giveni={I\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=813bd95fe553e6079cd53a567b238287}{%
+           family={Hinton},
+           familyi={H\bibinitperiod},
+           given={Geoffrey\bibnamedelima E},
+           giveni={G\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+      }
+      \name{editor}{4}{}{%
+        {{hash=128472f7930be2fd0645b02dc02aaeb8}{%
+           family={Pereira},
+           familyi={P\bibinitperiod},
+           given={F.},
+           giveni={F\bibinitperiod}}}%
+        {{hash=167dfedfa64097a597226f477da22c44}{%
+           family={Burges},
+           familyi={B\bibinitperiod},
+           given={C.\bibnamedelimi J.\bibnamedelimi C.},
+           giveni={C\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=bbfb0f3936c83b7b099561e6f0e32ef3}{%
+           family={Bottou},
+           familyi={B\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+        {{hash=ad5ed31dbb8d37755c6cb48bedfdfe1d}{%
+           family={Weinberger},
+           familyi={W\bibinitperiod},
+           given={K.\bibnamedelimi Q.},
+           giveni={K\bibinitperiod\bibinitdelim Q\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Curran Associates, Inc.}%
+      }
+      \strng{namehash}{dd291871bfa8ee64447232f1cca429aa}
+      \strng{fullhash}{1a23c09aa65b3c2ade45ed18d8127375}
+      \strng{bibnamehash}{1a23c09aa65b3c2ade45ed18d8127375}
+      \strng{authorbibnamehash}{1a23c09aa65b3c2ade45ed18d8127375}
+      \strng{authornamehash}{dd291871bfa8ee64447232f1cca429aa}
+      \strng{authorfullhash}{1a23c09aa65b3c2ade45ed18d8127375}
+      \strng{editorbibnamehash}{1e8af7f2d3a244c2cf4781005a405e9a}
+      \strng{editornamehash}{6d86a4a427d6d8717a2b98ed4d40921c}
+      \strng{editorfullhash}{1e8af7f2d3a244c2cf4781005a405e9a}
+      \field{sortinit}{K}
+      \field{sortinithash}{9fd838a31ba64d981e8f44562bd33f89}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Advances in {{Neural Information Processing Systems}} 25}
+      \field{title}{{{ImageNet Classification}} with {{Deep Convolutional Neural Networks}}}
+      \field{year}{2012}
+      \field{pages}{1097\bibrangedash 1105}
+      \range{pages}{9}
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/3R4T5RJV/4824-imagenet-classification-with-deep-convolutional-neural-networ.html
+      \endverb
+    \endentry
+    \entry{lake_human-level_2015}{article}{}
+      \name{author}{3}{}{%
+        {{uniquename=0,uniquepart=base,hash=8449df2d22be789ac9cc32444c31921e}{%
+           family={Lake},
+           familyi={L\bibinitperiod},
+           given={Brenden\bibnamedelima M.},
+           giveni={B\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=bd2be300d445e9f6db7808f9533e66cb}{%
+           family={Salakhutdinov},
+           familyi={S\bibinitperiod},
+           given={Ruslan},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=5c7ff02e1f8b4c4aa7bfddece14f23d2}{%
+           family={Tenenbaum},
+           familyi={T\bibinitperiod},
+           given={Joshua\bibnamedelima B.},
+           giveni={J\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{language}{1}{%
+        {en}%
+      }
+      \strng{namehash}{eff7bbe99dbb8df47713e2e6698163af}
+      \strng{fullhash}{14ae3a95313b9fa92797c20359da3dff}
+      \strng{bibnamehash}{14ae3a95313b9fa92797c20359da3dff}
+      \strng{authorbibnamehash}{14ae3a95313b9fa92797c20359da3dff}
+      \strng{authornamehash}{eff7bbe99dbb8df47713e2e6698163af}
+      \strng{authorfullhash}{14ae3a95313b9fa92797c20359da3dff}
+      \field{extraname}{1}
+      \field{sortinit}{L}
+      \field{sortinithash}{2c7981aaabc885868aba60f0c09ee20f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Handwritten characters drawn by a model Not only do children learn effortlessly, they do so quickly and with a remarkable ability to use what they have learned as the raw material for creating new stuff. Lake et al. describe a computational model that learns in a similar fashion and does so better than current deep learning algorithms. The model classifies, parses, and recreates handwritten characters, and can generate new letters of the alphabet that look ``right'' as judged by Turing-like tests of the model's output in comparison to what real humans produce. Science, this issue p. 1332 People learning new concepts can often generalize successfully from just a single example, yet machine learning algorithms typically require tens or hundreds of examples to perform with similar accuracy. People can also use learned concepts in richer ways than conventional algorithms—{}for action, imagination, and explanation. We present a computational model that captures these human learning abilities for a large class of simple visual concepts: handwritten characters from the world's alphabets. The model represents concepts as simple programs that best explain observed examples under a Bayesian criterion. On a challenging one-shot classification task, the model achieves human-level performance while outperforming recent deep learning approaches. We also present several ``visual Turing tests'' probing the model's creative generalization abilities, which in many cases are indistinguishable from human behavior. Combining the capacity to handle noise with probabilistic learning yields humanlike performance in a computational model. Combining the capacity to handle noise with probabilistic learning yields humanlike performance in a computational model.}
+      \field{issn}{0036-8075, 1095-9203}
+      \field{journaltitle}{Science}
+      \field{month}{12}
+      \field{number}{6266}
+      \field{title}{Human-Level Concept Learning through Probabilistic Program Induction}
+      \field{volume}{350}
+      \field{year}{2015}
+      \field{pages}{1332\bibrangedash 1338}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1126/science.aab3050
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/33UZ4DYA/Lake et al. - 2015 - Human-level concept learning through probabilistic.pdf;/home/spacewhisky/Zotero/storage/2THU7R4F/1332.html
+      \endverb
+    \endentry
+    \entry{lake_omniglot_2019}{article}{}
+      \name{author}{3}{}{%
+        {{uniquename=0,uniquepart=base,hash=8449df2d22be789ac9cc32444c31921e}{%
+           family={Lake},
+           familyi={L\bibinitperiod},
+           given={Brenden\bibnamedelima M.},
+           giveni={B\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=bd2be300d445e9f6db7808f9533e66cb}{%
+           family={Salakhutdinov},
+           familyi={S\bibinitperiod},
+           given={Ruslan},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=5c7ff02e1f8b4c4aa7bfddece14f23d2}{%
+           family={Tenenbaum},
+           familyi={T\bibinitperiod},
+           given={Joshua\bibnamedelima B.},
+           giveni={J\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{eff7bbe99dbb8df47713e2e6698163af}
+      \strng{fullhash}{14ae3a95313b9fa92797c20359da3dff}
+      \strng{bibnamehash}{14ae3a95313b9fa92797c20359da3dff}
+      \strng{authorbibnamehash}{14ae3a95313b9fa92797c20359da3dff}
+      \strng{authornamehash}{eff7bbe99dbb8df47713e2e6698163af}
+      \strng{authorfullhash}{14ae3a95313b9fa92797c20359da3dff}
+      \field{extraname}{2}
+      \field{sortinit}{L}
+      \field{sortinithash}{2c7981aaabc885868aba60f0c09ee20f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{Three years ago, we released the Omniglot dataset for developing more human-like learning algorithms. Omniglot is a one-shot learning challenge, inspired by how people can learn a new concept from just one or a few examples. Along with the dataset, we proposed a suite of five challenge tasks and a computational model based on probabilistic program induction that addresses them. The computational model, although powerful, was not meant to be the final word on Omniglot; we hoped that the machine learning community would both build on our work and develop novel approaches to tackling the challenge. In the time since, we have been pleased to see the wide adoption of Omniglot and notable technical progress. There has been genuine progress on one-shot classification, but it has been difficult to measure since researchers have adopted different splits and training procedures that make the task easier. The other four tasks, while essential components of human conceptual understanding, have received considerably less attention. We review the progress so far and conclude that neural networks are still far from human-like concept learning on Omniglot, a challenge that requires performing all of the tasks with a single model. We also discuss new tasks to stimulate further progress.}
+      \field{eprintclass}{cs}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1902.03477 [cs]}
+      \field{month}{2}
+      \field{shorttitle}{The {{Omniglot Challenge}}}
+      \field{title}{The {{Omniglot Challenge}}: {{A}} 3-{{Year Progress Report}}}
+      \field{year}{2019}
+      \verb{eprint}
+      \verb 1902.03477
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/FRIDLAGY/Lake et al. - 2019 - The Omniglot Challenge A 3-Year Progress Report.pdf;/home/spacewhisky/Zotero/storage/QP34QEBP/1902.html
+      \endverb
+      \keyw{Computer Science - Artificial Intelligence,Computer Science - Machine Learning,Computer Science - Computer Vision and Pattern Recognition}
+    \endentry
+    \entry{larochelle_few-shot_2017}{report}{}
+      \name{author}{3}{}{%
+        {{uniquename=0,uniquepart=base,hash=42a970b0a0f1ed24b23064370cc9392f}{%
+           family={Larochelle},
+           familyi={L\bibinitperiod},
+           given={Hugo},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=058e82495825ae376c6a96a12169e6ee}{%
+           family={Finn},
+           familyi={F\bibinitperiod},
+           given={Chelsea},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=1f7fc2e2d5d5696ce6c9b43afc486dc3}{%
+           family={Ravi},
+           familyi={R\bibinitperiod},
+           given={Sachin},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{institution}{1}{%
+        {AI-ON}%
+      }
+      \list{language}{1}{%
+        {en}%
+      }
+      \strng{namehash}{4cf660a37a0b51cf987caa2c88fb2930}
+      \strng{fullhash}{38954129668e12c751b3b4f822f8329c}
+      \strng{bibnamehash}{38954129668e12c751b3b4f822f8329c}
+      \strng{authorbibnamehash}{38954129668e12c751b3b4f822f8329c}
+      \strng{authornamehash}{4cf660a37a0b51cf987caa2c88fb2930}
+      \strng{authorfullhash}{38954129668e12c751b3b4f822f8329c}
+      \field{sortinit}{L}
+      \field{sortinithash}{2c7981aaabc885868aba60f0c09ee20f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Few-shot distribution learning refers to the problem of learning a generative model in the few-shot learning regime. We propose to investigate this problem in the context of generating music data, such as lyrics or MIDI sequences, using ideas from recent developments in adaptive language models, few-shot learning and meta-learning. We plan to collect and construct benchmarks for this problem and evaluate various solutions.}
+      \field{month}{11}
+      \field{title}{Few-{{Shot Distribution Learning}} for {{Music Generation}}}
+      \field{type}{techreport}
+      \field{year}{2017}
+      \field{pages}{4}
+      \range{pages}{1}
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/6J53FJKE/Larochelle et al. - Few-Shot Distribution Learning for Music Generatio.pdf
+      \endverb
+    \endentry
+    \entry{lecun_deep_2015}{article}{}
+      \name{author}{3}{}{%
+        {{uniquename=0,uniquepart=base,hash=6a1aa6b7eab12b931ca7c7e3f927231d}{%
+           family={LeCun},
+           familyi={L\bibinitperiod},
+           given={Yann},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=40a8e4774982146adc2688546f54efb2}{%
+           family={Bengio},
+           familyi={B\bibinitperiod},
+           given={Yoshua},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=9a8750ccdb2a4cf14d2655face1ce016}{%
+           family={Hinton},
+           familyi={H\bibinitperiod},
+           given={Geoffrey},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{language}{1}{%
+        {en}%
+      }
+      \strng{namehash}{9e4c6012409dc8dd9b2aa198a2059804}
+      \strng{fullhash}{c6c75bd00ce5a488e91a749d8383b3df}
+      \strng{bibnamehash}{c6c75bd00ce5a488e91a749d8383b3df}
+      \strng{authorbibnamehash}{c6c75bd00ce5a488e91a749d8383b3df}
+      \strng{authornamehash}{9e4c6012409dc8dd9b2aa198a2059804}
+      \strng{authorfullhash}{c6c75bd00ce5a488e91a749d8383b3df}
+      \field{sortinit}{L}
+      \field{sortinithash}{2c7981aaabc885868aba60f0c09ee20f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0028-0836, 1476-4687}
+      \field{journaltitle}{Nature}
+      \field{month}{5}
+      \field{number}{7553}
+      \field{title}{Deep Learning}
+      \field{volume}{521}
+      \field{year}{2015}
+      \field{pages}{436\bibrangedash 444}
+      \range{pages}{9}
+      \verb{doi}
+      \verb 10.1038/nature14539
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/FA66A6A2/LeCun et al. - 2015 - Deep learning.pdf
+      \endverb
+    \endentry
+    \entry{ledig_photo-realistic_2016}{article}{}
+      \name{author}{11}{}{%
+        {{uniquename=0,uniquepart=base,hash=dee0b959a6d8e56154a0c6381ea357af}{%
+           family={Ledig},
+           familyi={L\bibinitperiod},
+           given={Christian},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=5314c7da92c0dd8f017ad76fc7a24e02}{%
+           family={Theis},
+           familyi={T\bibinitperiod},
+           given={Lucas},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=55245b2fad09f9c922d0006d08f5b7f0}{%
+           family={Huszar},
+           familyi={H\bibinitperiod},
+           given={Ferenc},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=3b9836d6278f3cf5dc21ab6e8c010ecb}{%
+           family={Caballero},
+           familyi={C\bibinitperiod},
+           given={Jose},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=c1b16923730dc02c52fbcfe531bad999}{%
+           family={Cunningham},
+           familyi={C\bibinitperiod},
+           given={Andrew},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=054b92db4c82434176e894d7fa6055ce}{%
+           family={Acosta},
+           familyi={A\bibinitperiod},
+           given={Alejandro},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=b9d6efcdb8c05d59bf4b6c18cba1518c}{%
+           family={Aitken},
+           familyi={A\bibinitperiod},
+           given={Andrew},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=3feeeebee8583ecc208f7fb3e0a55068}{%
+           family={Tejani},
+           familyi={T\bibinitperiod},
+           given={Alykhan},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=1381c64db5234527e34e6f3b4977fe54}{%
+           family={Totz},
+           familyi={T\bibinitperiod},
+           given={Johannes},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=f9c196f615b0bde00b8ef1e7cfaa8055}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Zehan},
+           giveni={Z\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=59260dd2ba392e626647c9ee8f8c6b35}{%
+           family={Shi},
+           familyi={S\bibinitperiod},
+           given={Wenzhe},
+           giveni={W\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{d9ed1315cb65e9f234737cc328a74451}
+      \strng{fullhash}{99894a18ba4e3e9cb34c3b03d10f3ad7}
+      \strng{bibnamehash}{795c662dd2cde4f1f9b4b9854782b4ba}
+      \strng{authorbibnamehash}{795c662dd2cde4f1f9b4b9854782b4ba}
+      \strng{authornamehash}{d9ed1315cb65e9f234737cc328a74451}
+      \strng{authorfullhash}{99894a18ba4e3e9cb34c3b03d10f3ad7}
+      \field{sortinit}{L}
+      \field{sortinithash}{2c7981aaabc885868aba60f0c09ee20f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Despite the breakthroughs in accuracy and speed of single image super-resolution using faster and deeper convolutional neural networks, one central problem remains largely unsolved: how do we recover the finer texture details when we super-resolve at large upscaling factors? The behavior of optimization-based super-resolution methods is principally driven by the choice of the objective function. Recent work has largely focused on minimizing the mean squared reconstruction error. The resulting estimates have high peak signal-to-noise ratios, but they are often lacking high-frequency details and are perceptually unsatisfying in the sense that they fail to match the fidelity expected at the higher resolution. In this paper, we present SRGAN, a generative adversarial network (GAN) for image super-resolution (SR). To our knowledge, it is the first framework capable of inferring photo-realistic natural images for 4x upscaling factors. To achieve this, we propose a perceptual loss function which consists of an adversarial loss and a content loss. The adversarial loss pushes our solution to the natural image manifold using a discriminator network that is trained to differentiate between the super-resolved images and original photo-realistic images. In addition, we use a content loss motivated by perceptual similarity instead of similarity in pixel space. Our deep residual network is able to recover photo-realistic textures from heavily downsampled images on public benchmarks. An extensive mean-opinion-score (MOS) test shows hugely significant gains in perceptual quality using SRGAN. The MOS scores obtained with SRGAN are closer to those of the original high-resolution images than to those obtained with any state-of-the-art method.}
+      \field{eprintclass}{cs, stat}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1609.04802 [cs, stat]}
+      \field{month}{9}
+      \field{title}{Photo-{{Realistic Single Image Super}}-{{Resolution Using}} a {{Generative Adversarial Network}}}
+      \field{year}{2016}
+      \verb{eprint}
+      \verb 1609.04802
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/DEFRTDKA/Ledig et al. - 2016 - Photo-Realistic Single Image Super-Resolution Usin.pdf;/home/spacewhisky/Zotero/storage/VXRGA488/1609.html
+      \endverb
+      \keyw{Statistics - Machine Learning,Computer Science - Computer Vision and Pattern Recognition}
+    \endentry
+    \entry{mogren_c-rnn-gan_2016}{article}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,uniquepart=base,hash=37c6ba6530714be9ad3200d841f19362}{%
+           family={Mogren},
+           familyi={M\bibinitperiod},
+           given={Olof},
+           giveni={O\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{37c6ba6530714be9ad3200d841f19362}
+      \strng{fullhash}{37c6ba6530714be9ad3200d841f19362}
+      \strng{bibnamehash}{37c6ba6530714be9ad3200d841f19362}
+      \strng{authorbibnamehash}{37c6ba6530714be9ad3200d841f19362}
+      \strng{authornamehash}{37c6ba6530714be9ad3200d841f19362}
+      \strng{authorfullhash}{37c6ba6530714be9ad3200d841f19362}
+      \field{sortinit}{M}
+      \field{sortinithash}{cfd219b90152c06204fab207bc6c7cab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{Generative adversarial networks have been proposed as a way of efficiently training deep generative neural networks. We propose a generative adversarial model that works on continuous sequential data, and apply it by training it on a collection of classical music. We conclude that it generates music that sounds better and better as the model is trained, report statistics on generated music, and let the reader judge the quality by downloading the generated songs.}
+      \field{eprintclass}{cs}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1611.09904 [cs]}
+      \field{month}{11}
+      \field{shorttitle}{C-{{RNN}}-{{GAN}}}
+      \field{title}{C-{{RNN}}-{{GAN}}: {{Continuous}} Recurrent Neural Networks with Adversarial Training}
+      \field{year}{2016}
+      \verb{eprint}
+      \verb 1611.09904
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/FYW2CWU2/Mogren - 2016 - C-RNN-GAN Continuous recurrent neural networks wi.pdf;/home/spacewhisky/Zotero/storage/T2ARPDF8/1611.html
+      \endverb
+      \keyw{Computer Science - Artificial Intelligence,Computer Science - Machine Learning}
+    \endentry
+    \entry{nichol_first-order_2018}{article}{}
+      \name{author}{3}{}{%
+        {{uniquename=0,uniquepart=base,hash=fc19c0dc057e2a02419916b39da6895b}{%
+           family={Nichol},
+           familyi={N\bibinitperiod},
+           given={Alex},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=e9029ecf4d7c873909e2074c987301f3}{%
+           family={Achiam},
+           familyi={A\bibinitperiod},
+           given={Joshua},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=3e09bd2a25d237ebdaed560a07c0451e}{%
+           family={Schulman},
+           familyi={S\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{e7a6538c2c8fb1b09de9faa53e42f2f9}
+      \strng{fullhash}{110a5a67ba6159199411a3bce95436ea}
+      \strng{bibnamehash}{110a5a67ba6159199411a3bce95436ea}
+      \strng{authorbibnamehash}{110a5a67ba6159199411a3bce95436ea}
+      \strng{authornamehash}{e7a6538c2c8fb1b09de9faa53e42f2f9}
+      \strng{authorfullhash}{110a5a67ba6159199411a3bce95436ea}
+      \field{sortinit}{N}
+      \field{sortinithash}{f7242c3ed3dc50029fca1be76c497c7c}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{This paper considers meta-learning problems, where there is a distribution of tasks, and we would like to obtain an agent that performs well (i.e., learns quickly) when presented with a previously unseen task sampled from this distribution. We analyze a family of algorithms for learning a parameter initialization that can be fine-tuned quickly on a new task, using only first-order derivatives for the meta-learning updates. This family includes and generalizes first-order MAML, an approximation to MAML obtained by ignoring second-order derivatives. It also includes Reptile, a new algorithm that we introduce here, which works by repeatedly sampling a task, training on it, and moving the initialization towards the trained weights on that task. We expand on the results from Finn et al. showing that first-order meta-learning algorithms perform well on some well-established benchmarks for few-shot classification, and we provide theoretical analysis aimed at understanding why these algorithms work.}
+      \field{eprintclass}{cs}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1803.02999 [cs]}
+      \field{month}{3}
+      \field{title}{On {{First}}-{{Order Meta}}-{{Learning Algorithms}}}
+      \field{year}{2018}
+      \verb{eprint}
+      \verb 1803.02999
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/KEPG9LVS/Nichol et al. - 2018 - On First-Order Meta-Learning Algorithms.pdf;/home/spacewhisky/Zotero/storage/7PAVQVUG/1803.html
+      \endverb
+      \keyw{Computer Science - Machine Learning}
+    \endentry
+    \entry{oore_this_2018}{article}{}
+      \name{author}{5}{}{%
+        {{uniquename=0,uniquepart=base,hash=619ca3d01db1d2673993591ddf761dbb}{%
+           family={Oore},
+           familyi={O\bibinitperiod},
+           given={Sageev},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=0b461ec7764bb41a6287a8d0716006a0}{%
+           family={Simon},
+           familyi={S\bibinitperiod},
+           given={Ian},
+           giveni={I\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=a133b469b21b870786119a47b1b691eb}{%
+           family={Dieleman},
+           familyi={D\bibinitperiod},
+           given={Sander},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=b2c4631ad93e93115d9b3ceea6587550}{%
+           family={Eck},
+           familyi={E\bibinitperiod},
+           given={Douglas},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=9d16b7284df92c9adaee86c37ab992df}{%
+           family={Simonyan},
+           familyi={S\bibinitperiod},
+           given={Karen},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{95e0389a2ef20185a53af3f3aff56d9e}
+      \strng{fullhash}{3e15321d84ad8216c5e40f2dd041132c}
+      \strng{bibnamehash}{3e15321d84ad8216c5e40f2dd041132c}
+      \strng{authorbibnamehash}{3e15321d84ad8216c5e40f2dd041132c}
+      \strng{authornamehash}{95e0389a2ef20185a53af3f3aff56d9e}
+      \strng{authorfullhash}{3e15321d84ad8216c5e40f2dd041132c}
+      \field{sortinit}{O}
+      \field{sortinithash}{dad3efd0836470093a7b4a7bb756eb8c}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{Music generation has generally been focused on either creating scores or interpreting them. We discuss differences between these two problems and propose that, in fact, it may be valuable to work in the space of direct \$$\backslash$it performance\$ generation: jointly predicting the notes \$$\backslash$it and\$ \$$\backslash$it also\$ their expressive timing and dynamics. We consider the significance and qualities of the data set needed for this. Having identified both a problem domain and characteristics of an appropriate data set, we show an LSTM-based recurrent network model that subjectively performs quite well on this task. Critically, we provide generated examples. We also include feedback from professional composers and musicians about some of these examples.}
+      \field{eprintclass}{cs, eess}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1808.03715 [cs, eess]}
+      \field{month}{8}
+      \field{shorttitle}{This {{Time}} with {{Feeling}}}
+      \field{title}{This {{Time}} with {{Feeling}}: {{Learning Expressive Musical Performance}}}
+      \field{year}{2018}
+      \verb{eprint}
+      \verb 1808.03715
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/6ASMVC7P/Oore et al. - 2018 - This Time with Feeling Learning Expressive Musica.pdf;/home/spacewhisky/Zotero/storage/AJYZQJSN/1808.html
+      \endverb
+      \keyw{Computer Science - Sound,Electrical Engineering and Systems Science - Audio and Speech Processing,Computer Science - Machine Learning}
+    \endentry
+    \entry{ravi_optimization_2016}{article}{}
+      \name{author}{2}{}{%
+        {{uniquename=0,uniquepart=base,hash=1f7fc2e2d5d5696ce6c9b43afc486dc3}{%
+           family={Ravi},
+           familyi={R\bibinitperiod},
+           given={Sachin},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=42a970b0a0f1ed24b23064370cc9392f}{%
+           family={Larochelle},
+           familyi={L\bibinitperiod},
+           given={Hugo},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{ed82c19346f6c9d34bf0d66b18b29b94}
+      \strng{fullhash}{ed82c19346f6c9d34bf0d66b18b29b94}
+      \strng{bibnamehash}{ed82c19346f6c9d34bf0d66b18b29b94}
+      \strng{authorbibnamehash}{ed82c19346f6c9d34bf0d66b18b29b94}
+      \strng{authornamehash}{ed82c19346f6c9d34bf0d66b18b29b94}
+      \strng{authorfullhash}{ed82c19346f6c9d34bf0d66b18b29b94}
+      \field{sortinit}{R}
+      \field{sortinithash}{da6b42bd3ab22fee61abed031ee405f7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Though deep neural networks have shown great success in the large data domain, they generally perform poorly on few-shot learning tasks, where a model has to quickly generalize after seeing very...}
+      \field{month}{11}
+      \field{title}{Optimization as a {{Model}} for {{Few}}-{{Shot Learning}}}
+      \field{year}{2016}
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/BFUUN2KK/Ravi and Larochelle - 2016 - Optimization as a Model for Few-Shot Learning.pdf;/home/spacewhisky/Zotero/storage/VQBUV9V2/forum.html
+      \endverb
+    \endentry
+    \entry{rezende_one-shot_2016}{article}{}
+      \name{author}{5}{}{%
+        {{uniquename=0,uniquepart=base,hash=ec9d0847975b9ff58f6b8ba2661c82fc}{%
+           family={Rezende},
+           familyi={R\bibinitperiod},
+           given={Danilo\bibnamedelima Jimenez},
+           giveni={D\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=b520f2e46ec8803dd4c66bf1d6059482}{%
+           family={Mohamed},
+           familyi={M\bibinitperiod},
+           given={Shakir},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=970650e9394fccd4144d4b829505d2b3}{%
+           family={Danihelka},
+           familyi={D\bibinitperiod},
+           given={Ivo},
+           giveni={I\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=509f17f49c9d4d5520e09dbdf5648d67}{%
+           family={Gregor},
+           familyi={G\bibinitperiod},
+           given={Karol},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=d7805381550fb5f8360345f7f72c0b49}{%
+           family={Wierstra},
+           familyi={W\bibinitperiod},
+           given={Daan},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{b65436ab373a2da9cf20a07c37966dfa}
+      \strng{fullhash}{d79d9239d755b079f6680335c43134ef}
+      \strng{bibnamehash}{d79d9239d755b079f6680335c43134ef}
+      \strng{authorbibnamehash}{d79d9239d755b079f6680335c43134ef}
+      \strng{authornamehash}{b65436ab373a2da9cf20a07c37966dfa}
+      \strng{authorfullhash}{d79d9239d755b079f6680335c43134ef}
+      \field{sortinit}{R}
+      \field{sortinithash}{da6b42bd3ab22fee61abed031ee405f7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Humans have an impressive ability to reason about new concepts and experiences from just a single example. In particular, humans have an ability for one-shot generalization: an ability to encounter a new concept, understand its structure, and then be able to generate compelling alternative variations of the concept. We develop machine learning systems with this important capacity by developing new deep generative models, models that combine the representational power of deep learning with the inferential power of Bayesian reasoning. We develop a class of sequential generative models that are built on the principles of feedback and attention. These two characteristics lead to generative models that are among the state-of-the art in density estimation and image generation. We demonstrate the one-shot generalization ability of our models using three tasks: unconditional sampling, generating new exemplars of a given concept, and generating new exemplars of a family of concepts. In all cases our models are able to generate compelling and diverse samples---having seen new examples just once---providing an important class of general-purpose models for one-shot machine learning.}
+      \field{eprintclass}{cs, stat}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1603.05106 [cs, stat]}
+      \field{month}{3}
+      \field{title}{One-{{Shot Generalization}} in {{Deep Generative Models}}}
+      \field{year}{2016}
+      \verb{eprint}
+      \verb 1603.05106
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/8FZMMRZB/Rezende et al. - 2016 - One-Shot Generalization in Deep Generative Models.pdf;/home/spacewhisky/Zotero/storage/MHGQUHY8/1603.html
+      \endverb
+      \keyw{Computer Science - Artificial Intelligence,Statistics - Machine Learning,Computer Science - Machine Learning}
+    \endentry
+    \entry{richardson_gans_2018}{article}{}
+      \name{author}{2}{}{%
+        {{uniquename=0,uniquepart=base,hash=924106664b68f808541be2e73695f874}{%
+           family={Richardson},
+           familyi={R\bibinitperiod},
+           given={Eitan},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=214a71ab353c5570ed4acb95cf84f539}{%
+           family={Weiss},
+           familyi={W\bibinitperiod},
+           given={Yair},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{c980d01416af293b8213f991a78ba3ce}
+      \strng{fullhash}{c980d01416af293b8213f991a78ba3ce}
+      \strng{bibnamehash}{c980d01416af293b8213f991a78ba3ce}
+      \strng{authorbibnamehash}{c980d01416af293b8213f991a78ba3ce}
+      \strng{authornamehash}{c980d01416af293b8213f991a78ba3ce}
+      \strng{authorfullhash}{c980d01416af293b8213f991a78ba3ce}
+      \field{sortinit}{R}
+      \field{sortinithash}{da6b42bd3ab22fee61abed031ee405f7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{A longstanding problem in machine learning is to find unsupervised methods that can learn the statistical structure of high dimensional signals. In recent years, GANs have gained much attention as a possible solution to the problem, and in particular have shown the ability to generate remarkably realistic high resolution sampled images. At the same time, many authors have pointed out that GANs may fail to model the full distribution ("mode collapse") and that using the learned models for anything other than generating samples may be very difficult. In this paper, we examine the utility of GANs in learning statistical models of images by comparing them to perhaps the simplest statistical model, the Gaussian Mixture Model. First, we present a simple method to evaluate generative models based on relative proportions of samples that fall into predetermined bins. Unlike previous automatic methods for evaluating models, our method does not rely on an additional neural network nor does it require approximating intractable computations. Second, we compare the performance of GANs to GMMs trained on the same datasets. While GMMs have previously been shown to be successful in modeling small patches of images, we show how to train them on full sized images despite the high dimensionality. Our results show that GMMs can generate realistic samples (although less sharp than those of GANs) but also capture the full distribution, which GANs fail to do. Furthermore, GMMs allow efficient inference and explicit representation of the underlying statistical structure. Finally, we discuss how GMMs can be used to generate sharp images.}
+      \field{eprintclass}{cs}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1805.12462 [cs]}
+      \field{month}{5}
+      \field{title}{On {{GANs}} and {{GMMs}}}
+      \field{year}{2018}
+      \verb{eprint}
+      \verb 1805.12462
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/NNSD4LGV/Richardson and Weiss - 2018 - On GANs and GMMs.pdf;/home/spacewhisky/Zotero/storage/XM4HJUQX/1805.html
+      \endverb
+      \keyw{Computer Science - Machine Learning,Computer Science - Computer Vision and Pattern Recognition}
+    \endentry
+    \entry{vinyals_matching_2016}{article}{}
+      \name{author}{5}{}{%
+        {{uniquename=0,uniquepart=base,hash=494b568c5dc85ba8f3f409635f9c5f25}{%
+           family={Vinyals},
+           familyi={V\bibinitperiod},
+           given={Oriol},
+           giveni={O\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=24fe1af011227491e54e299ba4cb24b5}{%
+           family={Blundell},
+           familyi={B\bibinitperiod},
+           given={Charles},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=3a6fdf4df9a25f1d2d506ad9e86e1f6c}{%
+           family={Lillicrap},
+           familyi={L\bibinitperiod},
+           given={Timothy},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=481308b301166b521c74fde6566e97e6}{%
+           family={Kavukcuoglu},
+           familyi={K\bibinitperiod},
+           given={Koray},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=d7805381550fb5f8360345f7f72c0b49}{%
+           family={Wierstra},
+           familyi={W\bibinitperiod},
+           given={Daan},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{832d19b6ecbaa1d465342fe676ffb29a}
+      \strng{fullhash}{bd80cc60e81a6a4b5331c3cef2690fdd}
+      \strng{bibnamehash}{bd80cc60e81a6a4b5331c3cef2690fdd}
+      \strng{authorbibnamehash}{bd80cc60e81a6a4b5331c3cef2690fdd}
+      \strng{authornamehash}{832d19b6ecbaa1d465342fe676ffb29a}
+      \strng{authorfullhash}{bd80cc60e81a6a4b5331c3cef2690fdd}
+      \field{extraname}{1}
+      \field{sortinit}{V}
+      \field{sortinithash}{75dd7385c90b2252c3ae853a80ca853b}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Learning from a few examples remains a key challenge in machine learning. Despite recent advances in important domains such as vision and language, the standard supervised deep learning paradigm does not offer a satisfactory solution for learning new concepts rapidly from little data. In this work, we employ ideas from metric learning based on deep neural features and from recent advances that augment neural networks with external memories. Our framework learns a network that maps a small labelled support set and an unlabelled example to its label, obviating the need for fine-tuning to adapt to new class types. We then define one-shot learning problems on vision (using Omniglot, ImageNet) and language tasks. Our algorithm improves one-shot accuracy on ImageNet from 87.6\% to 93.2\% and from 88.0\% to 93.8\% on Omniglot compared to competing approaches. We also demonstrate the usefulness of the same model on language modeling by introducing a one-shot task on the Penn Treebank.}
+      \field{eprintclass}{cs, stat}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1606.04080 [cs, stat]}
+      \field{month}{6}
+      \field{title}{Matching {{Networks}} for {{One Shot Learning}}}
+      \field{year}{2016}
+      \verb{eprint}
+      \verb 1606.04080
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/JQ7NG2JM/Vinyals et al. - 2016 - Matching Networks for One Shot Learning.pdf;/home/spacewhisky/Zotero/storage/LKKH8K2S/1606.html
+      \endverb
+      \keyw{Statistics - Machine Learning,Computer Science - Machine Learning}
+    \endentry
+    \entry{vinyals_starcraft_2017}{article}{}
+      \name{author}{25}{}{%
+        {{uniquename=0,uniquepart=base,hash=494b568c5dc85ba8f3f409635f9c5f25}{%
+           family={Vinyals},
+           familyi={V\bibinitperiod},
+           given={Oriol},
+           giveni={O\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=2687d58e59afed22249974d723704f56}{%
+           family={Ewalds},
+           familyi={E\bibinitperiod},
+           given={Timo},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=7896fad6d0ebd9548ae7f08eb947c431}{%
+           family={Bartunov},
+           familyi={B\bibinitperiod},
+           given={Sergey},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=1c5b83cefd7033a528994276b9c00e87}{%
+           family={Georgiev},
+           familyi={G\bibinitperiod},
+           given={Petko},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=2ec38a3dd7ea5acceea0028fac6c15bf}{%
+           family={Vezhnevets},
+           familyi={V\bibinitperiod},
+           given={Alexander\bibnamedelima Sasha},
+           giveni={A\bibinitperiod\bibinitdelim S\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=b3d8def8985901e47c12ba944ec4e9b4}{%
+           family={Yeo},
+           familyi={Y\bibinitperiod},
+           given={Michelle},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=9d8b4e8b7224f41ba985f7dbc8896258}{%
+           family={Makhzani},
+           familyi={M\bibinitperiod},
+           given={Alireza},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=4eadcf26f55e11fe4be834b52d9b7fdf}{%
+           family={Küttler},
+           familyi={K\bibinitperiod},
+           given={Heinrich},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=333bf32d39a38f126d82c78d782e93ba}{%
+           family={Agapiou},
+           familyi={A\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=8fad8df927bc0014c0bd6a9feb7aa71d}{%
+           family={Schrittwieser},
+           familyi={S\bibinitperiod},
+           given={Julian},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=d1c6b8444cb95e400ca38d5ae5c5afd3}{%
+           family={Quan},
+           familyi={Q\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=d8308a9ad7b60797ff263ee04d6071bb}{%
+           family={Gaffney},
+           familyi={G\bibinitperiod},
+           given={Stephen},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=4e381e44037009b1cd834d794735c311}{%
+           family={Petersen},
+           familyi={P\bibinitperiod},
+           given={Stig},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=9d16b7284df92c9adaee86c37ab992df}{%
+           family={Simonyan},
+           familyi={S\bibinitperiod},
+           given={Karen},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=a56e72b23778a835bdade7d0511e43a3}{%
+           family={Schaul},
+           familyi={S\bibinitperiod},
+           given={Tom},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=e75f0b2e9c29c175e6320c1e96cdf5c8}{%
+           family={{van Hasselt}},
+           familyi={v\bibinitperiod},
+           given={Hado},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=89dbd30410c2085cd059f32c57d4593e}{%
+           family={Silver},
+           familyi={S\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=3a6fdf4df9a25f1d2d506ad9e86e1f6c}{%
+           family={Lillicrap},
+           familyi={L\bibinitperiod},
+           given={Timothy},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=9dce9c2ec3c46b83a5bea0ff2cfba0a7}{%
+           family={Calderone},
+           familyi={C\bibinitperiod},
+           given={Kevin},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=242fb86709e080be7c6ae88136dd9353}{%
+           family={Keet},
+           familyi={K\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=988d9bf170d1becb16f79103eaae5e23}{%
+           family={Brunasso},
+           familyi={B\bibinitperiod},
+           given={Anthony},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=d9d8a82c6bc1092b207a2c7b4cd7611c}{%
+           family={Lawrence},
+           familyi={L\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=3678dacdda8e161d3b0d6e33255e34f1}{%
+           family={Ekermo},
+           familyi={E\bibinitperiod},
+           given={Anders},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=18b32c718bca32a3d51b2e05b530518f}{%
+           family={Repp},
+           familyi={R\bibinitperiod},
+           given={Jacob},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=514b0b53011a598d392a5e6c13652624}{%
+           family={Tsing},
+           familyi={T\bibinitperiod},
+           given={Rodney},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{832d19b6ecbaa1d465342fe676ffb29a}
+      \strng{fullhash}{cfb42d7923f136c828559045db9b2595}
+      \strng{bibnamehash}{96cf591b7fd48c9037d3be12b09503da}
+      \strng{authorbibnamehash}{96cf591b7fd48c9037d3be12b09503da}
+      \strng{authornamehash}{832d19b6ecbaa1d465342fe676ffb29a}
+      \strng{authorfullhash}{cfb42d7923f136c828559045db9b2595}
+      \field{extraname}{2}
+      \field{sortinit}{V}
+      \field{sortinithash}{75dd7385c90b2252c3ae853a80ca853b}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{This paper introduces SC2LE (StarCraft II Learning Environment), a reinforcement learning environment based on the StarCraft II game. This domain poses a new grand challenge for reinforcement learning, representing a more difficult class of problems than considered in most prior work. It is a multi-agent problem with multiple players interacting; there is imperfect information due to a partially observed map; it has a large action space involving the selection and control of hundreds of units; it has a large state space that must be observed solely from raw input feature planes; and it has delayed credit assignment requiring long-term strategies over thousands of steps. We describe the observation, action, and reward specification for the StarCraft II domain and provide an open source Python-based interface for communicating with the game engine. In addition to the main game maps, we provide a suite of mini-games focusing on different elements of StarCraft II gameplay. For the main game maps, we also provide an accompanying dataset of game replay data from human expert players. We give initial baseline results for neural networks trained from this data to predict game outcomes and player actions. Finally, we present initial baseline results for canonical deep reinforcement learning agents applied to the StarCraft II domain. On the mini-games, these agents learn to achieve a level of play that is comparable to a novice player. However, when trained on the main game, these agents are unable to make significant progress. Thus, SC2LE offers a new and challenging environment for exploring deep reinforcement learning algorithms and architectures.}
+      \field{eprintclass}{cs}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1708.04782 [cs]}
+      \field{month}{8}
+      \field{shorttitle}{{{StarCraft II}}}
+      \field{title}{{{StarCraft II}}: {{A New Challenge}} for {{Reinforcement Learning}}}
+      \field{year}{2017}
+      \verb{eprint}
+      \verb 1708.04782
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/FEWXLMPW/Vinyals et al. - 2017 - StarCraft II A New Challenge for Reinforcement Le.pdf;/home/spacewhisky/Zotero/storage/IWNFI7JB/1708.html
+      \endverb
+      \keyw{Computer Science - Artificial Intelligence,Computer Science - Machine Learning}
+    \endentry
+    \entry{yu_seqgan_2016}{article}{}
+      \name{author}{4}{}{%
+        {{uniquename=0,uniquepart=base,hash=98c85f16186b9ce495905d4a0dd69e57}{%
+           family={Yu},
+           familyi={Y\bibinitperiod},
+           given={Lantao},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=fbc51a6317f158547173b93086d9b1a2}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Weinan},
+           giveni={W\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=2f3ea981fa5a715a69118b48e576a9f5}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Jun},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=c447a713c11f58a40c2a899040774a98}{%
+           family={Yu},
+           familyi={Y\bibinitperiod},
+           given={Yong},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{9de23e2f72700b4e180017bd0a3a6cc4}
+      \strng{fullhash}{63468ed95dbde63f8c46fbfca5063f4b}
+      \strng{bibnamehash}{63468ed95dbde63f8c46fbfca5063f4b}
+      \strng{authorbibnamehash}{63468ed95dbde63f8c46fbfca5063f4b}
+      \strng{authornamehash}{9de23e2f72700b4e180017bd0a3a6cc4}
+      \strng{authorfullhash}{63468ed95dbde63f8c46fbfca5063f4b}
+      \field{sortinit}{Y}
+      \field{sortinithash}{b8d711a035f7be9840c721c82920477e}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{As a new way of training generative models, Generative Adversarial Nets (GAN) that uses a discriminative model to guide the training of the generative model has enjoyed considerable success in generating real-valued data. However, it has limitations when the goal is for generating sequences of discrete tokens. A major reason lies in that the discrete outputs from the generative model make it difficult to pass the gradient update from the discriminative model to the generative model. Also, the discriminative model can only assess a complete sequence, while for a partially generated sequence, it is non-trivial to balance its current score and the future one once the entire sequence has been generated. In this paper, we propose a sequence generation framework, called SeqGAN, to solve the problems. Modeling the data generator as a stochastic policy in reinforcement learning (RL), SeqGAN bypasses the generator differentiation problem by directly performing gradient policy update. The RL reward signal comes from the GAN discriminator judged on a complete sequence, and is passed back to the intermediate state-action steps using Monte Carlo search. Extensive experiments on synthetic data and real-world tasks demonstrate significant improvements over strong baselines.}
+      \field{eprintclass}{cs}
+      \field{eprinttype}{arxiv}
+      \field{journaltitle}{arXiv:1609.05473 [cs]}
+      \field{month}{9}
+      \field{shorttitle}{{{SeqGAN}}}
+      \field{title}{{{SeqGAN}}: {{Sequence Generative Adversarial Nets}} with {{Policy Gradient}}}
+      \field{year}{2016}
+      \verb{eprint}
+      \verb 1609.05473
+      \endverb
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/FA5JGR57/Yu et al. - 2016 - SeqGAN Sequence Generative Adversarial Nets with .pdf;/home/spacewhisky/Zotero/storage/I46C957E/1609.html
+      \endverb
+      \keyw{Computer Science - Artificial Intelligence,Computer Science - Machine Learning}
+    \endentry
+    \entry{zhang_metagan_2018}{incollection}{}
+      \name{author}{5}{}{%
+        {{uniquename=0,uniquepart=base,hash=8704defdb7200dcedd52f6d797f19c8f}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Ruixiang},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=d240df7de384ee26e37dc8340bf08275}{%
+           family={Che},
+           familyi={C\bibinitperiod},
+           given={Tong},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=bf5cf30deddddad00a6341ad7a414445}{%
+           family={Ghahramani},
+           familyi={G\bibinitperiod},
+           given={Zoubin},
+           giveni={Z\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=40a8e4774982146adc2688546f54efb2}{%
+           family={Bengio},
+           familyi={B\bibinitperiod},
+           given={Yoshua},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{uniquename=0,uniquepart=base,hash=eb2f303f4f33fe4f02056096d47dc6c7}{%
+           family={Song},
+           familyi={S\bibinitperiod},
+           given={Yangqiu},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+      }
+      \name{editor}{6}{}{%
+        {{hash=9b411b6c9cefdde16ffea77ecf612142}{%
+           family={Bengio},
+           familyi={B\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=1444141e07dd9549dbb4b8530fe4ec15}{%
+           family={Wallach},
+           familyi={W\bibinitperiod},
+           given={H.},
+           giveni={H\bibinitperiod}}}%
+        {{hash=6c15b92d4ebdbfae091f6548dc7543ae}{%
+           family={Larochelle},
+           familyi={L\bibinitperiod},
+           given={H.},
+           giveni={H\bibinitperiod}}}%
+        {{hash=4f2317ca7fb46f798c6c220e39e332a0}{%
+           family={Grauman},
+           familyi={G\bibinitperiod},
+           given={K.},
+           giveni={K\bibinitperiod}}}%
+        {{hash=9bc86e7523b9aaf7183c5f7e7634048f}{%
+           family={{Cesa-Bianchi}},
+           familyi={C\bibinitperiod},
+           given={N.},
+           giveni={N\bibinitperiod}}}%
+        {{hash=36b98b7ab533936cf1b5716148de704f}{%
+           family={Garnett},
+           familyi={G\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Curran Associates, Inc.}%
+      }
+      \strng{namehash}{e397bd2fd1a7fae27c4cdbe35b324d33}
+      \strng{fullhash}{e47c72488db64218f5ea8bde59760c98}
+      \strng{bibnamehash}{e47c72488db64218f5ea8bde59760c98}
+      \strng{authorbibnamehash}{e47c72488db64218f5ea8bde59760c98}
+      \strng{authornamehash}{e397bd2fd1a7fae27c4cdbe35b324d33}
+      \strng{authorfullhash}{e47c72488db64218f5ea8bde59760c98}
+      \strng{editorbibnamehash}{f08403ac24c2e0a0ae72822c0c0afda6}
+      \strng{editornamehash}{233f4c9ba2f85af3db1eed171136508c}
+      \strng{editorfullhash}{f08403ac24c2e0a0ae72822c0c0afda6}
+      \field{sortinit}{Z}
+      \field{sortinithash}{156173bd08b075d7295bc3e0f4735a04}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{booktitle}{Advances in {{Neural Information Processing Systems}} 31}
+      \field{shorttitle}{{{MetaGAN}}}
+      \field{title}{{{MetaGAN}}: {{An Adversarial Approach}} to {{Few}}-{{Shot Learning}}}
+      \field{year}{2018}
+      \field{pages}{2371\bibrangedash 2380}
+      \range{pages}{10}
+      \verb{file}
+      \verb /home/spacewhisky/Zotero/storage/38FZHFNU/ZHANG et al. - 2018 - MetaGAN An Adversarial Approach to Few-Shot Learn.pdf;/home/spacewhisky/Zotero/storage/LJWGTCAZ/7504-metagan-an-adversarial-approach-to-few-shot-learning.html
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

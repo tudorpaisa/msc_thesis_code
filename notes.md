@@ -1,16 +1,9 @@
-site: anglicanchant.nl
+# Evaluation Metrics
 
-1. change of trends
-2. popularity of chant (how and why)
-
-- Evaluating text with music
-    - unsupervised?
-- Given text split into bars
-- similarity between chants
-    - multiple alignment
-
-1. Split text into bars
-    - ner, chunker, etc.
-    - Does the music help with assigning to bars?
-    - syllabification, stress pattern, language anlyses
-2. machine translation-ish, to align text with notes
+- [ ] Maximum Mean Discrepancy (MMD); Kernel MMD
+- [?] Coverage Metric
+- [ ] Refer to Boundary Distortion and say it's incompatible
+    - It implies training a GAN on each class;
+    - Few-shot (MAML) requires all of them. Cannot be used as eval metric
+- [X] Number of Statistically-Different Bins (NDB)
+- [X] GAN Quality Index
