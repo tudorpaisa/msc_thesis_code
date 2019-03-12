@@ -5,6 +5,7 @@
 __pycache__/
 *.aux
 *.bbl
+*.blg
 *.bcf
 *.fdb_latexmk
 *.fls
