@@ -1,0 +1,19 @@
+{
+    "model_name": "performance_rnn",
+    "raw_datadir": "../data",
+    "proc_datadir": "../data/processed/",
+    "model_folder": "../models/",
+    "layer_size": 256,
+    "dropout": 0.0,
+    "n_classes": 1,
+    "n_shots": 1,
+    "inner_batch": 4096,
+    "inner_iters": 5,
+    "learning_rate": 0.0025,
+    "meta_step": 0.025,
+    "meta_step_final": 0.0,
+    "meta_batch": 1,
+    "meta_iters": 1000,
+    "seq_len": 1,
+    "_unused": ["dropout", "n_classes", "n_shots", "inner_iters", "inner_step_size", "meta_batch"]
+}

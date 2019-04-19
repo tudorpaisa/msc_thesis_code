@@ -6,9 +6,6 @@ import pandas as pd
 import pretty_midi
 import mido
 import utils
-from flags import FLAGS
-from sklearn.externals import joblib
-from keras.utils import to_categorical
 
 
 def to_seq(path):
@@ -24,9 +21,9 @@ def to_seq(path):
         if hasattr(msg, 'note'):
             # move_by = int(round(msg.time/8, 0)*8)
             # Convert from ticks to miliseconds
-            move_by = int(mido.tick2second(msg.time, tpb, tempo)*1000)
+            move_by = int(mido.tick2second(msg.time, tpb, tempo) * 1000)
             # SORT OF quantizing by 8ms
-            move_by = int(round(move_by/8, 0)*8)
+            move_by = int(round(move_by / 8, 0) * 8)
 
             # If the time between the previous note and
             #  the current note is greater than 1 second,
@@ -41,7 +38,7 @@ def to_seq(path):
             #  velocity values to 32 instead of 128
             #  When decoding velocity must be multiplied by 32
             #  get back the appropriate values
-            sequence.append('velocity_set:{}'.format(msg.velocity//32))
+            sequence.append('velocity_set:{}'.format(msg.velocity // 32))
             # Append `note_on` or `note_off`
             sequence.append(msg.type + ':{}'.format(msg.note))
     return sequence
@@ -49,22 +46,28 @@ def to_seq(path):
 
 def build_sequences(data_paths):
     sequences = []
-    for i in data_paths:
-        if data_paths.index(i) % 50 == 0:
-            progress = str(round(data_paths.index(i)/len(data_paths),
-                                 4)*100)+'%'
-            print('[ ] {} Encoding data: {}'.format(utils.now(), progress))
+    size = len(data_paths)
 
+    # If we passed only one path; i.e., a string with
+    #  path to midi
+    if type(data_paths) == str:
+        return to_seq(data_paths)
+
+    for i in data_paths:
+        if data_paths.index(i) % 100 == 0:
+            loc = data_paths.index(i) + 1
+            print(f'[ ] {utils.now()} Encoding song {loc}/{size}')
         sequences += to_seq(i)
     return sequences
 
 
 def build_vocab():
-    time_move = ['time_move:'+str(i) for i in range(0, 1001, 8)]  # [0:1000]
-    note_on = ['note_on:'+str(i) for i in range(0, 128)]  # [0:127]
-    note_off = ['note_off:'+str(i) for i in range(0, 128)]  # [0:127]
-    velocity = ['velocity_set:'+str(i) for i in range(0, 32)]  # [0:31]
-    return note_on + note_off + time_move + velocity
+    init = ['PAD']
+    time_move = ['time_move:' + str(i) for i in range(0, 1001, 8)]  # [0:1000]
+    note_on = ['note_on:' + str(i) for i in range(0, 128)]  # [0:127]
+    note_off = ['note_off:' + str(i) for i in range(0, 128)]  # [0:127]
+    velocity = ['velocity_set:' + str(i) for i in range(0, 32)]  # [0:31]
+    return init + note_on + note_off + time_move + velocity
 
 
 def gen_task(data_paths, rng, n_samples=5, seq_len=128, vocab_len=414):
@@ -77,19 +80,54 @@ def gen_task(data_paths, rng, n_samples=5, seq_len=128, vocab_len=414):
     return inp, out
 
 
+def song_minibatch(data_paths, rng, batch_size=64):
+
+    idx = rng.choice(
+        len(data_paths),
+        size=(len(data_paths) // batch_size, batch_size),
+        replace=False).tolist()
+    paths = [['../data/' + data_paths[i] for i in ind] for ind in idx]
+    return paths
+
+
+def load_batch(data_paths, seq_len=1, vocab_len=414):
+    sequences = build_sequences(data_paths)
+    inp, out = create_io_sequences(sequences, seq_len, vocab_len)
+
+    return ins, outs
+
+
+def load_song(path, seq_len=1, vocab_len=414):
+    # print(f'[!] Loading {path.split("/")[-1]}')
+    sequences = build_sequences(path)
+    inp, out = create_io_sequences(sequences, seq_len, vocab_len)
+
+    return inp, out
+
+
 def one_hot(seq, vocab):
     one_hot = np.zeros((len(seq), len(vocab)), dtype='i4')
 
     for i in range(len(seq)):
-        if i % 500 == 0:
-            progress = str(round(i/len(seq), 4)*100)+'%'
-            print('[ ] {} One-Hot encoding data: {}'.format(utils.now(),
-                                                            progress))
         one_hot[i, vocab.index(seq[i])] = 1
 
     return one_hot
 
-# TODO: Decode one-hot encode
+
+def one_hot_wrapper(seq, vocab, method='output'):
+    assert method in ['input',
+                      'output'], 'Key `method` must be `input` or `output`'
+    print('[ ] {} One-Hot encoding sequences'.format(utils.now()), end='\n')
+
+    if method is 'input':
+        one_hots = [one_hot(s, vocab) for s in seq]
+        return np.vstack(one_hots).reshape((len(seq), -1, len(vocab)))
+    elif method is 'output':
+        return one_hot(seq, vocab)
+    print()
+
+
+# TODO: Decode model output
 
 
 def create_io_sequences(data, seq_len, vocab_len, it_increments=None):
@@ -98,6 +136,13 @@ def create_io_sequences(data, seq_len, vocab_len, it_increments=None):
     #  Otherwise you risk MemoryError when converting
     #  to np.array
     if not it_increments:
+        # Not defining it_increments will cause teacher
+        #  forcing in the model. In other words,
+        #  we will be using the actual or expected
+        #  output from the training dataset at the
+        #  current time step y(t) as input in the next
+        #  time step X(t+1), rather than the output
+        #  generated by the network.
         it_increments = seq_len
     vocab = build_vocab()
     event_to_int = dict((event, number) for number, event in enumerate(vocab))
@@ -105,20 +150,22 @@ def create_io_sequences(data, seq_len, vocab_len, it_increments=None):
     network_out = []
 
     for i in range(0, len(data) - seq_len, it_increments):
-        seq_in = data[i:i+seq_len]
-        seq_out = data[i+seq_len]
-        network_in.append([event_to_int[event] for event in seq_in])
+        seq_in = data[i:i + seq_len]
+        seq_out = data[i + seq_len]
+        # network_in.append([event_to_int[event] for event in seq_in])
         # network_out.append(event_to_int[seq_out])
-        network_out.append(seq_out)
+        network_in.append(seq_in)
+        network_out.append(event_to_int[seq_out])
 
     # reshape input to be 'compatible' with lstm network
     network_in = np.reshape(network_in, (len(network_in), seq_len, 1))
     # Normalize data
     # network_in = network_in / float(vocab_len)
     # network_out = to_categorical(network_out)
-    network_out = one_hot(network_out, vocab)
+    network_in = one_hot_wrapper(network_in, vocab, method='input')
+    # network_out = one_hot_wrapper(network_out, vocab)
 
-    return network_in, network_out
+    return network_in.astype(float), np.array(network_out)
 
 
 def read_npy(path):
@@ -144,6 +191,77 @@ def save_midi(midi, path: str, fname: str):
     midi.write(os.path.join(path, fname))
 
 
+def sample_mini_dataset(dataset: pd.DataFrame, num_classes: int,
+                        num_shots: int, rng):
+    shuffled = dataset.sample(frac=1).reset_index(drop=True)
+    sampled_classes = rng.choice(
+        dataset['canonical_composer'].tolist(), size=num_classes)
+    samples = []
+    for cls in sampled_classes:
+        filtered = shuffled[shuffled['canonical_composer'] == cls]
+        for sample in filtered['midi_filename'].sample(
+                num_shots, random_state=rng):
+            samples.append(sample)
+
+    return samples
+
+
+def mini_batches(samples: list, rng, batch_size: int, replacement=False):
+    batches = []
+    # samples = np.array(samples)
+    idx = np.arange(start=0, stop=len(samples))
+    if replacement:
+        smp = rng.choice(idx, size=batch_size, replace=replacement)
+        batches.append(smp)  # append just the index
+
+        return batches
+
+    else:
+        smp = rng.choice(
+            idx,
+            size=(len(samples) // batch_size, batch_size),
+            replace=replacement)
+        batches.append(smp)  # append just the index
+
+        return batches[0]
+
+
+def pad_song(seq, seq_len=1, vocab_len=415, max_song_len=129126):
+    # Maybe I should add the <PAD> to the vocabulary
+    inp, out = create_io_sequences(seq, seq_len=seq_len, vocab_len=vocab_len)
+    og_len = inp.shape[0]
+
+    ninp = np.zeros((max_song_len - 1, 1, vocab_len), dtype='i4')
+    nout = np.zeros((max_song_len - 1), dtype='i4')
+
+    ninp[0:og_len] = inp
+    nout[0:og_len] = out
+
+    return ninp, nout, og_len
+
+
+def batch(seq_lens, batch_size, window_size, stride_size, rng):
+    positions = [(i, range(j, j + window_size))
+                 for i, seqlen in enumerate(seq_lens)
+                 for j in range(0, seqlen - window_size, stride_size)]
+
+    positions = [(sum(seq_lens[:i]) + r.start, sum(seq_lens[:i]) + r.stop)
+                 for i, r in positions]
+    dummy = [i for i in range(len(positions))]
+
+    indices = rng.choice(
+        dummy, size=(len(positions) // batch_size, batch_size), replace=False)
+
+    # for i in seq_lens:
+    #     start = sum(seq_lens[:seq_lens.index(i)])
+    #     for j in range(0, i // window_size):
+    #         end = start + j + window_size
+    #         indices.append([start, end])
+    #         start = start + stride_size
+
+    return [[positions[j] for j in i] for i in indices]
+
+
 #########################################################################
 #
 #  CRUFT CODE
@@ -161,7 +279,7 @@ def test_io(path='/home/spacewhisky/cruft/enc.npy'):
 def test_iteration_increments(minim, maxim, skip=10):
     enc = read_npy('/home/spacewhisky/cruft/enc.npy')
 
-    for i in range(minim, maxim+1, skip):
+    for i in range(minim, maxim + 1, skip):
         try:
             create_io_sequences(enc, 3000, enc.shape[1], it_increments=i)
             print('[x] {} Success: {}'.format(utils.now(), i))
@@ -182,9 +300,11 @@ def test():
         times.append(midi.tracks[0][0].tempo)
         for msg in midi.tracks[1]:
             if hasattr(msg, 'note'):
-                msg_seconds.append(mido.tick2second(tick=msg.time,
-                                   tempo=midi.tracks[0][0].tempo,
-                                   ticks_per_beat=midi.ticks_per_beat))
+                msg_seconds.append(
+                    mido.tick2second(
+                        tick=msg.time,
+                        tempo=midi.tracks[0][0].tempo,
+                        ticks_per_beat=midi.ticks_per_beat))
     # return to_seq(paths[0])
     return ticks, times, msg_seconds
 
@@ -247,11 +367,13 @@ def batch_encode(folder, fs, out_path=None):
     for i in range(num_files):
         if i % 50 == 0:
             print('[ ] {} Encoding progress: {}'.format(
-                  utils.now(), str(round(i/num_files*100, 2))+'%'))
+                utils.now(),
+                str(round(i / num_files * 100, 2)) + '%'))
         piano_roll = encode(paths[i], fs)
         if out_path:
-            piano_roll.tofile(os.path.join(out_path,
-                                           str(int(time()*1000))+'.npy'))
+            piano_roll.tofile(
+                os.path.join(out_path,
+                             str(int(time() * 1000)) + '.npy'))
         else:
             piano_rolls.append(piano_roll)
 
@@ -272,29 +394,49 @@ def decode(piano_roll, fs):
         note_times = []
         for t_idx in range(piano_roll.shape[0]):
             if piano_roll[t_idx, n_idx] == 0 and note_times != []:
-                notes.append([note_times[0], note_times[-1],
-                              n_idx, piano_roll[t_idx-1, n_idx]])
+                notes.append([
+                    note_times[0], note_times[-1], n_idx,
+                    piano_roll[t_idx - 1, n_idx]
+                ])
                 note_times = []
                 continue
             elif piano_roll[t_idx, n_idx] == 0:
                 continue
             note_times.append(t_idx)
 
-    df = pd.DataFrame(data=notes, columns=['start_t', 'end_t',
-                                           'key', 'vel'])
+    df = pd.DataFrame(data=notes, columns=['start_t', 'end_t', 'key', 'vel'])
     df.sort_values(by=['start_t'], inplace=True)
     notes = df.values
-    del(df)
+    del (df)
 
     out = pretty_midi.PrettyMIDI()
     out_prog = pretty_midi.instrument_name_to_program('Acoustic Grand Piano')
     piano = pretty_midi.Instrument(program=out_prog)
 
     for i in notes:
-        note = pretty_midi.Note(velocity=int(i[3]), pitch=int(i[2]),
-                                start=i[0]/fs, end=i[1]/fs)
+        note = pretty_midi.Note(
+            velocity=int(i[3]),
+            pitch=int(i[2]),
+            start=i[0] / fs,
+            end=i[1] / fs)
         piano.notes.append(note)
 
     out.instruments.append(piano)
 
     return out
+
+
+if __name__ == '__main__':
+    from tqdm import tqdm
+    df = pd.read_csv('../data/maestro-v1.0.0.csv')
+    paths = [os.path.join('../data/', i) for i in df['midi_filename']]
+    puts = [os.path.join('../data/processed/', i) for i in df['midi_filename']]
+    sequences = []
+    seq_len = []
+    for path in tqdm(paths, desc='Building paths'):
+        sequence = build_sequences(path)
+        sequences += sequence
+        seq_len.append(len(sequence))
+    np.save('../data/processed/all_songs.npy', np.array(sequences))
+    df['seq_len'] = seq_len
+    df.to_csv('../data/maestro_updated.csv')

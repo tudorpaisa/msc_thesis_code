@@ -2,80 +2,130 @@ import os
 import data
 import utils
 import numpy as np
+import pandas as pd
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import torch.nn.functional as F
+import json
+from pathlib import Path
 
-from flags import FLAGS
-from lstm_baseline import build_baseline
+with open('../params/test.json', 'r') as f:
+    FLAGS = json.load(f)
 
-# check if the data has been processed
-data_paths = utils.get_file_paths(FLAGS['raw_datadir'], extension='midi')
+RNG = np.random.RandomState(666)
+VOCAB = data.build_vocab()
+IN_DIM = FLAGS['seq_len']
 
-# Constants
-innerstepsize = 0.02  # stepsize of inner SGD
-innerepochs = 1  # nr. epochs for each inner SGD
-outerstepsize0 = 0.1  # stepsize of outer optimization (meta-optimization)
-n_iterations = 5  # number of outer updates
-n_train = 10  # size of minibatch
-seq_len = 128
-vocab = data.build_vocab()
-vocab_len = len(vocab)
+assert FLAGS['model_name'] in ['baseline', 'performance_rnn',
+                               'c_rnn_gan'], 'Invalid model name.'
 
-rng = np.random.RandomState(1337)
+df = pd.read_csv(os.path.join(FLAGS['raw_datadir'], 'maestro_updated.csv'))
+test_df = df[df['split'] == 'test']
+train_df = df[df['split'] == 'train']
 
-# sequences = data.build_sequences(data_paths[:5])
-# print('[ ] {} One-Hot Encoding'.format(utils.now()))
-# one_hot = data.one_hot(sequences, vocab)
+train_data_paths = [
+    os.path.join(FLAGS['raw_datadir'], i) for i in train_df['midi_filename']
+]
+test_data_paths = [
+    os.path.join(FLAGS['raw_datadir'], i) for i in test_df['midi_filename']
+]
 
-# TODO: Init model
-# inp, out = data.create_io_sequences(sequences, 128, vocab_len)
-# n_vocab = out.shape[1]
+utils.make_folder(FLAGS['model_folder'])
 
-# import sys
-# sys.exit()
+if FLAGS['model_name'] == 'baseline':
+    from lstm_baseline import train_baseline_large
 
-lstm = build_baseline(seq_len, 1, vocab_len)
+    checkpoint = Path(
+        os.path.join(FLAGS['model_folder'],
+                     FLAGS['model_name'] + '_checkpoint'))
 
-# TODO: Batch from data + load batch (i.e., create task)
-# TODO: Train on batched data
+    if checkpoint.is_file():
+        print(f'[!] {utils.now()} Loading checkpoint')
+        saved = torch.load(
+            os.path.join(FLAGS['model_folder'],
+                         FLAGS['model_name'] + '_checkpoint'))
+        for i in saved.keys():
+            FLAGS[i] = saved[i]
+        stats = train_baseline_large(
+            VOCAB,
+            RNG,
+            df['seq_len'].tolist(),
+            in_dim=len(VOCAB),
+            hidden_dim=FLAGS['hidden_dim'],
+            init_dim=FLAGS['init_dim'],
+            num_layers=FLAGS['num_layers'],
+            batch_size=FLAGS['batch_size'],
+            meta_iters=FLAGS['meta_iters'],
+            meta_iters_start=FLAGS['meta_iters_start'],
+            learning_rate=FLAGS['meta_step'],
+            dropout=FLAGS['dropout'],
+            window_size=FLAGS['window_size'],
+            stride_size=FLAGS['stride_size'],
+            use_bias=FLAGS['use_bias'],
+            is_bidirectional=FLAGS['is_bidirectional'],
+            save_path=FLAGS['model_folder'],
+            model_state=FLAGS['model_state'],
+            optimizer_state=FLAGS['optimizer_state'])
 
+    else:
+        print(f'[!] {utils.now()} Starting model...')
+        stats = train_baseline_large(
+            VOCAB,
+            RNG,
+            df['seq_len'].tolist(),
+            in_dim=len(VOCAB),
+            hidden_dim=FLAGS['hidden_dim'],
+            init_dim=FLAGS['init_dim'],
+            num_layers=FLAGS['num_layers'],
+            batch_size=FLAGS['batch_size'],
+            meta_iters=FLAGS['meta_iters'],
+            learning_rate=FLAGS['meta_step'],
+            dropout=FLAGS['dropout'],
+            window_size=FLAGS['window_size'],
+            stride_size=FLAGS['stride_size'],
+            use_bias=FLAGS['use_bias'],
+            is_bidirectional=FLAGS['is_bidirectional'],
+            save_path=FLAGS['model_folder'])
+    results = pd.DataFrame({
+        'epoch': [i[0] for i in stats],
+        'nll': [i[1] for i in stats]
+    })
+    results.to_csv(
+        os.path.join(FLAGS['model_folder'],
+                     FLAGS['model_name'] + '_results.csv'))
 
-def train_on_batch(x, y):
-    weights_before = lstm.get_weights()
-    lstm.train_on_batch(x, y)
-    weights_after = lstm.get_weights()
-    for i in range(len(weights_after)):
-        lstm.weights[i] = (weights_after[i] -
-                          (weights_after[i] - weights_before[i])*innerstepsize)
+elif FLAGS['model_name'] == 'performance_rnn':
+    # from performance_rnn import train_model
+    # stats = train_model(
+    #     [train_data_paths[0]],  # NOTE: CHANGE ME LATER
+    #     VOCAB,
+    #     RNG,
+    #     in_dim=len(VOCAB),
+    #     dropout=args.dropout,
+    #     hidden_dim=args.layer_size,
+    #     seq_len=args.seq_len,
+    #     batch_size=args.meta_batch,
+    #     lr=args.meta_step,
+    #     # epochs=args.meta_iters,
+    #     epochs=1,  # NOTE: CHANGE ME LATER
+    #     save_path=args.model_folder)
 
-
-for iteration in range(n_iterations):
-    print('[ ] {} Outer epoch: {}'.format(utils.now(), iteration))
-    weights_before = lstm.get_weights()
-
-    # Generate a new task
-    inp, out = data.gen_task(data_paths, rng, n_samples=5, seq_len=seq_len,
-                             vocab_len=vocab_len)
-
-    # shuffle data... kind of
-    idx = rng.permutation(len(inp))
-
-    for inner in range(innerepochs):
-        print('[ ] {}\tInner epoch: {}'.format(utils.now(), inner))
-        for start in range(0, len(inp), n_train):
-            # minibatch
-            mini_idx = idx[start:start+n_train]
-            train_on_batch(inp[mini_idx], out[mini_idx])
-
-    weights_after = lstm.get_weights()
-
-    outerstepsize = outerstepsize0 * (1-iteration / n_iterations)
-
-    for i in range(len(weights_after)):
-        lstm.weights[i] = (weights_before[i] + (weights_after[i] -
-                           weights_before[i])*outerstepsize)
-
-# lstm.fit(i, o, epochs=2)
-# print(lstm.predict(inp))
-inp, out = data.gen_task(data_paths, rng, n_samples=5, seq_len=seq_len,
-                         vocab_len=vocab_len)
-print('evaluating')
-lstm.evaluate(inp, out)
+    from performance_rnn import reptilian
+    reptilian(
+        df,
+        VOCAB,
+        RNG,
+        in_dim=len(VOCAB),
+        hidden_dim=FLAGS['layer_size'],
+        seq_len=FLAGS['seq_len'],
+        dropout=FLAGS['dropout'],
+        num_shots=FLAGS['n_shots'],
+        num_classes=FLAGS['n_classes'],
+        inner_batch_size=FLAGS['inner_batch'],
+        inner_iters=FLAGS['inner_iters'],
+        inner_step_size=FLAGS['learning_rate'],
+        meta_iters=FLAGS['meta_iters'],
+        meta_step_size=FLAGS['meta_step'],
+        meta_step_size_final=FLAGS['meta_step_final'],
+        meta_batch_size=FLAGS['meta_batch'])
