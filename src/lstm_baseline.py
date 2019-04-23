@@ -174,6 +174,7 @@ class Baseline(nn.Module):
 
 def train_baseline_large(vocab,
                          rng,
+                         seq_file,
                          seq_lens,
                          in_dim=415,
                          hidden_dim=256,
@@ -188,9 +189,14 @@ def train_baseline_large(vocab,
                          stride_size=200,
                          use_bias=False,
                          is_bidirectional=False,
+                         clip_grad=True,
+                         clip_norm=3,
+                         max_norm=1.0,
                          save_path='../models/',
                          model_state=None,
-                         optimizer_state=None):
+                         optimizer_state=None,
+                         loss_saved=None,
+                         grad_norm=None):
     # Use GPU if we have one
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
@@ -215,14 +221,23 @@ def train_baseline_large(vocab,
     if optimizer_state != None:
         optimizer.load_state_dict(optimizer_state)
 
-    loss_saved = []  # for visualization purposes
+    if loss_saved != None:
+        loss_saved = loss_saved
+    else:
+        loss_saved = []  # for visualization purposes
+    if grad_norm != None:
+        grad_norm = grad_norm
+    else:
+        grad_norm = []  # for visualization purposes
 
     vocab = {i: vocab.index(i) for i in vocab}  # list to dict
 
-    sequences = np.load('../data/processed/all_songs.npy')
+    sequences = np.load(seq_file)
     for epoch in range(meta_iters_start, meta_iters):
         batches = data.batch(seq_lens, batch_size, window_size, stride_size,
                              rng)
+        norm_epoch = []
+        loss_epoch = []
 
         for batch in tqdm(batches, desc=f'Epoch {epoch+1}'):
             y = [sequences[i[0]:i[1]] for i in batch]
@@ -235,39 +250,72 @@ def train_baseline_large(vocab,
                 init, window_size, y=y[:-1], output_type='logit')
             # assert outputs.shape[:2] == y.shape[:2]
 
-            loss = F.nll_loss(outputs.contiguous().view(-1, in_dim),
-                              y.contiguous().view(-1))
+            loss = F.cross_entropy(outputs.contiguous().view(-1, in_dim),
+                                   y.contiguous().view(-1))
             model.train()
             model.zero_grad()
             loss.backward()
 
+            norm = data.calculate_grad_norm(model.parameters(), clip_norm)
+            norm_epoch.append(norm.cpu().numpy())
+            if clip_grad:
+                nn.utils.clip_grad_norm_(model.parameters(), max_norm,
+                                         clip_norm)
+
             optimizer.step()
 
-            print()  # goto next line
+            loss_epoch.append(loss.item())
+        loss_saved.append((epoch, np.mean(loss_epoch)))
+        grad_norm.append((epoch, np.mean(norm_epoch)))
 
-            loss_saved.append((epoch, loss.item()))
+        print(f'[!] {utils.now()} Current Loss: {loss_saved[-1][1]}')
 
         if epoch % 10 == 0:
-            print(f'[!] {utils.now()} Current Loss: {loss_saved[-1][1]}')
-            print(f'[!] {utils.now()} Saving checkpoint at epoch {epoch}')
+            print(f'[!] {utils.now()} Saving checkpoint at epoch {epoch+1}')
             checkpoint = os.path.join(save_path, 'baseline_checkpoint')
-            torch.save({
-                'in_dim': in_dim,
-                'hidden_dim': hidden_dim,
-                'init_dim': init_dim,
-                'num_layers': num_layers,
-                'batch_size': batch_size,
-                'meta_iters': meta_iters,
-                'meta_iters_start': epoch,
-                'learning_rate': learning_rate,
-                'dropout': dropout,
-                'window_size': window_size,
-                'stride_size': stride_size,
-                'use_bias': use_bias,
-                'is_bidirectional': is_bidirectional,
-                'model_state': deepcopy(model.state_dict()),
-                'optimizer_state': deepcopy(optimizer.state_dict())
-            }, checkpoint)
+            torch.save(
+                {
+                    'in_dim': in_dim,
+                    'hidden_dim': hidden_dim,
+                    'init_dim': init_dim,
+                    'num_layers': num_layers,
+                    'batch_size': batch_size,
+                    'meta_iters': meta_iters,
+                    # we continue from the next epoch
+                    'meta_iters_start': (epoch + 1),
+                    'learning_rate': learning_rate,
+                    'dropout': dropout,
+                    'window_size': window_size,
+                    'stride_size': stride_size,
+                    'use_bias': use_bias,
+                    'is_bidirectional': is_bidirectional,
+                    'model_state': deepcopy(model.state_dict()),
+                    'optimizer_state': deepcopy(optimizer.state_dict()),
+                    'loss_saved': loss_saved,
+                    'grad_norm': grad_norm
+                },
+                checkpoint)
 
-    torch.save(model.state_dict(), os.path.join(save_path, 'baseline'))
-    return loss_saved
+    torch.save(
+        {
+            'in_dim': in_dim,
+            'hidden_dim': hidden_dim,
+            'init_dim': init_dim,
+            'num_layers': num_layers,
+            'batch_size': batch_size,
+            'meta_iters': meta_iters,
+            # we continue from the next epoch
+            'meta_iters_start': (epoch + 1),
+            'learning_rate': learning_rate,
+            'dropout': dropout,
+            'window_size': window_size,
+            'stride_size': stride_size,
+            'use_bias': use_bias,
+            'is_bidirectional': is_bidirectional,
+            'model_state': deepcopy(model.state_dict()),
+            'optimizer_state': deepcopy(optimizer.state_dict()),
+            'loss_saved': loss_saved,
+            'grad_norm': grad_norm
+        },
+        os.path.join(save_path, 'baseline'))
+    return loss_saved, grad_norm

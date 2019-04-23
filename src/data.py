@@ -241,16 +241,23 @@ def pad_song(seq, seq_len=1, vocab_len=415, max_song_len=129126):
 
 
 def batch(seq_lens, batch_size, window_size, stride_size, rng):
+    # Fuck knows what i've done in these lines
     positions = [(i, range(j, j + window_size))
                  for i, seqlen in enumerate(seq_lens)
                  for j in range(0, seqlen - window_size, stride_size)]
 
-    positions = [(sum(seq_lens[:i]) + r.start, sum(seq_lens[:i]) + r.stop)
-                 for i, r in positions]
+    positions = [(sum(seq_lens[:i]) + r.stop - window_size,
+                  sum(seq_lens[:i]) + r.stop) for i, r in positions]
     dummy = [i for i in range(len(positions))]
 
-    indices = rng.choice(
-        dummy, size=(len(positions) // batch_size, batch_size), replace=False)
+    if len(positions) < batch_size:
+        repl = True
+        n_batches = batch_size // len(positions)
+    else:
+        repl = False
+        n_batches = len(positions) // batch_size
+
+    indices = rng.choice(dummy, size=(n_batches, batch_size), replace=repl)
 
     # for i in seq_lens:
     #     start = sum(seq_lens[:seq_lens.index(i)])
@@ -260,6 +267,39 @@ def batch(seq_lens, batch_size, window_size, stride_size, rng):
     #         start = start + stride_size
 
     return [[positions[j] for j in i] for i in indices]
+
+
+def calculate_grad_norm(params, norm_type=2):
+    total_norm = 0
+    for p in params:
+        param_norm = p.grad.data.norm(norm_type)
+        total_norm += param_norm**norm_type
+    total_norm = total_norm**(1.0 / norm_type)
+    return total_norm
+
+
+def midi2piano(path, fs=100):
+    """
+    Transform MIDI file to piano roll
+
+    Parameters
+    ----------
+    path : str
+        Path of MIDI file to open
+    fs : int
+        Sampling frequency of the rows; i.e., each row is spaced
+        apart by 1/fs
+
+    Returns
+    -------
+    piano_roll : np.ndarray, shape=(times, 128)
+        Piano roll of the Instrument
+    """
+    song = pretty_midi.PrettyMIDI(path)
+    inst = song.instruments[0]
+    piano = inst.get_piano_roll(fs=fs)
+    # piano = piano.astype('i')
+    return piano.T
 
 
 #########################################################################
@@ -429,14 +469,27 @@ def decode(piano_roll, fs):
 if __name__ == '__main__':
     from tqdm import tqdm
     df = pd.read_csv('../data/maestro-v1.0.0.csv')
-    paths = [os.path.join('../data/', i) for i in df['midi_filename']]
-    puts = [os.path.join('../data/processed/', i) for i in df['midi_filename']]
-    sequences = []
-    seq_len = []
-    for path in tqdm(paths, desc='Building paths'):
-        sequence = build_sequences(path)
-        sequences += sequence
-        seq_len.append(len(sequence))
-    np.save('../data/processed/all_songs.npy', np.array(sequences))
-    df['seq_len'] = seq_len
+    genres = pd.read_csv('../data/composers_genre.csv')
+    df['genre'] = [
+        genres[genres['canonical_composer'] == i]['genre'].item()
+        for i in df['canonical_composer']
+    ]
+
     df.to_csv('../data/maestro_updated.csv')
+
+    for split in df['split'].unique():
+        ndf = df[df['split'] == split].copy()
+        paths = [os.path.join('../data/', i) for i in ndf['midi_filename']]
+        # puts = [ os.path.join('../data/processed/', i) for i in ndf['midi_filename'] ]
+        sequences = []
+        seq_len = []
+
+        for path in tqdm(paths, desc=f'Building {split} sequences'):
+            sequence = build_sequences(path)
+            sequences += sequence
+            seq_len.append(len(sequence))
+
+        utils.make_folder('../data/processed')
+        np.save(f'../data/processed/{split}_songs.npy', np.array(sequences))
+        ndf['seq_len'] = seq_len
+        ndf.to_csv(f'../data/maestro_{split}.csv')
