@@ -96,7 +96,7 @@ if FLAGS['model_name'] == 'baseline':
                      FLAGS['model_name'] + '_results.csv'))
 
 elif FLAGS['model_name'] == 'performance_rnn':
-    from performance_rnn import reptilian
+    from train_performance_rnn import ReptilePRNN
 
     checkpoint = Path(
         os.path.join(FLAGS['model_folder'],
@@ -112,7 +112,7 @@ elif FLAGS['model_name'] == 'performance_rnn':
         for i in saved.keys():
             FLAGS[i] = saved[i]
 
-        losses, grads = reptilian(
+        reptile = ReptilePRNN(
             VOCAB,
             RNG,
             FLAGS['raw_datadir'],
@@ -128,7 +128,6 @@ elif FLAGS['model_name'] == 'performance_rnn':
             batch_size=FLAGS['batch_size'],
             inner_iters=FLAGS['inner_iters'],
             meta_step=FLAGS['meta_step'],
-            meta_step_final=FLAGS['meta_step_final'],
             meta_batch=FLAGS['meta_batch'],
             meta_iters=FLAGS['meta_iters'],
             meta_iters_start=FLAGS['meta_iters_start'],
@@ -147,7 +146,7 @@ elif FLAGS['model_name'] == 'performance_rnn':
 
     else:
         print(f'[!] {utils.now()} Starting model...')
-        losses, grads = reptilian(
+        reptile = ReptilePRNN(
             VOCAB,
             RNG,
             FLAGS['raw_datadir'],
@@ -163,7 +162,6 @@ elif FLAGS['model_name'] == 'performance_rnn':
             batch_size=FLAGS['batch_size'],
             inner_iters=FLAGS['inner_iters'],
             meta_step=FLAGS['meta_step'],
-            meta_step_final=FLAGS['meta_step_final'],
             meta_batch=FLAGS['meta_batch'],
             meta_iters=FLAGS['meta_iters'],
             use_bias=FLAGS['use_bias'],
@@ -175,7 +173,90 @@ elif FLAGS['model_name'] == 'performance_rnn':
             max_norm=FLAGS['max_norm'],
             save_path=FLAGS['model_folder'])
 
-    results = pd.DataFrame({'loss': losses, 'grad': grads})
-    results.to_csv(
+    reptile.train()
+
+elif FLAGS['model_name'] == 'c_rnn_gan':
+    from train_c_rnn_gan import ReptileGAN
+
+    checkpoint = Path(
         os.path.join(FLAGS['model_folder'],
-                     FLAGS['model_name'] + '_results.csv'))
+                     FLAGS['model_name'] + '_checkpoint'))
+
+    if checkpoint.is_file():
+        print(f'[!] {utils.now()} Loading checkpoint')
+        saved = torch.load(
+            os.path.join(FLAGS['model_folder'],
+                         FLAGS['model_name'] + '_checkpoint'),
+            map_location='cpu')
+
+        for i in saved.keys():
+            FLAGS[i] = saved[i]
+
+        reptile = ReptileGAN(
+            VOCAB,
+            RNG,
+            FLAGS['raw_datadir'],
+            FLAGS['split'],
+            in_dim=len(VOCAB),
+            hidden_dim=FLAGS['hidden_dim'],
+            init_dim=FLAGS['init_dim'],
+            num_layers=FLAGS['num_layers'],
+            dropout=FLAGS['dropout'],
+            n_classes=FLAGS['n_classes'],
+            n_shots=FLAGS['n_shots'],
+            learning_rate=FLAGS['learning_rate'],
+            batch_size=FLAGS['batch_size'],
+            inner_iters=FLAGS['inner_iters'],
+            meta_step=FLAGS['meta_step'],
+            meta_batch=FLAGS['meta_batch'],
+            meta_iters=FLAGS['meta_iters'],
+            meta_iters_start=FLAGS['meta_iters_start'],
+            use_bias=FLAGS['use_bias'],
+            window_size=FLAGS['window_size'],
+            stride_size=FLAGS['stride_size'],
+            clip_grad=FLAGS['clip_grad'],
+            clip_norm=FLAGS['clip_norm'],
+            max_norm=FLAGS['max_norm'],
+            g_train=FLAGS['g_train'],
+            d_train=FLAGS['d_train'],
+            feature_matching=FLAGS['feature_matching'],
+            save_path=FLAGS['model_folder'],
+            g_model_state=FLAGS['g_model_state'],
+            d_model_state=FLAGS['d_model_state'],
+            g_optimizer_state=FLAGS['g_optimizer_state'],
+            d_optimizer_state=FLAGS['d_optimizer_state'],
+            g_loss_saved=FLAGS['g_loss_saved'],
+            d_loss_saved=FLAGS['d_loss_saved'],
+            g_grad_norm=FLAGS['g_grad_norm'],
+            d_grad_norm=FLAGS['d_grad_norm'])
+    else:
+        reptile = ReptileGAN(
+            VOCAB,
+            RNG,
+            FLAGS['raw_datadir'],
+            FLAGS['split'],
+            in_dim=len(VOCAB),
+            hidden_dim=FLAGS['hidden_dim'],
+            init_dim=FLAGS['init_dim'],
+            num_layers=FLAGS['num_layers'],
+            dropout=FLAGS['dropout'],
+            n_classes=FLAGS['n_classes'],
+            n_shots=FLAGS['n_shots'],
+            learning_rate=FLAGS['learning_rate'],
+            batch_size=FLAGS['batch_size'],
+            inner_iters=FLAGS['inner_iters'],
+            meta_step=FLAGS['meta_step'],
+            meta_batch=FLAGS['meta_batch'],
+            meta_iters=FLAGS['meta_iters'],
+            use_bias=FLAGS['use_bias'],
+            window_size=FLAGS['window_size'],
+            stride_size=FLAGS['stride_size'],
+            clip_grad=FLAGS['clip_grad'],
+            clip_norm=FLAGS['clip_norm'],
+            max_norm=FLAGS['max_norm'],
+            g_train=FLAGS['g_train'],
+            d_train=FLAGS['d_train'],
+            feature_matching=FLAGS['feature_matching'],
+            save_path=FLAGS['model_folder'])
+
+    reptile.train()

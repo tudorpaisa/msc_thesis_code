@@ -2,6 +2,7 @@ maestro-v1.0.0-midi.zip
 maestro-v1.0.0.csv
 maestro-v1.0.0.json
 ./data/*
+*.npy
 *.midi
 *.mid
 __pycache__/

@@ -325,6 +325,12 @@ def reptilian(vocab,
         dropout=dropout,
         out_dim=len(vocab))
 
+    print(model.batch_size)
+    print(model.init_dim)
+    print(model.hidden_dim)
+    print(model.num_layers)
+    print(model.device)
+
     if model_state is not None:
         model.load_state_dict(model_state)
 
@@ -413,7 +419,7 @@ def reptilian(vocab,
                                                     clip_norm)
 
                     norm_epoch.append(norm.cpu().numpy())
-                    pdb.set_trace()
+
                     if clip_grad:
                         nn.utils.clip_grad_norm_(model.parameters(), max_norm,
                                                  clip_norm)
@@ -456,7 +462,7 @@ def reptilian(vocab,
         print(f'[!] {utils.now()} Current Loss: {loss_saved[-1][1]}')
 
         # Save model every 10 epochs
-        if epoch % 10 == 0:
+        if epoch % 10 == 0 and epoch != 0:
             print(f'[!] {utils.now()} Saving checkpoint at epoch {epoch+1}')
             checkpoint = os.path.join(save_path, 'performance_rnn_checkpoint')
             torch.save(
@@ -525,3 +531,237 @@ def reptilian(vocab,
         },
         os.path.join(save_path, f'performance_rnn_{n_shots}_{n_classes}'))
     return loss_saved
+
+
+def figr(vocab,
+         rng,
+         raw_datadir,
+         split,
+         in_dim=415,
+         hidden_dim=512,
+         init_dim=32,
+         num_layers=3,
+         dropout=0.0,
+         n_classes=5,
+         n_shots=1,
+         learning_rate=0.025,
+         batch_size=64,
+         inner_iters=5,
+         meta_step=0.025,
+         meta_step_final=0.0,
+         meta_batch=1,
+         meta_iters=250,
+         meta_iters_start=0,
+         use_bias=False,
+         is_bidirectional=False,
+         window_size=200,
+         stride_size=200,
+         clip_grad=True,
+         clip_norm=3,
+         max_norm=1.0,
+         save_path='../models/',
+         model_state=None,
+         optimizer_state=None,
+         loss_saved=None,
+         grad_norm=None):
+
+    df = pd.read_csv(os.path.join(raw_datadir, f'maestro_{split}.csv'))
+
+    # Use GPU if we have one
+    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    model = PerformanceRNN(
+        in_dim=in_dim,
+        hidden_dim=hidden_dim,
+        init_dim=init_dim,
+        batch_size=batch_size,
+        num_layers=num_layers,
+        use_bias=use_bias,
+        is_bidirectional=is_bidirectional,
+        dropout=dropout,
+        out_dim=len(vocab))
+
+    meta_model = PerformanceRNN(
+        in_dim=in_dim,
+        hidden_dim=hidden_dim,
+        init_dim=init_dim,
+        batch_size=batch_size,
+        num_layers=num_layers,
+        use_bias=use_bias,
+        is_bidirectional=is_bidirectional,
+        dropout=dropout,
+        out_dim=len(vocab))
+
+    print(model.batch_size)
+    print(model.init_dim)
+    print(model.hidden_dim)
+    print(model.num_layers)
+    print(model.device)
+
+    if model_state is not None:
+        model.load_state_dict(model_state)
+
+    model.to(device)
+    meta_model.to(device)
+
+    # optimizer = nn.
+    optimizer = optim.Adam(model.parameters(), lr=meta_step)
+
+    if optimizer_state is not None:
+        optimizer.load_state_dict(optimizer_state)
+
+    if loss_saved != None:
+        loss_saved = loss_saved
+    else:
+        loss_saved = []  # for visualization purposes
+    if grad_norm != None:
+        grad_norm = grad_norm
+    else:
+        grad_norm = []  # for visualization purposes
+
+    vocab = {i: vocab.index(i) for i in vocab}  # list to dict
+
+    for epoch in range(meta_iters_start, meta_iters):
+
+        loss_epoch = []
+        norm_epoch = []
+
+        meta_model.load_state_dict(deepcopy(model.state_dict()))
+
+        inner_optim = optim.Adam(meta_model.parameters(), lr=learning_rate)
+
+        for _ in range(meta_batch):
+            mini_dataset = data.sample_mini_dataset(df, n_classes, n_shots,
+                                                    rng)
+            mini_dataset = [os.path.join(raw_datadir, i) for i in mini_dataset]
+
+            sequences = []
+            seq_lens = []
+            for song in mini_dataset:
+                sequence = data.build_sequences(song)
+                sequences += sequence
+                seq_lens.append(len(sequence))
+
+            total_its = 0  # counts how many iterations were done
+
+            for inner_iter in tqdm(
+                    range(inner_iters), desc=f'Outer Epoch {epoch+1}'):
+                batches = data.batch(seq_lens, batch_size, window_size,
+                                     stride_size, rng)
+                for batch in batches:
+                    y = [sequences[i[0]:i[1]] for i in batch]
+                    y = np.array([[vocab[j] for j in i] for i in y])
+                    y = torch.from_numpy(y.T).to(device)
+                    y = y.long()
+
+                    meta_model.train()
+                    inner_optim.zero_grad()
+
+                    init = torch.randn(batch_size,
+                                       meta_model.init_dim).to(device)
+                    outputs = meta_model.generate(
+                        init, window_size, y=y[:-1], output_type='logit')
+                    # assert outputs.shape[:2] == y.shape[:2]
+
+                    loss = F.cross_entropy(
+                        outputs.contiguous().view(-1, in_dim),
+                        y.contiguous().view(-1))
+
+                    loss_epoch.append(loss.item())
+
+                    loss.backward()
+
+                    norm = data.calculate_grad_norm(meta_model.parameters(),
+                                                    clip_norm)
+
+                    norm_epoch.append(norm.cpu().numpy())
+
+                    if clip_grad:
+                        nn.utils.clip_grad_norm_(meta_model.parameters(),
+                                                 max_norm, clip_norm)
+
+                    inner_optim.step()
+
+                    total_its += 1
+
+        # Calculate update to weights
+        for p, meta_p in zip(model.parameters(), meta_model.parameters()):
+            diff = p - meta_p
+            print(diff)
+            p.grad = diff
+
+        optimizer.step()
+
+        loss_saved.append((epoch, np.mean(loss_epoch)))
+        grad_norm.append((epoch, np.mean(norm_epoch)))
+        print(f'[!] {utils.now()} Current Loss: {loss_saved[-1][1]}')
+
+        # Save model every 10 epochs
+        if epoch % 10 == 0 and epoch != 0:
+            print(f'[!] {utils.now()} Saving checkpoint at epoch {epoch+1}')
+            checkpoint = os.path.join(save_path, 'performance_rnn_checkpoint')
+            torch.save(
+                {
+                    'split': split,
+                    'in_dim': in_dim,
+                    'hidden_dim': hidden_dim,
+                    'init_dim': init_dim,
+                    'num_layers': num_layers,
+                    'dropout': dropout,
+                    'n_classes': n_classes,
+                    'n_shots': n_shots,
+                    'learning_rate': learning_rate,
+                    'batch_size': batch_size,
+                    'inner_iters': inner_iters,
+                    'meta_step': meta_step,
+                    'meta_step_final': meta_step_final,
+                    'meta_batch': meta_batch,
+                    'meta_iters': meta_iters,
+                    # we continue from the next epoch
+                    'meta_iters_start': (epoch + 1),
+                    'use_bias': use_bias,
+                    'is_bidirectional': is_bidirectional,
+                    'window_size': window_size,
+                    'stride_size': stride_size,
+                    "clip_grad": clip_grad,
+                    "clip_norm": clip_norm,
+                    "max_norm": max_norm,
+                    'model_state': deepcopy(model.state_dict()),
+                    'optimizer_state': deepcopy(optimizer.state_dict()),
+                    'loss_saved': loss_saved,
+                    'grad_norm': grad_norm
+                },
+                checkpoint)
+
+    torch.save(
+        {
+            'split': split,
+            'in_dim': in_dim,
+            'hidden_dim': hidden_dim,
+            'init_dim': init_dim,
+            'num_layers': num_layers,
+            'dropout': dropout,
+            'n_classes': n_classes,
+            'n_shots': n_shots,
+            'learning_rate': learning_rate,
+            'batch_size': batch_size,
+            'inner_iters': inner_iters,
+            'meta_step': meta_step,
+            'meta_step_final': meta_step_final,
+            'meta_batch': meta_batch,
+            'meta_iters': meta_iters,
+            # we continue from the next epoch
+            'meta_iters_start': (epoch + 1),
+            'use_bias': use_bias,
+            'is_bidirectional': is_bidirectional,
+            'window_size': window_size,
+            'stride_size': stride_size,
+            "clip_grad": clip_grad,
+            "clip_norm": clip_norm,
+            "max_norm": max_norm,
+            'model_state': deepcopy(model.state_dict()),
+            'optimizer_state': deepcopy(optimizer.state_dict()),
+            'loss_saved': loss_saved,
+            'grad_norm': grad_norm
+        },
+        os.path.join(save_path, f'performance_rnn_{n_shots}_{n_classes}'))
+    return loss_saved, grad_norm

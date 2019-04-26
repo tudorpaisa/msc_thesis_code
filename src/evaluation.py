@@ -1,6 +1,13 @@
+from scipy.stats import norm
 from tqdm import tqdm
-from data import midi2piano
+from data import midi2piano, to_seq, build_vocab
+from sklearn.cluster import KMeans
+from sklearn.metrics import pairwise_distances_argmin
+from collections import Counter
+from math import sqrt
 import mido
+import numpy as np
+import pandas as pd
 
 
 def open_midi(path):
@@ -168,3 +175,99 @@ def evaluate_batch(paths, poly_criterion=31.35):
     #     results[key] = sum(results[key]) / len(results[key])
 
     return results
+
+
+def _prepare_data(paths, max_len=None):
+    vocab = build_vocab()
+    vocab = {i: vocab.index(i) for i in vocab}
+    data = []
+
+    for path in tqdm(paths, desc='Building sequences'):
+        dat = to_seq(path)
+        dat = [vocab[i] for i in dat]
+        data.append(np.array(dat))
+
+    length = [len(i) for i in data]
+    if max_len is None:
+        max_len = max(length)
+
+    sequences = []
+    for i in tqdm(data, desc='Padding data'):
+        diff = max_len - i.shape[0]
+        if diff > 0:
+            i = np.pad(i, pad_width=((0, diff)), mode='constant')
+        elif diff < 0:
+            i = i[:max_len]
+
+        sequences.append(i)
+
+    return np.vstack(sequences), max_len
+
+
+def ndb(real_data, gen_data, n_bins=5, alpha_level=0.05, rng=None, workers=4):
+    def assign_counts_to_bins(bins, count):
+        for key in count.keys():
+            bins[key] = count[key]
+        return bins
+
+    def bin_se(key):
+        a = pool_prop[key] * (1 - pool_prop[key])
+        b = (1 / real_data.shape[0]) + (1 / gen_data.shape[0])
+        return sqrt((a * b))
+
+    if rng is None:
+        rng = np.random.RandomState(1337)
+
+    n_samples = real_data.shape[0] + gen_data.shape[0]
+
+    # assign test data into bins
+    clf = KMeans(n_clusters=n_bins, random_state=rng, n_jobs=workers)
+    clf.fit(real_data)
+    r_bins = clf.labels_
+
+    # count how many in bins
+    r_count = {i: 0 for i in range(n_bins)}
+    r_count = assign_counts_to_bins(r_count, Counter(r_bins))
+
+    # assign generated data to closest (L2) centroid
+    centroids = clf.cluster_centers_
+    g_bins = []
+    for i in gen_data:
+        argmin = pairwise_distances_argmin(
+            i.reshape(1, -1), centroids, metric='euclidean')
+        g_bins.append(argmin.item(0))
+
+    g_count = {i: 0 for i in range(n_bins)}
+    g_count = assign_counts_to_bins(g_count, Counter(g_bins))
+
+    # calculate proportion in bins
+    r_prop = {key: val / real_data.shape[0] for key, val in r_count.items()}
+    g_prop = {key: val / gen_data.shape[0] for key, val in g_count.items()}
+
+    # calculate proportion in bins of joined sets
+    pool_prop = {
+        key: (r_count[key] + g_count[key]) / n_samples
+        for key in r_count.keys()
+    }
+
+    # calculated standard error
+    pool_se = {key: bin_se(key) for key in r_prop.keys()}
+
+    test_statistic = {
+        key: (r_prop[key] - g_prop[key]) / pool_se[key]
+        for key in r_prop.keys()
+    }
+
+    z_score = [i for i in test_statistic.values()]
+    p_val = [
+        2 * norm.cdf(-1.0 * abs(test_statistic[key]))
+        for key in test_statistic.keys()
+    ]
+    significant = [i < alpha_level for i in p_val]
+    df = pd.DataFrame({
+        'z_score': z_score,
+        'p_val': p_val,
+        'significant': significant
+    })
+    df.index.name = 'bins'
+    return df

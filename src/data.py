@@ -191,14 +191,16 @@ def save_midi(midi, path: str, fname: str):
     midi.write(os.path.join(path, fname))
 
 
-def sample_mini_dataset(dataset: pd.DataFrame, num_classes: int,
-                        num_shots: int, rng):
+def sample_mini_dataset(dataset: pd.DataFrame,
+                        num_classes: int,
+                        num_shots: int,
+                        rng,
+                        labels='genre'):
     shuffled = dataset.sample(frac=1).reset_index(drop=True)
-    sampled_classes = rng.choice(
-        dataset['canonical_composer'].tolist(), size=num_classes)
+    sampled_classes = rng.choice(dataset[labels].tolist(), size=num_classes)
     samples = []
     for cls in sampled_classes:
-        filtered = shuffled[shuffled['canonical_composer'] == cls]
+        filtered = shuffled[shuffled[labels] == cls]
         for sample in filtered['midi_filename'].sample(
                 num_shots, random_state=rng):
             samples.append(sample)
@@ -209,6 +211,9 @@ def sample_mini_dataset(dataset: pd.DataFrame, num_classes: int,
 def mini_batches(samples: list, rng, batch_size: int, replacement=False):
     batches = []
     # samples = np.array(samples)
+    # Originally, there was one guy labelled as
+    #  expressionist, but that meant having a category
+    #  only for him. he was moved to modernism
     idx = np.arange(start=0, stop=len(samples))
     if replacement:
         smp = rng.choice(idx, size=batch_size, replace=replacement)
@@ -252,7 +257,7 @@ def batch(seq_lens, batch_size, window_size, stride_size, rng):
 
     if len(positions) < batch_size:
         repl = True
-        n_batches = batch_size // len(positions)
+        n_batches = 1
     else:
         repl = False
         n_batches = len(positions) // batch_size
@@ -469,6 +474,8 @@ def decode(piano_roll, fs):
 if __name__ == '__main__':
     from tqdm import tqdm
     df = pd.read_csv('../data/maestro-v1.0.0.csv')
+
+    # add genres to DataFrame
     genres = pd.read_csv('../data/composers_genre.csv')
     df['genre'] = [
         genres[genres['canonical_composer'] == i]['genre'].item()
