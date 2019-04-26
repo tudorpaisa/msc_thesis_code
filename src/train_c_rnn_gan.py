@@ -24,7 +24,8 @@ class ReptileGAN:
                  rng,
                  raw_datadir,
                  split,
-                 in_dim=415,
+                 in_dim=416,
+                 out_dim=416,
                  hidden_dim=512,
                  init_dim=100,
                  num_layers=2,
@@ -62,6 +63,7 @@ class ReptileGAN:
         self.raw_datadir = raw_datadir
         self.split = split
         self.in_dim = in_dim
+        self.out_dim = out_dim
         self.hidden_dim = hidden_dim
         self.init_dim = init_dim
         self.num_layers = num_layers
@@ -123,6 +125,7 @@ class ReptileGAN:
     def init_models(self):
         self.g = Generator(
             in_dim=self.in_dim,
+            out_dim=self.out_dim,
             hidden_dim=self.hidden_dim,
             batch_size=self.batch_size,
             dropout=self.dropout,
@@ -131,6 +134,7 @@ class ReptileGAN:
             use_bias=self.use_bias).to(self.device)
         self.meta_g = Generator(
             in_dim=self.in_dim,
+            out_dim=self.out_dim,
             hidden_dim=self.hidden_dim,
             batch_size=self.batch_size,
             dropout=self.dropout,
@@ -194,6 +198,7 @@ class ReptileGAN:
             {
                 'split': self.split,
                 'in_dim': self.in_dim,
+                'out_dim': self.out_dim,
                 'hidden_dim': self.hidden_dim,
                 'init_dim': self.init_dim,
                 'num_layers': self.num_layers,

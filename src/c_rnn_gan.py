@@ -20,7 +20,7 @@ class Generator(nn.Module):
                  in_dim,
                  hidden_dim,
                  batch_size,
-                 out_dim=415,
+                 out_dim=416,
                  dropout=0.3,
                  num_layers=2,
                  init_dim=100,

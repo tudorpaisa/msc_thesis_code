@@ -20,7 +20,7 @@ class PerformanceRNN(nn.Module):
                  in_dim,
                  hidden_dim,
                  batch_size,
-                 out_dim=415,
+                 out_dim=416,
                  dropout=0.0,
                  num_layers=1,
                  init_dim=32,

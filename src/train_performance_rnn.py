@@ -23,7 +23,8 @@ class ReptilePRNN:
                  rng,
                  raw_datadir,
                  split,
-                 in_dim=415,
+                 in_dim=416,
+                 out_dim=416,
                  hidden_dim=512,
                  init_dim=32,
                  num_layers=3,
@@ -55,6 +56,7 @@ class ReptilePRNN:
         self.raw_datadir = raw_datadir
         self.split = split
         self.in_dim = in_dim
+        self.out_dim = out_dim
         self.hidden_dim = hidden_dim
         self.init_dim = init_dim
         self.num_layers = num_layers
@@ -145,6 +147,7 @@ class ReptilePRNN:
             {
                 'split': self.split,
                 'in_dim': self.in_dim,
+                'out_dim': self.out_dim,
                 'hidden_dim': self.hidden_dim,
                 'init_dim': self.init_dim,
                 'num_layers': self.num_layers,

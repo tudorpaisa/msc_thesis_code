@@ -7,11 +7,13 @@ import pretty_midi
 import mido
 import utils
 
+from mido import MetaMessage, Message, MidiTrack, MidiFile
+
 
 def to_seq(path):
     midi = mido.MidiFile(path)
     tpb = midi.ticks_per_beat  # Ticks/beat. between 384-480
-    tempo = midi.tracks[0][0].tempo  # Tempo in ms. All are 500000
+    tempo = midi.tracks[0][0].tempo  # Tempo in microseconds. All are 500000
     # max_tick = mido.second2tick(second=1, ticks_per_beat=tpb, tempo=tempo)
 
     melody = midi.tracks[1]
@@ -22,8 +24,8 @@ def to_seq(path):
             # move_by = int(round(msg.time/8, 0)*8)
             # Convert from ticks to miliseconds
             move_by = int(mido.tick2second(msg.time, tpb, tempo) * 1000)
-            # SORT OF quantizing by 8ms
-            move_by = int(round(move_by / 8, 0) * 8)
+            # sort of quantizing by 8ms
+            move_by = int((move_by // 8) * 8)
 
             # If the time between the previous note and
             #  the current note is greater than 1 second,
@@ -36,12 +38,126 @@ def to_seq(path):
             sequence.append('time_move:{}'.format(move_by))
             # Append velocity; we limit the number of possible
             #  velocity values to 32 instead of 128
-            #  When decoding velocity must be multiplied by 32
+            #  When decoding velocity must be multiplied by 4
             #  get back the appropriate values
-            sequence.append('velocity_set:{}'.format(msg.velocity // 32))
+            sequence.append('velocity_set:{}'.format(msg.velocity // 4))
+
             # Append `note_on` or `note_off`
-            sequence.append(msg.type + ':{}'.format(msg.note))
+            # The data has this weird quirk where it
+            #  does not make use of the note_off
+            #  messsage. What it does, is that it sets
+            #  the velocity of the note to be closed
+            #  to zero. Thus, a messages with 'note_on'
+            #  note=60, velocity=0, actually means
+            #  'note_off', note=60, velocity=0
+            # Thus, we store the message type in a
+            #  variable, and check the velocity. If
+            #  it's zero, then we change the message
+            #  to note_off
+            message_type = msg.type
+            if msg.velocity == 0:
+                message_type = 'note_off'
+            sequence.append(message_type + ':{}'.format(msg.note))
+        elif msg.type == 'control_change':
+            # Convert from ticks to miliseconds
+            move_by = int(mido.tick2second(msg.time, tpb, tempo) * 1000)
+            # sort of quantizing by 8ms
+            move_by = int((move_by // 8) * 8)
+
+            # If the time between the previous note and
+            #  the current note is greater than 1 second,
+            #  force time difference to be 1 second.
+            #  1 second at 120 BPM (default) == 2 bars
+            #  Therefore, @var:move_by will still be in time
+            if move_by > 1000:
+                move_by = 1000
+            # Append time since last message
+            sequence.append('time_move:{}'.format(move_by))
+
+            # All control messages we have are channel
+            #  zero, control 64. They refer to the
+            #  sustain pedal. In the MIDI specs, in
+            #  actuality it has a binary value: on/off
+            #  on = value >= 64, off = value <= 63
+            # ALSO, we need to implement is as
+            #  apparently this CC message will
+            #  turn all other notes off, but NOT record
+            #  this in the MIDI file itself.
+            val = int(msg.value >= 64)  # 1 if True else 0
+            sequence.append(f'{msg.type}:{val}')
+
     return sequence
+
+
+def from_seq(sequence, path=None):
+    vocab = build_vocab()
+    vocab = {vocab.index(i): i for i in vocab}  # {int: label}
+    tempo = 500000
+    tpb = 480
+
+    midi = MidiFile(ticks_per_beat=tpb)
+    track = MidiTrack()
+
+    # Append metadata
+    midi.tracks.append(track)
+    track.append(MetaMessage('set_tempo', tempo=tempo, time=0))
+    track.append(
+        MetaMessage(
+            'time_signature',
+            numerator=4,
+            denominator=4,
+            clocks_per_click=24,
+            notated_32nd_notes_per_beat=8,
+            time=0))
+    track.append(MetaMessage('end_of_track', time=1))
+
+    track = MidiTrack()
+    midi.tracks.append(track)
+    track.append(Message('program_change', channel=0, program=0, time=0))
+
+    move_by = 0
+    velocity = 25 * 4
+    note = 60
+    note_type = 'note_on'
+
+    for i in sequence:
+        # global move_by, velocity, note, note_type
+        message = vocab[i].split(':')
+
+        if message[0] == 'time_move':
+            time = int(message[1])  # miliseconds
+            time = time / 1000  # seconds
+            move_by = int(mido.second2tick(time, tpb, tempo))  # ticks
+        elif message[0] == 'velocity_set':
+            velocity = int(message[1]) * 4
+        elif message[0] == 'note_on' or message[0] == 'note_off':
+            note_type = message[0]
+            note = int(message[1])
+            track.append(
+                Message(
+                    note_type,
+                    channel=0,
+                    note=note,
+                    velocity=velocity,
+                    time=move_by))
+        elif message[0] == 'control_change':
+            value = 127 if int(message[1]) == 1 else 0
+            track.append(
+                Message(
+                    message[0],
+                    channel=0,
+                    control=64,  # all of our CC messages are for sustain pedal
+                    value=value,
+                    time=move_by))
+        else:  # in case we get a <PAD> vector
+            continue
+    track.append(MetaMessage('end_of_track', time=1))
+
+    if path:
+        with open(path, 'r') as my_midi:
+            midi.save(file=my_midi)
+
+    return midi
 
 
 def build_sequences(data_paths):
@@ -62,12 +178,12 @@ def build_sequences(data_paths):
 
 
 def build_vocab():
-    init = ['PAD']
     time_move = ['time_move:' + str(i) for i in range(0, 1001, 8)]  # [0:1000]
     note_on = ['note_on:' + str(i) for i in range(0, 128)]  # [0:127]
     note_off = ['note_off:' + str(i) for i in range(0, 128)]  # [0:127]
     velocity = ['velocity_set:' + str(i) for i in range(0, 32)]  # [0:31]
-    return init + note_on + note_off + time_move + velocity
+    control_change = ['control_change:0', 'control_change:1']
+    return note_on + note_off + time_move + velocity + control_change
 
 
 def gen_task(data_paths, rng, n_samples=5, seq_len=128, vocab_len=414):
