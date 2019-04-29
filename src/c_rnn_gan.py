@@ -87,7 +87,7 @@ class Generator(nn.Module):
         return torch.LongTensor([[self.primary_event] * batch_size]).to(
             self.device)
 
-    def _sample_event(self, output, greedy=True, temperature=1.0):
+    def _sample_event(self, output, greedy=False, temperature=1.0):
         if greedy:
             return output.argmax(-1)
 
@@ -136,7 +136,7 @@ class Generator(nn.Module):
                  init,
                  steps,
                  y=None,
-                 greedy=True,
+                 greedy=False,
                  temperature=1.0,
                  output_type='index'):
 

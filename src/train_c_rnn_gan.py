@@ -260,7 +260,7 @@ class ReptileGAN:
 
     def train_generator(self,
                         feature_matching=True,
-                        greedy=True,
+                        greedy=False,
                         temperature=1.0):
         # Generator
         self.meta_g_optim.zero_grad()

@@ -141,7 +141,7 @@ def from_seq(sequence, path=None):
                     velocity=velocity,
                     time=move_by))
         elif message[0] == 'control_change':
-            value = 127 if int(message[1]) == 1 else 0
+            value = 100 if int(message[1]) == 1 else 1
             track.append(
                 Message(
                     message[0],
@@ -154,7 +154,7 @@ def from_seq(sequence, path=None):
     track.append(MetaMessage('end_of_track', time=1))
 
     if path:
-        with open(path, 'r') as my_midi:
+        with open(path, 'w') as my_midi:
             midi.save(file=my_midi)
 
     return midi
