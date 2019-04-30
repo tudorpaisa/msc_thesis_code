@@ -220,15 +220,17 @@ This chapter takes a deep-dive into the fields of meta-learning and generative n
 
 \section{Long Short-Term Memory Networks} \label{sec:lstm}
 
-In a standard ANN, the data traverses the network through the input layer, to the hidden layer, and finally reaching the output layer; setup which is generally known as a feedforward neural network \parencite[Figure \ref{fig:feedforward_net};][]{graves_supervised_2012}. Broadly, this type of network is defined by the fact that its connections do not form cycles. If however we relax this condition, we arrive at a recurrent neural network \parencite[Figure \ref{fig:rnn_folded};][]{rumelhart_learning_1986}: a family of neural networks specifically designed for processing sequential data \parencite{goodfellow_deep_2016}.
+In a standard ANN, the data traverses the network through the input layer, to the hidden layer, and finally reaches the output layer; setup which is generally known as a feedforward neural network \parencite[Figure \ref{fig:feedforward_net};][]{graves_supervised_2012}. Broadly, this type of network is defined by the fact that its connections do not form cycles. If however we relax this condition, we arrive at a recurrent neural network \parencite[Figure \ref{fig:rnn_folded};][]{rumelhart_learning_1986}: a family of neural networks specifically designed for processing sequential data \parencite{goodfellow_deep_2016}.
 
-Concretely, information passes through the RNN similarly to the feedforward network except that the activations which arrive at the hidden layer are from the current external input and prior hidden activations from the previous timestep \parencite{graves_supervised_2012}. Thus a formal definition of the network would be represented by
-
+The information passes through the RNN in a similar manner to the feedforward network except that the activations which arrive at the hidden layer are from the current external input and prior hidden activations from the previous timestep \parencite{graves_supervised_2012}. Moreover, recurrent networks also benefit from the fact that parameters (weights) are shared across different parts of a model. This allows extending and applying the model to data points of different lengths and generalizing across all of them \parencite{goodfellow_deep_2016}. In contrast, a feedforward network would require separate parameters for each input feature, at each position. Thus, a formal definition of the network's forward pass would be
 \begin{equation}
-    h^t = f(h^{t-1}; x^t; \theta)
+    h^t = f(h^{t-1}; x^t; \theta) \label{eq:rnn_hidden}
 \end{equation}
-
 where $h^t$ is the state of the hidden layer at time $t$, $x^t$ is the input at time $t$, and $\theta$ the bias.
+
+The backward pass in a RNN is similar to that of a feedforward network: given the partial derivatives of a differentiable loss function $\mathcal{L}$ we calculate the derivatives with respect to the network's weights \parencite{graves_supervised_2012}. In this setting, a popular algorithm is called backpropagation through time 
+
+Equation \ref{eq:rnn_hidden} can be drawn as in Figure \ref{fig:rnn_folded}: input sequences $x$ are mapped to a hidden layer $h$ and an output $y$, with the state of the hidden layer at time $t$ feeding back into itself with a time delay of $1$. In other words, the state of $h_t$ will influence the decision of the recurrent layer at time $t+1$. Another way to illustrate this is to unfold the computational graph such that each component of the network is represented by different variables per step, as in Figure \ref{fig:rnn_unfolded}.
 
 \begin{figure}[t]
     \centering
