@@ -2,7 +2,6 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
-from torch.distributions import Categorical
 
 import os
 import data
@@ -24,8 +23,7 @@ class ReptileGAN:
                  rng,
                  raw_datadir,
                  split,
-                 in_dim=416,
-                 out_dim=416,
+                 in_dim=415,
                  hidden_dim=512,
                  init_dim=100,
                  num_layers=2,
@@ -47,7 +45,6 @@ class ReptileGAN:
                  max_norm=1.0,
                  g_train=True,
                  d_train=True,
-                 feature_matching=False,
                  save_path='../models/',
                  g_model_state=None,
                  d_model_state=None,
@@ -63,7 +60,6 @@ class ReptileGAN:
         self.raw_datadir = raw_datadir
         self.split = split
         self.in_dim = in_dim
-        self.out_dim = out_dim
         self.hidden_dim = hidden_dim
         self.init_dim = init_dim
         self.num_layers = num_layers
@@ -83,9 +79,8 @@ class ReptileGAN:
         self.clip_grad = clip_grad
         self.clip_norm = clip_norm
         self.max_norm = max_norm
-        self.g_train = g_train
-        self.d_train = d_train
-        self.feature_matching = feature_matching
+        self.g_train = g_train,
+        self.d_train = d_train,
         self.save_path = save_path
         self.g_loss_saved = g_loss_saved
         self.d_loss_saved = d_loss_saved
@@ -125,7 +120,6 @@ class ReptileGAN:
     def init_models(self):
         self.g = Generator(
             in_dim=self.in_dim,
-            out_dim=self.out_dim,
             hidden_dim=self.hidden_dim,
             batch_size=self.batch_size,
             dropout=self.dropout,
@@ -134,7 +128,6 @@ class ReptileGAN:
             use_bias=self.use_bias).to(self.device)
         self.meta_g = Generator(
             in_dim=self.in_dim,
-            out_dim=self.out_dim,
             hidden_dim=self.hidden_dim,
             batch_size=self.batch_size,
             dropout=self.dropout,
@@ -198,7 +191,6 @@ class ReptileGAN:
             {
                 'split': self.split,
                 'in_dim': self.in_dim,
-                'out_dim': self.out_dim,
                 'hidden_dim': self.hidden_dim,
                 'init_dim': self.init_dim,
                 'num_layers': self.num_layers,
@@ -221,7 +213,6 @@ class ReptileGAN:
                 "max_norm": self.max_norm,
                 "g_train": self.g_train,
                 "d_train": self.d_train,
-                "feature_matching": self.feature_matching,
                 'g_model_state': deepcopy(self.g.state_dict()),
                 'd_model_state': deepcopy(self.d.state_dict()),
                 'g_optimizer_state': deepcopy(self.g_optim.state_dict()),
@@ -258,10 +249,7 @@ class ReptileGAN:
             self.g_train = True
             self.d_train = True
 
-    def train_generator(self,
-                        feature_matching=True,
-                        greedy=False,
-                        temperature=1.0):
+    def train_generator(self, feature_matching=True):
         # Generator
         self.meta_g_optim.zero_grad()
         self.meta_g.zero_grad()
@@ -269,48 +257,22 @@ class ReptileGAN:
         init = torch.randn(self.batch_size, self.init_dim).to(self.device)
 
         if feature_matching:
-            # hidden = self.meta_g.init_to_hidden(init)
-            # event = self.meta_g.get_primary_event(self.batch_size)
-            # # outputs = []
-            # generated = []
-            # q_values = []
-
-            # for step in range(self.window_size):
-            #     output, hidden = self.meta_g.forward(event, hidden=hidden)
-            #     # outputs.append(output)
-            #     generated.append(
-            #         self.meta_g._sample_event(
-            #             output, greedy=greedy, temperature=temperature))
-
-            #     q_value = self.meta_d(
-            #         torch.cat(generated, 0), output_type='logit')
-            #     q_value = q_value.unsqueeze(0)
-            #     q_values.append(q_value)
-            q_values = []
             fake_batch = self.meta_g.generate(
-                init, self.window_size, greedy=greedy, temperature=temperature)
-            for val in fake_batch:
-                q_val = self.meta_d(
-                    val.view((1, val.shape[0])), output_type='logit')
-                q_values.append(q_val)
-
-            q_values = torch.cat(q_values, 0)
-            # pdb.set_trace()
-            g_loss = F.mse_loss(
-                fake_batch.view(-1).float(),
-                q_values.view(-1).float())
-
-            output = self.meta_d(fake_batch, output_type='sigmoid')
-            entropy = F.binary_cross_entropy(output, self.g_targets)
-            train_loss = entropy.item()
+                init, self.window_size, greedy=True, output_type='logit')
+            pdb.set_trace()
+            output = self.meta_d(
+                fake_batch, input_is_logit=True, output_logits=True)
+            pdb.set_trace()
+            g_loss = F.cross_entropy(
+                fake_batch.view(-1, self.meta_g.out_dim), output.view(-1))
         else:
             fake_batch = self.meta_g.generate(
                 init, self.window_size, greedy=True)
-            output = self.meta_d(fake_batch, output_type='sigmoid')
+            output = self.meta_d(fake_batch, output_logits=False)
             # g_loss = F.cross_entropy(output, self.g_targets)
             g_loss = F.binary_cross_entropy(output, self.g_targets)
 
-            train_loss = g_loss.item()
+        train_loss = g_loss.item()
 
         g_loss.backward()
 
@@ -339,8 +301,8 @@ class ReptileGAN:
 
         train_batch = torch.cat((real_batch, fake_batch), 0).to(self.device)
 
-        d_pred_1 = self.meta_d(real_batch, output_type='logit')
-        d_pred_2 = self.meta_d(fake_batch, output_type='logit')
+        d_pred_1 = self.meta_d(real_batch, output_logits=True)
+        d_pred_2 = self.meta_d(fake_batch, output_logits=True)
         d_pred = torch.cat((d_pred_1, d_pred_2), 0)
 
         d_loss = F.binary_cross_entropy_with_logits(d_pred, self.d_targets)
@@ -375,10 +337,12 @@ class ReptileGAN:
                                  self.stride_size, self.rng)
             for batch in batches:
                 if self.g_train:
+                    print('training GENERATOR')
                     g_loss = self.train_generator()
                     g_loop_losses.append(g_loss)
 
                 if self.d_train:
+                    print('training DISCRIMINATOR')
                     real_batch = self._init_target(sequences, batch)
                     d_loss = self.train_discriminator(real_batch)
                     d_loop_losses.append(d_loss)
@@ -437,4 +401,4 @@ class ReptileGAN:
                 self.save_model(self.save_path, 'c_rnn_gan_checkpoint')
 
         self.save_model(self.save_path,
-                        f'c_rnn_gan_{self.n_shots}_{self.n_classes}')
+                        'c_rnn_gan_{self.n_shots}_{self.n_classes}')

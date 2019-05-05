@@ -192,22 +192,16 @@ def _prepare_data(paths, max_len=None):
         max_len = max(length)
 
     sequences = []
-    for i in data:
+    for i in tqdm(data, desc='Padding data'):
         diff = max_len - i.shape[0]
         if diff > 0:
             i = np.pad(i, pad_width=((0, diff)), mode='constant')
         elif diff < 0:
             i = i[:max_len]
 
-        try:
-            sequences.append(i)
-        except ValueError:
-            continue
+        sequences.append(i)
 
-    try:
-        return np.vstack(sequences), max_len
-    except ValueError:
-        return None, None
+    return np.vstack(sequences), max_len
 
 
 def ndb(real_data, gen_data, n_bins=5, alpha_level=0.05, rng=None, workers=4):
@@ -277,67 +271,3 @@ def ndb(real_data, gen_data, n_bins=5, alpha_level=0.05, rng=None, workers=4):
     })
     df.index.name = 'bins'
     return df
-
-
-if __name__ == '__main__':
-    import os
-    from glob import glob
-
-    rng = np.random.RandomState(1337)
-
-    GEN_DIR = '../generated/'
-    test_df = pd.read_csv('../data/maestro_test.csv')
-    test_paths = [
-        os.path.join('../data/', i) for i in test_df['midi_filename']
-    ]
-    test_data, max_len = _prepare_data(test_paths)
-
-    models = [i[1] for i in os.walk(GEN_DIR)][0]  # get model folders
-    for model in models:
-        # get parameter folders
-        params = [i[1] for i in os.walk(os.path.join(GEN_DIR, model))][0]
-
-        for param in params:
-            current_folder = os.path.join('../generated', model, param)
-            paths = glob(current_folder + '/*.midi')
-            gen_data, _ = _prepare_data(paths, max_len)
-            if gen_data is None:
-                continue
-
-            results1 = ndb(test_data, gen_data, n_bins=20, rng=rng)
-            results2 = pd.DataFrame(evaluate_batch(paths))
-
-            results1.to_csv(current_folder + '/ndb.csv')
-            results2.to_csv(current_folder + '/domain_evaluation.csv')
-
-    results = {
-        'model': [],
-        'polyphony': [],
-        'repetitions': [],
-        'tone_span': [],
-        'scale_consistency': [],
-        'ndb': []
-    }
-
-    for model in models:
-        # get parameter folders
-        params = [i[1] for i in os.walk(os.path.join(GEN_DIR, model))][0]
-
-        for param in params:
-            current_folder = os.path.join('../generated', model, param)
-            try:
-                df1 = pd.read_csv(current_folder + '/ndb.csv')
-                df2 = pd.read_csv(current_folder + '/domain_evaluation.csv')
-            except:
-                continue
-
-            results['model'].append(model + '_' + param)
-            results['polyphony'].append(df2['polyphony'].mean())
-            results['repetitions'].append(df2['repetitions'].mean())
-            results['tone_span'].append(df2['tone_span'].mean())
-            results['scale_consistency'].append(
-                df2['scale_consistency'].mean())
-            results['ndb'].append(df1['significant'].sum())
-
-    df = pd.DataFrame(results)
-    df.to_csv('../generated/results.csv')
