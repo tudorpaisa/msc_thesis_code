@@ -119,7 +119,7 @@ class ReptileGAN:
         y = [sequences[i[0]:i[1]] for i in batch]
         y = np.array([[self.vocab[j] for j in i] for i in y])
         y = torch.from_numpy(y.T).to(self.device)
-        y = y.long()
+        # y = y.long()
         return y
 
     def init_models(self):
@@ -155,13 +155,15 @@ class ReptileGAN:
             num_layers=self.num_layers,
             use_bias=self.use_bias).to(self.device)
 
-        self.g_optim = optim.Adam(self.g.parameters(), lr=self.meta_step)
-        self.meta_g_optim = optim.SGD(
-            self.meta_g.parameters(), lr=self.learning_rate)
+        self.g_optim = optim.Adam(
+            self.g.parameters(), lr=self.meta_step, weight_decay=0.1)
+        self.meta_g_optim = optim.Adam(
+            self.meta_g.parameters(), lr=self.learning_rate, weight_decay=0.1)
 
-        self.d_optim = optim.Adam(self.d.parameters(), lr=self.meta_step)
+        self.d_optim = optim.SGD(
+            self.d.parameters(), lr=self.meta_step, weight_decay=0.1)
         self.meta_d_optim = optim.SGD(
-            self.meta_d.parameters(), lr=self.learning_rate)
+            self.meta_d.parameters(), lr=self.learning_rate, weight_decay=0.1)
 
         self.d_targets = torch.tensor(
             [1] * self.batch_size + [0] * self.batch_size,
@@ -259,7 +261,7 @@ class ReptileGAN:
             self.d_train = True
 
     def train_generator(self,
-                        feature_matching=True,
+                        feature_matching=False,
                         greedy=False,
                         temperature=1.0):
         # Generator
@@ -286,29 +288,40 @@ class ReptileGAN:
             #         torch.cat(generated, 0), output_type='logit')
             #     q_value = q_value.unsqueeze(0)
             #     q_values.append(q_value)
-            q_values = []
+
+            # q_values = []
+            # fake_batch = self.meta_g.generate(
+            #     init, self.window_size, greedy=greedy, temperature=temperature)
+            # for val in fake_batch:
+            #     q_val = self.meta_d(
+            #         val.view((1, val.shape[0])), output_type='logit')
+            #     q_values.append(q_val)
+
+            # q_values = torch.cat(q_values, 0)
+            # # pdb.set_trace()
+            # g_loss = F.mse_loss(
+            #     fake_batch.view(-1).float(),
+            #     q_values.view(-1).float())
+
+            # output = self.meta_d(fake_batch, output_type='sigmoid')
+            # entropy = F.binary_cross_entropy(output, self.g_targets)
+            # train_loss = entropy.item()
             fake_batch = self.meta_g.generate(
-                init, self.window_size, greedy=greedy, temperature=temperature)
-            for val in fake_batch:
-                q_val = self.meta_d(
-                    val.view((1, val.shape[0])), output_type='logit')
-                q_values.append(q_val)
-
-            q_values = torch.cat(q_values, 0)
-            # pdb.set_trace()
-            g_loss = F.mse_loss(
-                fake_batch.view(-1).float(),
-                q_values.view(-1).float())
-
+                init, self.window_size, greedy=True)
             output = self.meta_d(fake_batch, output_type='sigmoid')
-            entropy = F.binary_cross_entropy(output, self.g_targets)
-            train_loss = entropy.item()
+            g_loss = torch.mean(
+                -torch.log(torch.clamp(output, 1e-1000000, 1.0)))
+
+            train_loss = g_loss.item()
         else:
             fake_batch = self.meta_g.generate(
                 init, self.window_size, greedy=True)
             output = self.meta_d(fake_batch, output_type='sigmoid')
             # g_loss = F.cross_entropy(output, self.g_targets)
-            g_loss = F.binary_cross_entropy(output, self.g_targets)
+            # g_loss = F.binary_cross_entropy(output, self.g_targets)
+            # Use mogren's loss calculation
+            g_loss = torch.mean(
+                -torch.log(torch.clamp(output, 1e-1000000, 1.0)))
 
             train_loss = g_loss.item()
 
@@ -332,18 +345,26 @@ class ReptileGAN:
 
         # self.meta_g.train()
 
-        with torch.no_grad():
-            init = torch.randn(self.batch_size, self.init_dim).to(self.device)
-            fake_batch = self.meta_g.generate(
-                init, self.window_size, greedy=True)
+        # with torch.no_grad():
+        init = torch.randn(self.batch_size, self.init_dim).to(self.device)
+        fake_batch = self.meta_g.generate(init, self.window_size, greedy=True)
 
-        train_batch = torch.cat((real_batch, fake_batch), 0).to(self.device)
+        real_batch = real_batch.float()
+        fake_batch = fake_batch.float()
+        real_batch.requires_grad_(True)
+        fake_batch.requires_grad_(True)
+
+        # train_batch = torch.cat((real_batch, fake_batch), 0).to(self.device)
 
         d_pred_1 = self.meta_d(real_batch, output_type='logit')
         d_pred_2 = self.meta_d(fake_batch, output_type='logit')
-        d_pred = torch.cat((d_pred_1, d_pred_2), 0)
+        # d_pred = torch.cat((d_pred_1, d_pred_2), 0)
 
-        d_loss = F.binary_cross_entropy_with_logits(d_pred, self.d_targets)
+        # d_loss = F.binary_cross_entropy_with_logits(d_pred, self.d_targets)
+        # Using mogren's loss
+        d_loss = torch.mean(
+            -torch.log(torch.clamp(d_pred_1.float(), 1e-1000000, 1.0)) -
+            torch.log(torch.clamp(d_pred_2.float(), 0.0, 1.0 - 1e-1000000)))
         train_loss = d_loss.item()
 
         d_loss.backward()
@@ -375,12 +396,15 @@ class ReptileGAN:
                                  self.stride_size, self.rng)
             for batch in batches:
                 if self.g_train:
-                    g_loss = self.train_generator()
+                    g_loss = self.train_generator(
+                        feature_matching=self.feature_matching)
+                    self.g_loss_saved.append((self.meta_iters_start, g_loss))
                     g_loop_losses.append(g_loss)
 
                 if self.d_train:
                     real_batch = self._init_target(sequences, batch)
                     d_loss = self.train_discriminator(real_batch)
+                    self.d_loss_saved.append((self.meta_iters_start, d_loss))
                     d_loop_losses.append(d_loss)
 
                 self._check_losses(g_loop_losses, d_loop_losses)
@@ -405,8 +429,9 @@ class ReptileGAN:
                 seq_lens.append(len(sequence))
 
             g_loss, d_loss = self.inner_loop(sequences, seq_lens)
-            self.g_loss_saved.append((self.meta_iters_start, np.mean(g_loss)))
-            self.d_loss_saved.append((self.meta_iters_start, np.mean(d_loss)))
+            # Losses are now appended in inner loop
+            # self.g_loss_saved.append((self.meta_iters_start, np.mean(g_loss)))
+            # self.d_loss_saved.append((self.meta_iters_start, np.mean(d_loss)))
             # self.g_grad_norm.append((self.meta_iters_start, np.mean(g_grad)))
             # self.d_grad_norm.append((self.meta_iters_start, np.mean(d_grad)))
 

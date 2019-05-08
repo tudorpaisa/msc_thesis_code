@@ -166,7 +166,7 @@ def evaluate_batch(paths, poly_criterion=31.35):
         'scale_consistency': []
     }
 
-    for path in tqdm(paths):
+    for path in tqdm(paths, desc='Domain-Specific Evaluation'):
         stats = evaluate_song(path, poly_criterion)
         for key in results.keys():
             results[key].append(stats[key])
@@ -192,19 +192,25 @@ def _prepare_data(paths, max_len=None):
         max_len = max(length)
 
     sequences = []
-    for i in tqdm(data, desc='Padding data'):
+    for i in data:
         diff = max_len - i.shape[0]
         if diff > 0:
             i = np.pad(i, pad_width=((0, diff)), mode='constant')
         elif diff < 0:
             i = i[:max_len]
 
-        sequences.append(i)
+        try:
+            sequences.append(i)
+        except ValueError:
+            continue
 
-    return np.vstack(sequences), max_len
+    try:
+        return np.vstack(sequences), max_len
+    except ValueError:
+        return None, None
 
 
-def ndb(real_data, gen_data, n_bins=5, alpha_level=0.05, rng=None, workers=4):
+def ndb(real_data, gen_data, rng=1337, alpha_level=0.05, n_bins=5, workers=4):
     def assign_counts_to_bins(bins, count):
         for key in count.keys():
             bins[key] = count[key]
@@ -214,9 +220,6 @@ def ndb(real_data, gen_data, n_bins=5, alpha_level=0.05, rng=None, workers=4):
         a = pool_prop[key] * (1 - pool_prop[key])
         b = (1 / real_data.shape[0]) + (1 / gen_data.shape[0])
         return sqrt((a * b))
-
-    if rng is None:
-        rng = np.random.RandomState(1337)
 
     n_samples = real_data.shape[0] + gen_data.shape[0]
 
@@ -271,3 +274,114 @@ def ndb(real_data, gen_data, n_bins=5, alpha_level=0.05, rng=None, workers=4):
     })
     df.index.name = 'bins'
     return df
+
+
+if __name__ == '__main__':
+    import os
+    import torch
+    import torch.nn.functional as F
+    from glob import glob
+
+    rng = np.random.RandomState(1337)
+
+    GEN_DIR = '../generated/'
+    N_BINS = 20
+    WORKERS = 4
+
+    test_df = pd.read_csv('../data/maestro_test.csv')
+    test_paths = [
+        os.path.join('../data/', i) for i in test_df['midi_filename']
+    ]
+    test_data, max_len = _prepare_data(test_paths)
+
+    results2 = pd.DataFrame(evaluate_batch(test_paths))
+    results2.to_csv('../generated/test_set_stats.csv')
+
+    # print('Building classifier')
+    # clf = KMeans(n_clusters=N_BINS, random_state=rng, n_jobs=WORKERS)
+    # clf.fit(test_data)
+
+    # print('Creating Torch arrays')
+    # torch_test = torch.from_numpy(test_data).long()
+
+    models = [i[1] for i in os.walk(GEN_DIR)][0]  # get model folders
+    for model in models:
+        # get parameter folders
+        params = [i[1] for i in os.walk(os.path.join(GEN_DIR, model))][0]
+
+        for param in params:
+            current_folder = os.path.join('../generated', model, param)
+            paths = glob(current_folder + '/*.midi')
+            gen_data, _ = _prepare_data(paths, max_len)
+
+            if gen_data is None:
+                print('Skipping {}:{}'.format(model, param))
+                continue
+
+            # print('Creating Torch arrays')
+            # torch_gen = torch.from_numpy(gen_data).float()
+
+            print('Evaluating {}:{}'.format(model, param))
+
+            results1 = ndb(
+                test_data, gen_data, rng=rng, n_bins=N_BINS, workers=WORKERS)
+            results2 = pd.DataFrame(evaluate_batch(paths))
+
+            # import pdb
+            # pdb.set_trace()
+
+            # loss = F.nll_loss(torch_gen.contiguous().view(-1, 1),
+            #                   torch_test.contiguous().view(-1))
+
+            # loss_item = loss.item()
+
+            results1.to_csv(current_folder + '/ndb.csv')
+            results2.to_csv(current_folder + '/domain_evaluation.csv')
+
+            # with open(current_folder + '/nll.txt', 'w') as f:
+            #     f.write(loss_item)
+
+    results = {
+        'model': [],
+        'polyphony': [],
+        'repetitions': [],
+        'tone_span': [],
+        'scale_consistency': [],
+        # 'nll': [],
+        'ndb': []
+    }
+
+    df2 = pd.read_csv(GEN_DIR + 'test_set_stats.csv')
+    results['model'].append('Test Set')
+    results['polyphony'].append(df2['polyphony'].mean())
+    results['repetitions'].append(df2['repetitions'].mean())
+    results['tone_span'].append(df2['tone_span'].mean())
+    results['scale_consistency'].append(df2['scale_consistency'].mean())
+    results['ndb'].append(None)
+
+    for model in models:
+        # get parameter folders
+        params = [i[1] for i in os.walk(os.path.join(GEN_DIR, model))][0]
+
+        for param in params:
+            current_folder = os.path.join('../generated', model, param)
+            try:
+                df1 = pd.read_csv(current_folder + '/ndb.csv')
+                df2 = pd.read_csv(current_folder + '/domain_evaluation.csv')
+                # with open(current_folder + '/nll.txt', 'r') as f:
+                #     nll = f.readlines()
+                #     nll = float(nll.strip('\n'))
+            except:
+                continue
+
+            results['model'].append(model + '_' + param)
+            results['polyphony'].append(df2['polyphony'].mean())
+            results['repetitions'].append(df2['repetitions'].mean())
+            results['tone_span'].append(df2['tone_span'].mean())
+            results['scale_consistency'].append(
+                df2['scale_consistency'].mean())
+            results['ndb'].append(df1['significant'].sum())
+            # results['nll'].append(nll)
+
+    df = pd.DataFrame(results)
+    df.to_csv('../generated/results.csv')

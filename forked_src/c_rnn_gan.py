@@ -217,14 +217,22 @@ class Discriminator(nn.Module):
         self.linear = nn.Linear(self.in_dim, 1)
         self.activation = nn.Sigmoid()
 
-    def forward(self, event, hidden=None, output_type='sigmoid'):
+    def forward(self,
+                event,
+                hidden=None,
+                output_type='sigmoid',
+                use_attn=False):
         assert output_type in ['sigmoid', 'logit', 'features']
         # shape events = steps, batch_size
         event = self.event_embedding(event.long())
 
         outputs, _ = self.lstm(event, hidden)
-        weights = (outputs * self.attn).sum(-1, keepdim=True)
-        output = (outputs * weights).mean(0)
+
+        if use_attn:
+            weights = (outputs * self.attn).sum(-1, keepdim=True)
+            output = (outputs * weights).mean(0)
+        else:
+            output = outputs
 
         output = self.features(output)
         if output_type == 'features':

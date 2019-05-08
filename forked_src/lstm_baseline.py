@@ -201,6 +201,8 @@ def train_baseline_large(vocab,
     # Use GPU if we have one
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
+    data_paths = ['../data/' + i for i in df['midi_filename']]
+
     model = Baseline(
         in_dim=in_dim,
         hidden_dim=hidden_dim,
@@ -234,32 +236,31 @@ def train_baseline_large(vocab,
     vocab = {i: vocab.index(i) for i in vocab}  # list to dict
 
     for epoch in range(meta_iters_start, meta_iters):
-        batches = data.mini_batches(
-            df['midi_filename'], rng, batch_size, replacement=False)
+        # batches = data.batch(seq_lens, batch_size, window_size, stride_size,
+        # rng)
         norm_epoch = []
         loss_epoch = []
 
+        batches = rng.choice(
+            data_paths, size=(len(data_paths) // batch_size, batch_size))
+        batches = batches.tolist()
+
         for batch in tqdm(batches, desc=f'Epoch {epoch+1}'):
+            # make variable sequences based on batch
+            sequences = data.build_sequences(batch)
+            # import pdb
+            # pdb.set_trace()
 
-            batch = [
-                os.path.join('../data/', df['midi_filename'][i]) for i in batch
-            ]
-
-            y = []
-            for song in batch:
-                sequence = data.build_sequences(song)
-                y += sequence
-
-            y = np.array([vocab[j] for j in y])
-            y = torch.from_numpy(y.T).to(device)
+            # goal is to make y.shape [lens, 1]
+            y = np.array([vocab[i] for i in sequences]).reshape(-1, 1)
+            y = torch.from_numpy(y).to(device)  # [window_size, 1]
             y = y.long()
-            y = y.view(-1, 1)
 
-            init = torch.randn(y.shape[0], model.init_dim).to(device)
-            model.batch_size = y.shape[0]
-
+            # change batch_size to 1
+            model.batch_size = 1
+            init = torch.randn(1, model.init_dim).to(device)
             outputs = model.generate(
-                init, window_size, y=y[:-1], output_type='logit')
+                init, y.shape[0], y=y[:-1], output_type='logit')
             # assert outputs.shape[:2] == y.shape[:2]
 
             loss = F.cross_entropy(outputs.contiguous().view(-1, in_dim),

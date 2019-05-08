@@ -375,7 +375,8 @@ class ReptileGAN:
                                  self.stride_size, self.rng)
             for batch in batches:
                 if self.g_train:
-                    g_loss = self.train_generator()
+                    g_loss = self.train_generator(
+                        feature_matching=self.feature_matching)
                     g_loop_losses.append(g_loss)
 
                 if self.d_train:

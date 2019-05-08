@@ -20,7 +20,7 @@ class Generator(nn.Module):
                  in_dim,
                  hidden_dim,
                  batch_size,
-                 out_dim=415,
+                 out_dim=416,
                  dropout=0.3,
                  num_layers=2,
                  init_dim=100,
@@ -87,7 +87,7 @@ class Generator(nn.Module):
         return torch.LongTensor([[self.primary_event] * batch_size]).to(
             self.device)
 
-    def _sample_event(self, output, greedy=True, temperature=1.0):
+    def _sample_event(self, output, greedy=False, temperature=1.0):
         if greedy:
             return output.argmax(-1)
 
@@ -136,7 +136,7 @@ class Generator(nn.Module):
                  init,
                  steps,
                  y=None,
-                 greedy=True,
+                 greedy=False,
                  temperature=1.0,
                  output_type='index'):
 
@@ -199,10 +199,7 @@ class Discriminator(nn.Module):
         else:
             self.num_directions = 1
 
-        self.event_embedding = nn.Embedding(self.in_dim, self.in_dim)
-
-        self.in_layer = nn.Linear(self.in_dim, self.hidden_dim)
-        self.in_activation = nn.LeakyReLU(0.1, inplace=True)
+        self.event_embedding = nn.Embedding(self.in_dim, self.hidden_dim)
 
         self.lstm = nn.LSTM(
             input_size=self.hidden_dim,
@@ -215,26 +212,26 @@ class Discriminator(nn.Module):
         self.attn = nn.Parameter(
             torch.randn(self.hidden_dim * self.num_directions),
             requires_grad=True)
-        self.linear = nn.Linear(self.hidden_dim * self.num_directions, 1)
+        self.features = nn.Linear(self.hidden_dim * self.num_directions,
+                                  self.in_dim)
+        self.linear = nn.Linear(self.in_dim, 1)
         self.activation = nn.Sigmoid()
 
-    def forward(self,
-                event,
-                hidden=None,
-                input_is_logit=False,
-                output_logits=False):
+    def forward(self, event, hidden=None, output_type='sigmoid'):
+        assert output_type in ['sigmoid', 'logit', 'features']
         # shape events = steps, batch_size
-        if not input_is_logit:
-            event = self.event_embedding(event.long())
+        event = self.event_embedding(event.long())
 
-        x = self.in_layer(event)
-        x = self.in_activation(x)
-
-        outputs, _ = self.lstm(x, hidden)
+        outputs, _ = self.lstm(event, hidden)
         weights = (outputs * self.attn).sum(-1, keepdim=True)
         output = (outputs * weights).mean(0)
-        output = self.linear(output).squeeze(-1)
 
-        if output_logits:
+        output = self.features(output)
+        if output_type == 'features':
             return output
+
+        output = self.linear(output).squeeze(-1)
+        if output_type == 'logit':
+            return output
+
         return self.activation(output)
