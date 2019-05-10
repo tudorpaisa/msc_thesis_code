@@ -22,7 +22,9 @@ if __name__ == '__main__':
     greed = False
     temperatures = [0.8, 0.9, 1.0, 1.1, 1.2]
 
-    models = ['baseline', 'performance_rnn_1_5', 'c_rnn_gan_1_5']
+    models = [
+        'baseline_50', 'baseline', 'performance_rnn_1_5', 'c_rnn_gan_1_5'
+    ]
 
     make_folder('../generated')
     for model in models:
@@ -30,6 +32,19 @@ if __name__ == '__main__':
 
         checkpoint = load_model_data(os.path.join('../models/', model))
         if model == 'baseline':
+            from lstm_baseline import Baseline
+            net = Baseline(
+                in_dim=checkpoint['in_dim'],
+                hidden_dim=checkpoint['hidden_dim'],
+                batch_size=1,  # we create one song at a time
+                out_dim=checkpoint['out_dim'],
+                dropout=checkpoint['dropout'],
+                num_layers=checkpoint['num_layers'],
+                init_dim=checkpoint['init_dim'],
+                use_bias=checkpoint['use_bias'],
+                is_bidirectional=checkpoint['is_bidirectional'])
+            net.load_state_dict(checkpoint['model_state'])
+        elif model == 'baseline_50':
             from lstm_baseline import Baseline
             net = Baseline(
                 in_dim=checkpoint['in_dim'],
@@ -66,6 +81,7 @@ if __name__ == '__main__':
                 num_layers=checkpoint['num_layers'],
                 init_dim=checkpoint['init_dim'],
                 use_bias=checkpoint['use_bias'])
+            net.load_state_dict(checkpoint['g_model_state'])
 
         net.to(device)
 

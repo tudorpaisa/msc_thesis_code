@@ -165,13 +165,23 @@ class ReptileGAN:
         self.meta_d_optim = optim.SGD(
             self.meta_d.parameters(), lr=self.learning_rate, weight_decay=0.1)
 
-        self.d_targets = torch.tensor(
-            [1] * self.batch_size + [0] * self.batch_size,
-            dtype=torch.float,
-            device=self.device).view(-1).to(self.device)
-        self.g_targets = torch.tensor(
-            [1] * self.batch_size, dtype=torch.float,
-            device=self.device).view(-1).to(self.device)
+    def init_labels(self):
+        rand_ind = np.random.randint(0, 10)
+        target_1 = np.random.uniform(0.9, 1.0, size=self.batch_size)
+        target_2 = np.random.uniform(0.0, 0.1, size=self.batch_size)
+
+        if rand_ind != 1:
+            # Sort of randomly...
+            targets = np.hstack([target_1, target_2])
+        else:
+            # Flip the labels every once in a while
+            targets = np.hstack([target_2, target_1])
+
+        self.d_targets = torch.from_numpy(targets).float().view(-1).to(
+            self.device)
+
+        self.g_targets = torch.from_numpy(target_1).float().view(-1).to(
+            self.device)
 
     def reset_inner_model(self):
         self.meta_g.train()
@@ -309,9 +319,9 @@ class ReptileGAN:
             fake_batch = self.meta_g.generate(
                 init, self.window_size, greedy=True)
             output = self.meta_d(fake_batch, output_type='sigmoid')
-            g_loss = torch.mean(
-                -torch.log(torch.clamp(output, 1e-1000000, 1.0)))
-
+            # g_loss = torch.mean(
+            #     -torch.log(torch.clamp(output, 1e-1000000, 1.0)))
+            g_loss = F.binary_cross_entropy(output, self.g_targets)
             train_loss = g_loss.item()
         else:
             fake_batch = self.meta_g.generate(
@@ -320,8 +330,9 @@ class ReptileGAN:
             # g_loss = F.cross_entropy(output, self.g_targets)
             # g_loss = F.binary_cross_entropy(output, self.g_targets)
             # Use mogren's loss calculation
-            g_loss = torch.mean(
-                -torch.log(torch.clamp(output, 1e-1000000, 1.0)))
+            # g_loss = torch.mean(
+            #     -torch.log(torch.clamp(output, 1e-1000000, 1.0)))
+            g_loss = F.binary_cross_entropy(output, self.g_targets)
 
             train_loss = g_loss.item()
 
@@ -358,13 +369,14 @@ class ReptileGAN:
 
         d_pred_1 = self.meta_d(real_batch, output_type='logit')
         d_pred_2 = self.meta_d(fake_batch, output_type='logit')
-        # d_pred = torch.cat((d_pred_1, d_pred_2), 0)
+        d_pred = torch.cat((d_pred_1, d_pred_2), 0)
 
-        # d_loss = F.binary_cross_entropy_with_logits(d_pred, self.d_targets)
+        d_loss = F.binary_cross_entropy_with_logits(d_pred, self.d_targets)
+
         # Using mogren's loss
-        d_loss = torch.mean(
-            -torch.log(torch.clamp(d_pred_1.float(), 1e-1000000, 1.0)) -
-            torch.log(torch.clamp(d_pred_2.float(), 0.0, 1.0 - 1e-1000000)))
+        # d_loss = torch.mean(
+        #     -torch.log(torch.clamp(d_pred_1.float(), 1e-1000000, 1.0)) -
+        #     torch.log(torch.clamp(d_pred_2.float(), 0.0, 1.0 - 1e-1000000)))
         train_loss = d_loss.item()
 
         d_loss.backward()
@@ -395,6 +407,8 @@ class ReptileGAN:
             batches = data.batch(seq_lens, self.batch_size, self.window_size,
                                  self.stride_size, self.rng)
             for batch in batches:
+                self.init_labels()
+
                 if self.g_train:
                     g_loss = self.train_generator(
                         feature_matching=self.feature_matching)
