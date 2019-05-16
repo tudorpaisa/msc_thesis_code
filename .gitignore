@@ -4,6 +4,7 @@ maestro-v1.0.0.json
 ./data/*
 ./models/*
 ./models
+./plots/*
 *.npy
 *.midi
 *.mid

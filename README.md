@@ -1,8 +1,10 @@
 # Repo for my Master's Thesis
 
+WARNING: Code is somewhat messy and undocumented (it's on my to-do list). A good chunk of `data.py` is now "cruft code" (unused).
+
 ## How to
 
-All the important script are in the `src` directory. They must be executed in the following order:
+All the important script are in the `src` directory. To replicate the experiments in my thesis, they must be executed in the order shown below. However, you need to download the dataset first (run `download_data.sh`).
 
 ```bash
 # Parse dataset for the baseline
@@ -45,3 +47,7 @@ chmod +x download_data.sh
 **Python**: `pytorch numpy mido pandas pretty_midi sklearn matplotlib`
 
 **Shell**: `curl unzip`
+
+## To-Do
+
+- [ ] Document Code
