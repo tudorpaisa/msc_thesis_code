@@ -3,6 +3,7 @@ maestro-v1.0.0.csv
 maestro-v1.0.0.json
 ./data/*
 ./models/*
+./models
 *.npy
 *.midi
 *.mid

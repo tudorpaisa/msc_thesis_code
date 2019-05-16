@@ -18,7 +18,7 @@ def open_midi(path):
     return melody, tpb, tempo
 
 
-def polyphony(melody, tpb, tempo, criterion=31.25):
+def polyphony(melody, tpb, tempo, criterion=20.7):
     # Default criterion is a 64th note in ms
     # At 120 BPM, a 64th is pretty fast, and two notes
     #  played at a distance of ~31ms sounds like a
@@ -144,7 +144,7 @@ def scale_consistency(melody, verbose=False):
         return max(scores)
 
 
-def evaluate_song(path, poly_criterion=31.25):
+def evaluate_song(path, poly_criterion=20.7):
     melody, tpb, tempo = open_midi(path)
     poly = polyphony(melody, tpb, tempo, criterion=poly_criterion)
     rep = repetitions(melody)
@@ -158,7 +158,7 @@ def evaluate_song(path, poly_criterion=31.25):
     }
 
 
-def evaluate_batch(paths, poly_criterion=31.35):
+def evaluate_batch(paths, poly_criterion=20.7):
     results = {
         'polyphony': [],
         'repetitions': [],

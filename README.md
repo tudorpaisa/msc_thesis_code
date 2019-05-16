@@ -2,7 +2,34 @@
 
 ## How to
 
-TBA
+All the important script are in the `src` directory. They must be executed in the following order:
+
+```bash
+# Parse dataset for the baseline
+python3 data.py
+
+# Train the baseline (~10 days to train)
+cp ../params/baseline_t3.json ../params/test.json
+python3 run.py
+
+# Train PerformanceRNN (~1/2 day)
+cp ../params/performance_rnn_t1.json ../params/test.json
+python3 run.py
+
+# Train C-RNN-GAN (~1 day)
+cp ../params/c_rnn_gan_t1.json ../params/test.json
+python3 run.py
+
+# Generate songs
+python3 generate.py
+
+# Evaluate generated songs
+python3 evaluation.py
+
+# Make pretty pictures of the NNs
+#  (loss and neuron activations)
+python3 plots.py
+```
 
 ## Dataset
 
@@ -15,14 +42,6 @@ chmod +x download_data.sh
 
 ## Dependencies
 
-**Python**: `keras numpy mido pandas pretty_midi sklearn`
+**Python**: `pytorch numpy mido pandas pretty_midi sklearn matplotlib`
 
 **Shell**: `curl unzip`
-
-## To-Do
-
-- [ ] Separate data into train and test
-- [ ] Train baseline
-- [ ] Write code for PerformanceRNN
-- [ ] Write code for C-RNN-GAN
-- [ ] Document Code

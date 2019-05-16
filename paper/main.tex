@@ -43,12 +43,13 @@
 \setcounter{biburllcpenalty}{7000}
 \setcounter{biburlucpenalty}{8000}
 
-\usepackage[colorlinks=true, citecolor=base08, linkcolor=base08, urlcolor=base08]{hyperref}
+\usepackage[colorlinks=true, citecolor=black, linkcolor=black, urlcolor=black]{hyperref}
 
 % Essentials
 \usepackage{tabularx}
 \usepackage{supertabular}
 \usepackage{graphicx}
+\usepackage[font=small, labelfont=bf]{caption}
 \usepackage{subcaption}
 \usepackage{lscape}
 \usepackage[ruled]{algorithm2e}
@@ -107,6 +108,11 @@
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
 
+\newenvironment{acknowledgements}%
+    {\cleardoublepage\thispagestyle{empty}\null\vfill\begin{center}%
+    \bfseries Acknowledgements\end{center}}%
+    {\vfill\null}
+
 \begin{document}
 
 \begin{titlepage}
@@ -144,165 +150,115 @@
     \end{center}
 \end{titlepage}
 
+\cleardoublepage
+\begin{center}
+    \vspace*{\fill}
+\begin{figure}[ht]
+    \centering
+    \def\svgwidth{\linewidth}
+    \input{images/the_lick.pdf_tex}
+\end{figure}
+    \vspace{1em}
+\end{center}
+
 %TC:ignore
 \chapter*{Abstract}
-Experiments in Deep Learning are marked by scant explorations outside of the classification task, and even more so when trying to overcome some of the limitations imposed by gradient-based optimization algorithms (such as the uncertainty of convergence when dealing with non-convexity). With the resurgence of generative models and recent advancements in meta-learning we are faced two exciting ares of research, the intersection of which could be a promising area when investing general-purpose A.I. systems. Inspired by \textcite{clouatre_figr_2019} and \textcite{zhang_metagan_2018}, this paper proposed a new line of inquiry where these two fields could be useful specifically, in the musical domain. As such, the paper sought to establish the extent to which meta-learned generative models are comparable to a model trained under normal circumstances, and to real musical performances.
+Experiments in Deep Learning are marked by scant explorations outside of the classification task, and even more so when trying to overcome some of the limitations imposed by gradient-based optimization algorithms (such as the uncertainty of convergence when dealing with non-convexity). With the resurgence of generative models and recent advancements in meta-learning we are faced two exciting ares of research, the intersection of which could be a promising area when investing general-purpose A.I. systems. Inspired by recent literature, this paper proposed a new line of inquiry where these two fields could be useful specifically, in the musical domain. As such, the paper sought to establish the extent to which meta-learned generative models are comparable to a model trained under normal circumstances, and to real musical performances.
 
 Three models have been trained to generate music akin to the performances of expert musicians participating at the International Piano-e-Competition. Two of these models are models come from the literature and followed a 1-shot 5-way training with Reptile, a recent meta-learning algorithm. Afterwards they were evaluated against the baseline model (a LSTM network consisting of one layer with 256 units), and the test samples from the MAESTRO dataset.
 
-When compared to the baseline, the two Reptile-based models have show to be quite competitive however, they failed to attain the same level of mastery when compared to the test samples. However, it is hypothesized that more time involved into training them could narrow the gap between the models and the real musical performances. Thus, the results of these experiments solidify the intuition that meta-learning algorithms are a viable alternative to traditional training methods, in the context of generative models.
+When compared to the baseline, the two Reptile-based models have shown to be quite competitive however, they failed to attain the same level of mastery when compared to the test samples. However, it is hypothesized that more time involved into training them could narrow the gap between the models and the real musical performances. Thus, the results of these experiments solidify the intuition that meta-learning algorithms are a viable alternative to traditional training methods, in the context of generative models.
 
 %TC:endignore
 
 \tableofcontents
 
-\chapter{A hazy shade of winter} \label{chap:intro}
-%Simon and Garfunkel - A hazy shade of winter
+\chapter{Introduction} \label{chap:intro}
 
 Over the past sixty years, Artificial Neural Networks (ANNs) have experienced several popularity cycles noted in the literature by extensive publicity of over-inflated expectations with regards to the promises of connectionism (the field of science that tries to explain mental phenomena with the help of ANNs) \parencite{minsky_perceptrons_1988, knight_ai_2016, nilsson_speed_2009}. More specifically, it promised that a system could learn to do anything it was programmed to do \parencite{minsky_perceptrons_1988}. However, each wave of praise was followed by a mass of public disappointment, criticism, and funding cuts \parencite[e.g.,][]{lighthill_artificial_1972}. These upturns and downturns of the field of connectionism - or more generally A.I. - are now known in the literature as the A.I. winters \parencite{nilsson_speed_2009}.
 
 The recent revival of ANNs under the brand of Deep Learning (DL) has brought new ways to tackle Machine Learning problems - most notably in the context of classification (but also regression, although less popular; see \cite{lecun_deep_2015} for several examples). In addition, with the advent of chatbots \parencite{dale_return_2016}, voice-activated personal assistants \parencite{xiong_microsoft_2018}, and general-purpose A.I. systems \parencite{vinyals_starcraft_2017}, DL introduced new frontiers in artificial intelligence research.
 
-Broadly speaking, DL as a field, promises to solve tasks which are easily (intuitively) performed by people, but hard to formalize \parencite[e.g., recognizing faces or spoken word;][]{goodfellow_deep_2016}. The solution comprises of enabling computers to learn from experience and understand the world through the discovery of hierarchical relationships between concepts \parencite{lecun_deep_2015}. This way, there is no need for manual input on the sort of knowledge that the computer needs \parencite{goodfellow_deep_2016}. A more simplistic and concise interpretation of DL would be to see it as a statistical technique for identifying patterns in sample data using large (deep) ANNs \parencite{marcus_deep_2018}.
+Broadly speaking, DL as a field, promises to solve tasks which are easily (intuitively) performed by people, but hard to formalize \parencite[e.g., recognizing faces or spoken word;][]{goodfellow_deep_2016}. The solution comprises of enabling computers to learn from experience and understand the world through the discovery of hierarchical relationships between concepts \parencite{lecun_deep_2015}. This way, there is no need for manual input on the sort of knowledge that the computer needs \parencite{goodfellow_deep_2016}.
 
 The reasons for presenting these facts will be clarified bit-by-bit throughout this chapter (Section \ref{sec:thesis_goal} provides a concrete explanation) however, a terse argumentation is that progress towards general A.I. systems is marked by scant explorations of ANNs outside of the classification task, and even more so when trying to overcome some of their shortcomings, such as being highly reliant on massive amounts of data.
 % NOTE: Maybe I was too harsh?
 
-\section{Strange Fruit}\label{sec:no_disc}
-% Billie Holiday - Strange Fruit
+\section{A variety of applications}\label{sec:no_disc}
 
 Typically, in a neural network, data samples go through a set of input units (that might represent pixels, word embeddings, etc.), then through multiple hidden layers, each with a given number of nodes, and reaching the output units where the answer is given \parencite{marcus_deep_2018}. An overwhelming majority of experiments with ANNs involve discriminative models \parencite{goodfellow_generative_2014}, where the goal is to assign high-dimensional inputs to a single class label \parencite[such as an animal or piece of furniture;][]{zhang_character-level_2015, krizhevsky_imagenet_2012}. However, other possible applications of DL models include (but are not limited to): regression \parencite{qiu_ensemble_2014}, data compression \parencite{cheng_deep_2018}, and generating new data points \parencite{graves_generating_2013}.
 
 The last point mentioned above is particularly interesting not because it has gained a lot of traction in recent years, but because of its potential to assist the scientific community as well as the general population. Borrowing the analogy from \textcite{goodfellow_nips_2016}, one might wonder what is the value of studying generative models. If, for instance, we are dealing with images, such a framework would merely generate more images for us (something which the Internet as no shortage of). This sort of worldview, however, would only limit these systems from their full capacity; aside from the obvious use case, generative networks could also be used for simulating possible futures - such as for scheduling and planning \parencite{finn_deep_2016} -, for providing predictions to missing data, or for enabling work on multi-modal outputs, where a single input may have more than one correct answer \parencite{goodfellow_nips_2016}.
 
-Regardless, successes in generative models have been either scarce or unattractive, with Fully Visible Belief Networks \parencite{frey_does_1996} being the most suitable (and popular) method for the longest run. Given the age and - alleged - popularity, a valid question to ask is why things haven't moved that much since then. As it turn out, this method requires generating one sample at a time (ramping up the cost of the process to $O(n)$). Coupled with the fact that the computation is done through a neural network, creating $n$ samples requires a substantial amount of time \parencite{goodfellow_nips_2016}. This discussion is not exhaustive; for a comprehensive list of various generative approaches and their downsides, refer to \textcite{goodfellow_nips_2016}.
+Regardless, successes in generative models have been either scarce or unattractive, with Fully Visible Belief Networks \parencite{frey_does_1996} being the most suitable (and popular) method for nearly two decades. Given that we have had a solution for all this time, a valid question to ask is why things haven't moved that much since then. As it turn out, this method requires generating one sample at a time (ramping up the cost of the process to $O(n)$, where $n$ is the number of samples). Coupled with the fact that the computation is done through a neural network, creating $n$ samples requires a substantial amount of time \parencite{goodfellow_nips_2016}. This discussion is not exhaustive; for a comprehensive list of various generative approaches and their downsides, refer to \textcite{goodfellow_nips_2016}.
 %Variational Autoencoders \parencite{kingma_auto-encoding_2013} are another popular method that is used for this sort of task. Their main drawback however, is that when a weak approximation of a prior or posterior distribution of the data is used, the model might learn something other than the true data distribution \parencite{goodfellow_nips_2016}.
 
-The discovery of Generative Adversarial Networks \parencite[GANs;][]{goodfellow_generative_2014} has leapfrogged the state of developments in this field. Besides countering the drawbacks outlined above, they have been particularly successful at a variety of tasks such as image super-resolution \parencite[; see Figure \ref{fig:srgan}]{ledig_photo-realistic_2016}, style-based image generation \parencite{karras_style-based_2018}, or image-to-image translation \parencite[such as converting a satellite image into a map, or a sketch into a photorealistic image;][;see Figure \ref{fig:pix2pix}]{isola_image--image_2016}.
+The discovery of Generative Adversarial Networks \parencite[GANs;][]{goodfellow_generative_2014} has leapfrogged the state of developments in this area. Besides countering the drawbacks outlined above, they have been particularly successful at a variety of tasks such as image super-resolution \parencite{ledig_photo-realistic_2016}, or style-based image generation \parencite{karras_style-based_2018}. Similarly, and although not as popular, Recurrent Neural Networks (RNNs) have been successful at various generative tasks \parencite{jenal_rnn-based_2019, ICML2011Sutskever_524}. The reason is because RNNs contain a high-dimensional hidden state which allows them to remember and predict from previous inputs \parencite{ICML2011Sutskever_524}. This made them great candidates for predicting sequences \parencite{graves_generating_2013} of text or characters, where the input at $t_0$ might be influenced by prior input at $t_{-1}$, $t_{-2}$, etc. \parencite{fan_tts_2014}. That being said, Long Short-Term Memory networks \parencite[LSTM;][]{hochreiter_long_1997} - a variant of RNNs - have been purpose-built with memory cells which permit better storing and accessing of information. This variant of the recurrent network makes it an excellent candidate for generating sequences with long-term dependencies \parencite{graves_generating_2013}.
 
-Similarly, and although not as popular, Recurrent Neural Networks (RNNs) have been successful at various generative tasks \parencite{jenal_rnn-based_2019, ICML2011Sutskever_524}. The reason is because RNNs contain a high-dimensional hidden state which allows them to remember and predict from previous inputs \parencite{ICML2011Sutskever_524}. This made them great candidates for predicting sequences \parencite{graves_generating_2013} of text or characters, where the input at $t_0$ might be influenced by prior input at $t_{-1}$, $t_{-2}$, etc. \parencite{fan_tts_2014}. That being said, Long Short-Term Memory networks \parencite[LSTM;][]{hochreiter_long_1997} - a variant of RNNs - have been purpose-built with memory cells which permit better storing and accessing of information. This design decision variant of the recurrent network good candidates for generating sequences with long-term dependencies \parencite{graves_generating_2013}.
+In light of the above, the majority of developments with generative models lie in the field of Computer Vision. But that is not to say that we can generate only images. Generative models have also been applied with varying degrees of success also in Natural Language Processing - where the scope was to generate high-quality text with sufficient diversity \parencite[e.g.,][]{yu_seqgan_2016, chen_adversarial_2018}. Less explored, but still successful, have been the efforts in generating music \parencite[e.g.,][]{mogren_c-rnn-gan_2016, dong_musegan_2017}. 
 
-\begin{figure}[t]
-    \centering
-    \begin{subfigure}{.24\linewidth}
-        \includegraphics[width=\linewidth]{images/comic_HR.jpg}
-        \caption{original}
-        \label{fig:srgan_orig}
-    \end{subfigure}
-    \begin{subfigure}{.24\linewidth}
-        \includegraphics[width=\linewidth]{images/comic_SRF_4_bicubic.jpg}
-        \caption{bicubic}
-        \label{fig:srgan_bicubic}
-    \end{subfigure}
-    \begin{subfigure}{.24\linewidth}
-        \includegraphics[width=\linewidth]{images/comic_SRResNet-MSE.jpg}
-        \caption{SRResNet}
-        \label{fig:srgan_srresnet}
-    \end{subfigure}
-    \begin{subfigure}{.24\linewidth}
-        \includegraphics[width=\linewidth]{images/comic_SRGAN-VGG54.jpg}
-        \caption{SRGAN}
-        \label{fig:srgan_srgan}
-    \end{subfigure}
+\textcite{briot_deep_2017} have conducted one of the most comprehensive survey of DL techniques and models for generating music, work which covers experiments from the last 25 years. What is striking, is that the authors admit that in spite of its rich history in computer science, there have been only a few attempts at generating music with ANNs. Thus, herein lies the scope of this paper. Given such minimal explorations, I evaluated the songs generated by a GAN \parencite{mogren_c-rnn-gan_2016} and a LSTM network \parencite{oore_this_2018} trained with a handful of examples against a baseline model that had access to the entire training set. To understand why such an assessment is needed, we need to introduce some of the shortcomings of modern ANNs and how to circumvent them.
 
-    \caption{Example of single-image super-resolution results that highlight the advantages of a GAN. The original high-resolution image (\ref{fig:srgan_orig}) has been downsampled to make a low-resolution image. The results of bicubic interpolation (\ref{fig:srgan_bicubic}) can be seen in the second image, followed by the results of SRResNet (\ref{fig:srgan_srresnet}), a neural network trained on mean squared error. Lastly, the results of SRGAN can be seen in the final image (\ref{fig:srgan_srgan}). Figure adapted from \textcite{ledig_photo-realistic_2016}.}
-    \label{fig:srgan}
-\end{figure}
+\section{Pitfalls in gradient descent}\label{sec:hungry}
 
-\begin{figure}[t]
-    \centering
-    \begin{tabular}{ccc}
-    Input & Ground Truth & Output \\
-    \includegraphics[width=.15\linewidth]{images/handbags_edges_lotsofresults_latex/input_106_AB.jpg} &
-    \includegraphics[width=.15\linewidth]{images/handbags_edges_lotsofresults_latex/gt_106_AB.jpg} &
-    \includegraphics[width=.15\linewidth]{images/handbags_edges_lotsofresults_latex/L1cGAN_106_AB.jpg} \\
-    \includegraphics[width=.15\linewidth]{images/handbags_edges_lotsofresults_latex/input_12_AB.jpg} &
-    \includegraphics[width=.15\linewidth]{images/handbags_edges_lotsofresults_latex/gt_12_AB.jpg} &
-    \includegraphics[width=.15\linewidth]{images/handbags_edges_lotsofresults_latex/L1cGAN_12_AB.jpg} \\
-    \includegraphics[width=.15\linewidth]{images/handbags_edges_lotsofresults_latex/input_130_AB.jpg} &
-    \includegraphics[width=.15\linewidth]{images/handbags_edges_lotsofresults_latex/gt_130_AB.jpg} &
-    \includegraphics[width=.15\linewidth]{images/handbags_edges_lotsofresults_latex/L1cGAN_130_AB.jpg} \\
-    \end{tabular}
-    \caption{\textcite{isola_image--image_2016} coined the term image-to-image translation where an input image is transformed into a revisualization of the original input. This figures illustrates how an outline of a purse (leftmost column) is transformed into a colored photorealistic version of it (rightmost column). In the middle we have the ground truth: the real image of the purse. Figure adapted from \textcite{isola_image--image_2016}.}
-    \label{fig:pix2pix}
-\end{figure}
+The training of DL models usually relies on a procedure called stochastic gradient descent (SGD) which implies computing an output and an error for a given input vector, followed by calculating the input's average gradient and adjusting the network's parameters in a manner that minimizes the error \parencite{lecun_deep_2015}. \textcite{ravi_optimization_2016} argue that the iterative nature of gradient-optimization algorithms does not allow them to perform well under the constraint of a set number of updates over few examples. In particular, when faced with non-convex optimization problems, DL algorithms do not guarantee convergence within a reasonable amount of time. In addition, they also emphasize that for each new problem (e.g., new dataset), the model needs to reinitialize with a new set of random parameters. Ultimately, this hurts the network's ability to converge to a good solution when constrained by a limited number of updates \parencite{ravi_optimization_2016}. Thus they lay out two clear drawbacks of DL models: "data-hunger", and performing separate tasks is problematic.
 
-Having said all of these, the majority of developments with generative models lie in the field of Computer Vision. But that is not to say that we can generate only images. Generative models have been applied with varying degrees of success also in Natural Language Processing - where the scope was to generate high-quality text with sufficient diversity \parencite[e.g.,][]{yu_seqgan_2016, chen_adversarial_2018}. Less explored, but still successful, have been the efforts in generating music \parencite[e.g.,][]{mogren_c-rnn-gan_2016, dong_musegan_2017}. Herein lies the scope of this paper. Given such minimal explorations into generating music, we evaluated the samples generated by a GAN \parencite{mogren_c-rnn-gan_2016} and a LSTM network \parencite{oore_this_2018} trained under the constraints imposed by few-shot learning (Section \ref{sec:hungry}) against a baseline model proposed by \textcite{larochelle_few-shot_2017}. To reiterate, a full explanation of the purpose of the paper is provided in Section \ref{sec:thesis_goal}.
+A clear outcome from solving these issues would be that DL models are easier to train (less data) as well as being able to carry out multiple tasks. But there is also the fact that humans have the ability to generalize after one (or few) example(s) of a given object \parencite{vinyals_matching_2016, chen_closer_2018, ravi_optimization_2016} - something which DL models tend to lack. Moreover, there are many fields where the data exhibits a large number of classes, with few examples per class. Bridging the gap between human-type learning and current learning architectures would allow a system to do a proper job at capturing and generalizing information from sparse data \parencite{ravi_optimization_2016, larochelle_few-shot_2017}. This has motivated a series of explorations in the direction of "few-shot" learning (i.e., learning a class from a few examples) or more broadly, into the field of "meta-learning" \parencite[learning to learn in hopes of generalizing to new tasks;][]{chen_closer_2018, vinyals_matching_2016, zhang_metagan_2018}.
 
-\section{I want it all}\label{sec:hungry}
-% Queen - I want it all
+In spite of its proposed benefits, developments and experiments with few-shot learning are still scarce \parencite{larochelle_few-shot_2017}. Moreover, evaluations are largely concentrated on image data \parencite[see][]{lake_omniglot_2019, clouatre_figr_2019, vinyals_matching_2016, chen_closer_2018, ravi_optimization_2016}, whereas those with music are virtually non-existent.
 
-DL models usually rely on a procedure called stochastic gradient descent (SGD) which implies computing an output and an error for a given input vector, followed by calculating the input's average gradient and adjusting the network's parameters in a manner that minimizes the error \parencite{lecun_deep_2015}. \textcite{ravi_optimization_2016} argue that the iterative nature of gradient-optimization algorithms does not allow them to perform well under the constraint of a set number of updates over few examples. In particular, when faced with non-convex optimization problems, DL algorithms do not guarantee convergence within a reasonable amount of time. In addition, they also emphasize that for each new problem (e.g., new dataset), the model needs to reinitialize with a new set of random parameters. Ultimately, this hurts the network's ability to converge to a good solution when constrained by a limited number of updates \parencite{ravi_optimization_2016}. Thus they lay out two clear drawbacks of DL models: "data-hunger", and inability to perform separate tasks.
+\section{Problem definition} \label{sec:thesis_goal}
 
-A clear outcome from solving these issues would be that DL models are easier to train (less data) as well as multifunctional. Nonetheless, this list is not exhaustive. There is also fact that humans have the ability to generalize after one (or few) example(s) of a given object \parencite{vinyals_matching_2016, chen_closer_2018, ravi_optimization_2016} - something which DL models tend to lack. Moreover, there are many fields where the data exhibits a large number of classes, with few examples per class. Bridging the gap between human-type learning and current learning architectures would allow a system to do a proper job at capturing and generalizing information from sparse data \parencite{ravi_optimization_2016, larochelle_few-shot_2017}. This has motivated a series of explorations in the direction of "few-shot" learning (i.e., learning a class from a few examples) or more broadly, into the field of "meta-learning" \parencite[learning to learn in hopes of generalizing to new tasks;][]{chen_closer_2018, vinyals_matching_2016, zhang_metagan_2018}.
+At the time of writing, generative models and meta-learning are two exciting areas of research, the intersection of which could be interesting for A.I. research. Having said that, there are scarcely any few-shot experiments with generative networks; \textcite{clouatre_figr_2019}, \textcite{dong_musegan_2017} and \textcite{zhang_metagan_2018} being some of the early (and few) explorers in this direction. Moreover, to the knowledge of the researcher, no such experiments have been conducted in the musical domain to this day. Thus, to enrich the current literature of DL in music, this paper examines the extent to which generative models can create novel and qualitative samples of music under the constraints posed by few-shot learning. In other words, it seeks to evaluate the degree to which generative models can create novel and high-fidelity samples when trained in a manner which is (quantitatively) more akin to that of an aspiring musician. To avoid any ambiguity, novel is used here as new (i.e., not in the training set), and qualitative as consistent with common scales and structurally diverse (combines chord structures with single-note sequences and is not restricted to only a few notes).
 
-In spite of its proposed benefits, developments and experiments with few-shot learning are still scarce \parencite{larochelle_few-shot_2017}. Moreover, evaluations are largely concentrated on image data \parencite[see][]{lake_omniglot_2019, clouatre_figr_2019, vinyals_matching_2016, chen_closer_2018, ravi_optimization_2016}. Having said that, few-shot experiments with generative networks are even less frequent; \textcite{clouatre_figr_2019}, \textcite{dong_musegan_2017} and \textcite{zhang_metagan_2018} being some of the early (and few) explorers in this direction.
+This research evaluates the generated samples of two state-of-the-art generative models (C-RNN-GAN of \cite{mogren_c-rnn-gan_2016} and Performance-RNN of \cite{oore_this_2018}) that have been trained under a meta-learning framework, Reptile \parencite{nichol_first-order_2018}, with a limited number of songs. The performances of these two models were compared to the baseline proposed by \textcite{larochelle_few-shot_2017} and to recorded performances played by expert piano players at the International e-Piano Competition \parencite{university_of_minnesota_international_2019}.
 
-\section{Composing like a human} \label{sec:thesis_goal}
-
-At the time of writing, generative models and meta-learning are two exciting areas of research the intersection of which could be quite promising. However, to the knowledge of the researcher, no experiments which combine the both of them have been conducted in the musical domain. Thus, this paper examined the extent to which generative models can create novel and qualitative samples of music under the constraints posed by few-shot learning. In other words, it sought to evaluate the degree to which generative models can create novel and high-fidelity samples when training data is scarce. To avoid any ambiguity, novel is used here as new (i.e., not in the training set), and qualitative as consistent with common scales and structurally diverse (combines chord structures with single-note sequences and is not restricted to only a few notes).
-
-This research will evaluate the generated samples of two state-of-the-art generative models (C-RNN-GAN of \cite{mogren_c-rnn-gan_2016} and Performance-RNN of \cite{oore_this_2018}) that have been trained under a meta-learning framework, Reptile \parencite{nichol_first-order_2018}, with a limited number of songs. The performances of these two models were compared to the baseline proposed by \textcite{larochelle_few-shot_2017} and to recorded performances played by expert piano players at the International e-Piano Competition \parencite{university_of_minnesota_international_2019}.
-
-In other words, this study sought to answer the following research questions:
+In other words, this study seeks to answer the following research questions:
 
 \begin{itemize}
     \item To what extent is the music created by a few-shot generative model comparable to the music of a generative model that is trained on the entire dataset?
     \item To what extent is the music created by a few-shot generative model comparable to real music?
 \end{itemize}
 
-The following chapters will discuss more about generative models, meta-learning, and some of the models and algorithms involved in this paper (Chapter \ref{chap:theoretical_framework}), followed by a detailed description of the setup of the experiments (Chapter \ref{chap:methods}), and the results obtained from them (Chapter \ref{chap:results}). Finally, Chapter \ref{chap:discussion} closes with a discussion of the results and limitations of the experimental setup, whereas Chapter \ref{chap:conclusion} concludes the findings of this paper.
+The following chapters will discuss generative models, meta-learning, and some of the models and algorithms involved in this paper in more depth (Chapter \ref{chap:theoretical_framework}), followed by a detailed description of the experimental setup (Chapter \ref{chap:methods}), and the results obtained from them (Chapter \ref{chap:results}). Finally, Chapter \ref{chap:discussion} closes with a discussion of the results and limitations of the experimental setup, whereas Chapter \ref{chap:conclusion} concludes the findings of this paper.
 
 \chapter{Related Work}\label{chap:theoretical_framework}
 
-This chapter takes a deep-dive into the fields of meta-learning and generative networks in order to highlight their current state of affairs. This will lay the groundwork for the experiments detailed in Chapter \ref{chap:methods}. Section \ref{sec:rnn} will present the principal network architecture of this paper, the recurrent neural network, and argument for its use as the foundation of a generative network. Section \ref{sec:generative} will introduce Generative Adversarial Networks, a training method build specifically for the task, whereas Section \ref{sec:learn2learn} will formally introduce meta-learning and some state-of-the-art approaches. 
+To highlight the current state of affairs, this chapter takes a deep-dive into the fields of meta-learning and generative networks. This will lay the groundwork for the experiments detailed in Chapter \ref{chap:methods}. Section \ref{sec:rnn} will present the principal network architecture of this paper, the recurrent neural network, and argument for its use as the foundation of a generative network. Section \ref{sec:generative} will introduce Generative Adversarial Networks, a training method build specifically for the task, whereas Section \ref{sec:learn2learn} will formally introduce meta-learning and recent state-of-the-art approaches. 
 
 \section{Recurrent Neural Networks} \label{sec:rnn}
 
 In a standard ANN, the data traverses the network through the input layer, to the hidden layers, and finally the output layer; this setup is generally known as a feedforward neural network \parencite[Figure \ref{fig:feedforward_net};][]{graves_supervised_2012}. Broadly speaking, this type of network is defined by the fact that its connections do not form cycles. If however we relax this condition, we arrive at a recurrent neural network \parencite[Figure \ref{fig:rnn_folded};][]{rumelhart_learning_1986}: a family of neural networks specifically designed for processing sequential data \parencite{goodfellow_deep_2016}.
 
-For transparency, it should be noted that it is possible to use a feedforward architecture, specifically a one-dimensional Convolutional Neural Network, with sequential data, where the convolution forms the basis of a time-delay neural network. Unfortunately, the output of such a system would be a function of a small number of neighbouring data points \parencite[such as the last and the next three notes in a song;][]{goodfellow_deep_2016}. Despite that, a system that uses convolution would quickly reach its limitation in the musical domain. Here, knowledge of the notes played from the beginning of the song is needed, meaning that we need an architecture that is able to account for long-term dependencies - which brings us back to the RNN.
+For transparency, it should be noted that it is possible to use a feedforward architecture with sequential data. This would take the form of a Convolutional Neural Network where the convolution forms the basis of a time-delay system. Unfortunately, the output of such a system would be a function of a small number of neighbouring data points \parencite[such as the last and the next three notes in a song;][]{goodfellow_deep_2016}. Despite that, a system that uses convolution would quickly reach its limitation. Using music (the topic of this paper) as an example, knowledge of the notes played from the beginning of the song is needed. This means that we need an architecture that is able to account for long-term dependencies - which brings us back to the RNN.
 
-The information passes through the RNN in a similar manner to the feedforward network except that the activations which arrive at the hidden layer are from the current external input and hidden activations from the previous timestep. It should be noted that the parameters of a recurrent network (weights) are shared across different timesteps \parencite{graves_supervised_2012}. This allows extending (and applying) the model to data points of different lengths whilst generalizing across all of them \parencite{goodfellow_deep_2016}. To place this into perspective, a feedforward network would require separate parameters for each input feature, at each position.
+The information passes through the RNN in a similar manner to the feedforward network except that the activations which arrive at the hidden layer are from the current external input and hidden activations from the previous timestep. It should be noted that the parameters (weights) of a recurrent network are shared across different timesteps \parencite{graves_supervised_2012}. This allows extending (and applying) the model to data points of different lengths whilst generalizing across all of them \parencite{goodfellow_deep_2016}. To place this into perspective, a feedforward network would require separate parameters for each input feature, at each position.
 
-Thus, a formal definition of the network's forward pass would be
-\begin{equation}
-    h^t = f(h^{t-1}; x^t; \theta) \label{eq:rnn_hidden}
-\end{equation}
-where $h^t$ is the state of the hidden layer at time $t$, $x^t$ is the input at time $t$, and $\theta$ the model parameters.
+\begin{figure}[htbp]
+    \begin{subfigure}{\linewidth}
+        \centering
+        \begin{tikzpicture}
+            \node[io] (x1) {$x_1$};
+            \node[io, above=4em of x1] (x2) {$x_2$};
+            \node[io, above=4em of x2] (x3) {$x_3$};
 
-The backward pass in a RNN is similar to that of a feedforward network: given the partial derivatives of a differentiable loss function $\mathcal{L}$ we calculate the derivatives with respect to the network's weights \parencite{graves_supervised_2012}. In this setting, a popular algorithm is called backpropagation through time \parencite[BPTT;][]{werbos_backpropagation_1990} which consists of repeated applications of the chain rule. The difference between standard backpropagation and BPTT is that the loss function depends on the activation of the hidden layer through its influence on the output layer as well as its influence on the hidden layer at the next timestep \parencite{graves_supervised_2012}.
+            \node[neuron, right= of x1] (h1) {$h_1$};
+            \node[neuron, above=4em of h1] (h2) {$h_2$};
+            \node[neuron, above=4em of h2] (h3) {$h_3$};
 
-Equation \ref{eq:rnn_hidden} can be drawn as in Figure \ref{fig:rnn_folded}: input sequences $x$ are mapped to a hidden layer $h$ and an output $y$, with the state of the hidden layer at time $t$ feeding back into itself with a time delay of $1$. In other words, the state of $h_t$ will influence the decision of the recurrent layer at time $t+1$. Another way to illustrate this is to unfold the computational graph such that each component of the network is represented by different variables per step, as in Figure \ref{fig:rnn_unfolded}.
+            \node[io, right= of h2] (y) {$y$};
 
-The reason why these notions have been introduced is to be able to bring up the following point. As good as standard RNNs are - in theory - at accessing contextual information when mapping input sequences to output sequences, the range of contexts that can be accessed in a standard RNN architecture is in practice quite limited \parencite{graves_supervised_2012}. \textcite{hochreiter_long_1997} outlines two problems caused by BPTT: the error signals flowing backwards in time tend to either (1) blow up or (2) vanish. As such, the Long Short-Term Memory network has been proposed, a recurrent architecture designed to overcome these issues \parencite{hochreiter_long_1997}.
+            \foreach \x in {1, 2, 3}
+                \foreach \h in {1, 2, 3}
+                    \draw[conn] (x\x) -- (h\h);
 
-\begin{figure}[t]
-    \centering
-    \begin{tikzpicture}
-        \node[io] (x1) {$x_1$};
-        \node[io, above=4em of x1] (x2) {$x_2$};
-        \node[io, above=4em of x2] (x3) {$x_3$};
-
-        \node[neuron, right= of x1] (h1) {$h_1$};
-        \node[neuron, above=4em of h1] (h2) {$h_2$};
-        \node[neuron, above=4em of h2] (h3) {$h_3$};
-
-        \node[io, right= of h2] (y) {$y$};
-
-        \foreach \x in {1, 2, 3}
             \foreach \h in {1, 2, 3}
-                \draw[conn] (x\x) -- (h\h);
-
-        \foreach \h in {1, 2, 3}
-            \draw[conn] (h\h) -- (y);
-    \end{tikzpicture}
-    \caption{Example of a feedforward neural network with three nodes in the input layer ($x_1$, $x_2$, $x_3$), three nodes in the hidden layer ($h_1$, $h_2$, $h_3$), and an output layer a single node ($y$).}
-    \label{fig:feedforward_net}
-\end{figure}
-
-\begin{figure}[t]
-    \centering
+                \draw[conn] (h\h) -- (y);
+        \end{tikzpicture}
+        \caption{Feedforward Network}
+        \label{fig:feedforward_net}
+        \vspace{1em}\break
+    \end{subfigure}
     \begin{subfigure}{.24\linewidth}
         \begin{tikzpicture}
             [align=center]
@@ -316,7 +272,7 @@ The reason why these notions have been introduced is to be able to bring up the 
             \draw[conn] (h.north) to [out=150, in=180, loop, looseness=4] node[left=0.5em, midway, align=center] {$W$} (h.west);
 
         \end{tikzpicture}
-        \caption{Folded}
+        \caption{Folded RNN}
         \label{fig:rnn_folded}
     \end{subfigure}
     \begin{subfigure}{.74\linewidth}
@@ -356,15 +312,25 @@ The reason why these notions have been introduced is to be able to bring up the 
             \draw[conn] (ht+1) -- node [above=0.5em, midway, align=center] {$W$} (nullRight);
 
         \end{tikzpicture}
-        \caption{Unfolded}
+        \caption{Unfolded RNN}
         \label{fig:rnn_unfolded}
     \end{subfigure}
-    \caption{A typical view of an RNN (left) and an unfolded view of the same network (right). In both sub-figures each node is a layer of network units however, in the second representation these are shown for each timestep. The weighted connections from the input layer to the hidden one is labelled $U$, those from the hidden layer feeding back to itself are $W$, and those from the hidden layer to the output layer are labelled as $V$. Note that these weights are reused at each timestep. Bias has been omitted in this representation. Figure adapted from \textcite{graves_supervised_2012}}
+
+    \caption{Example of the two main ANN structures: a feedforward neural network (top), and a RNN (bottom). The feedforward neural network features three nodes in the input layer ($x_1$, $x_2$, $x_3$), three nodes in the hidden layer ($h_1$, $h_2$, $h_3$), and an output layer with a single node ($y$). On the bottom left we have a typical view of a RNN followed by an unfolded view of the same network (bottom right). In both sub-figures at the bottom each node is a layer of network units however, in the second representation these are shown for each timestep. The weighted connections from the input layer to the hidden one is labelled $U$, those from the hidden layer feeding back to itself are $W$, and those from the hidden layer to the output layer are labelled as $V$. Note that these weights are reused at each timestep. Bias has been omitted in this representation. RNN figure adapted from \textcite{graves_supervised_2012}}
+    \label{fig:two_nets}
 \end{figure}
 
-The LSTM is made of a network of recurrently connected subnetworks known as memory blocks, each with one or more self-connected memory cells and three multiplicative units: the input gate, the output gate, and the forget gate \parencite{hochreiter_long_1997}. The three gates act as analogies for the read, write, reset computer operations and allow the memory cells to store and access information over long periods of time \parencite{graves_supervised_2012}. See Figure \ref{fig:lstm} for an illustration of a LSTM memory block with a single cell.
+Thus, a formal definition of the network's forward pass would be
+\begin{equation}
+    h^t = f(h^{t-1}; x^t; \theta) \label{eq:rnn_hidden}
+\end{equation}
+where $h^t$ is the state of the hidden layer at time $t$, $x^t$ is the input at time $t$, and $\theta$ the model parameters.
 
-Aside from being successful at a variety of classification tasks \parencite[e.g.,][]{graves_framewise_2005}, this architecture has been successfully applied to generating new data points \parencite[such as creating sequences of text;][]{graves_generating_2013}. In the context of generating musical performances, experiments with this neural architecture go as far as \textcite{eck_first_2002} however, a more noteworthy implementation is Performance-RNN \parencite{oore_this_2018}; a three layer LSTM network with 512 cells each designed to generate classical compositions whilst maintaining the playing style of expert pianists. Considering its success, this model was re-implemented for the purposes of this paper's experiments (see Chapter \ref{chap:methods}).
+The backward pass in a RNN is similar to that of a feedforward network: given the partial derivatives of a differentiable loss function $\mathcal{L}$ we calculate the derivatives with respect to the network's weights \parencite{graves_supervised_2012}. In this setting, a popular algorithm is called backpropagation through time \parencite[BPTT;][]{werbos_backpropagation_1990} which consists of repeated applications of the chain rule. The difference between standard backpropagation and BPTT is that the loss function depends on the activation of the hidden layer through its influence on the output layer as well as its influence on the hidden layer at the next timestep \parencite{graves_supervised_2012}.
+
+Equation \ref{eq:rnn_hidden} can be drawn as in Figure \ref{fig:rnn_folded}: input sequences $x$ are mapped to a hidden layer $h$ and an output $y$, with the state of the hidden layer at time $t$ feeding back into itself with a time delay of $1$. In other words, the state of $h_t$ will influence the decision of the recurrent layer at time $t+1$. Another way to illustrate this is to unfold the computational graph such that each component of the network is represented by different variables per step, as in Figure \ref{fig:rnn_unfolded}.
+
+The reason why these notions have been introduced is to be able to bring up the following point. As good as standard RNNs are - in theory - at accessing contextual information when mapping input sequences to output sequences, the range of contexts that can be accessed in a standard RNN architecture is in practice quite limited \parencite{graves_supervised_2012}. \textcite{hochreiter_long_1997} outline two problems caused by BPTT: the error signals flowing backwards in time tend to either (1) blow up or (2) vanish. As such, the Long Short-Term Memory network has been proposed, a recurrent architecture designed to overcome these issues \parencite{hochreiter_long_1997}.
 
 \begin{figure}[t]
     \centering
@@ -411,11 +377,15 @@ Aside from being successful at a variety of classification tasks \parencite[e.g.
     \label{fig:lstm}
 \end{figure}
 
+The LSTM is made of a network of recurrently connected subnetworks known as memory blocks, each with one or more self-connected memory cells and three multiplicative units: the input gate, the output gate, and the forget gate \parencite{hochreiter_long_1997}. The three gates act as analogies for the read, write, reset computer operations and allow the memory cells to store and access information over long periods of time \parencite{graves_supervised_2012}. See Figure \ref{fig:lstm} for an illustration of a LSTM memory block with a single cell.
+
+Aside from being successful at a variety of classification tasks \parencite[e.g.,][]{graves_framewise_2005}, this architecture has been successfully applied to generating new data points \parencite[such as creating sequences of text;][]{graves_generating_2013}. In the context of generating musical performances, experiments with this neural architecture go as far as \textcite{eck_first_2002} however, a more noteworthy implementation is Performance-RNN \parencite{oore_this_2018}; a three layer LSTM network with 512 cells each designed to generate classical compositions whilst maintaining the playing style of expert pianists. Considering its success, this model was re-implemented for the purposes of this paper's experiments (see Chapter \ref{chap:methods}).
+
 \section{Generative Adversarial Networks} \label{sec:generative}
 
 Nowadays, the most popular form of generating data is through the use of a Generative Adversarial Network \parencite[GAN;][]{goodfellow_generative_2014}. The training procedure is set up as a game between two networks: a generator and a discriminator. The purpose of the former is to create samples that come from the same distribution as the training data, whereas the latter aims to determine which samples are real or fake \parencite{goodfellow_nips_2016}.
 
-To make the generator's data distribution $p_g$ imitate that of the real data $p_{\text{data}}$, we need to define a prior on input noise variables $p_{z}(z)$ and then represent a mapping to the data space $G(z; \theta_g)$ where $G$ is a differentiable function represented by a network with parameters $\theta_g$. The discriminator is another network with a mapping function $D(x; \theta_d)$ that outputs a single scalar. More concretely, $D(x)$ is the probability that $x$ came from the real data distribution rather than that of the generator \parencite{goodfellow_nips_2016}. We train $D$ to maximize the probability of correctly classifying the training data and samples from $G$ (i.e., as "real" and "fake"), while simultaneously training $G$ to minimize the dissimilarity between the two data distributions, \emph{without actually looking at} $p_{\text{data}}$. In other words, $G$ must minimize $\log (1- D(G(z)))$ \parencite{goodfellow_generative_2014}.
+To make the generator's data distribution $p_g$ imitate that of the real data $p_{\text{data}}$, we need to define a prior on input noise variables $p_{z}(z)$ and then represent a mapping to the data space $G(z; \theta_g)$ where $G$ is a differentiable function represented by a network with parameters $\theta_g$. The discriminator is another network with a mapping function $D(x; \theta_d)$ that outputs a single scalar \parencite{goodfellow_generative_2014}. More concretely, $D(x)$ is the probability that $x$ came from the real data distribution rather than that of the generator \parencite{goodfellow_nips_2016}. We train $D$ to maximize the probability of correctly classifying the training data and samples from $G$ (i.e., as "real" and "fake"), while simultaneously training $G$ to minimize the dissimilarity between the two data distributions, \emph{without actually looking at} $p_{\text{data}}$. In other words, $G$ must minimize $\log (1- D(G(z)))$ \parencite{goodfellow_generative_2014}.
 
 To formalize, both models play a minimax game with a value function $V(G, D)$:
 \begin{equation}
@@ -423,15 +393,15 @@ To formalize, both models play a minimax game with a value function $V(G, D)$:
 \end{equation}
 where the solution is for $G$ to recover the training data distribution and $D$ to have a classification accuracy of 50\% \parencite{goodfellow_generative_2014}.
 
-Although new, GANs are a significant conceptual and technical innovation \parencite{briot_deep_2017} which can be seen in them revitalizing interest in generative models. As mentioned before, they have been proven successful at image super-resolution \parencite{ledig_photo-realistic_2016}, image-to-image translation \parencite{isola_image--image_2016}, or style-based image generation \parencite{karras_style-based_2018}. Having said these, \textcite{mogren_c-rnn-gan_2016} has shown that GANs do not belong only to the field of Computer Vision by successfully re-purposing this architecture to generate music. The model in question, C-RNN-GAN, features a completely unidirectional LSTM network with two layers, 350 units each as generator and a unidirectional LSTM network with a similar structure as discriminator.
+Although new, GANs are a significant conceptual and technical innovation \parencite{briot_deep_2017} which can be seen in them revitalizing interest in generative models. They have been shown successful at image super-resolution \parencite{ledig_photo-realistic_2016}, image-to-image translation \parencite{isola_image--image_2016}, or style-based image generation \parencite{karras_style-based_2018}. Having said these, \textcite{mogren_c-rnn-gan_2016} has shown that GANs do not belong only to the field of Computer Vision by successfully re-purposing this architecture to generate music. The model in question, C-RNN-GAN, features a completely unidirectional LSTM network with two layers, 350 units each as generator and a bidirectional LSTM network with a similar structure as discriminator.
 
-\section{Learning to learn} \label{sec:learn2learn}
+\section{Meta-Learning} \label{sec:learn2learn}
 
-The rationale for investing time and energy into meta-learning is that we cannot capture the essence of learning simply by relying on a small number of algorithms, but rather a bunch of context-dependent learning strategies that would enable us to properly capture domain specific information \parencite{schmidhuber_evolutionary_1987}. Given the complexities of each learning strategy, \textcite{schmidhuber_evolutionary_1987} argues that an obvious way to tackle this initiative is to give a system the ability to learn how to learn. A simplistic way to do this would be to train a system on different tasks (e.g, image classification, text classification, etc.). However, this approach entails training on a dataset that is much larger that what current hardware can withstand. Furthermore, this approach would stray away from the idea of building general-purpose A.I. architectures as generalizing over a task would require more data points that what a human would need. To be more concrete, a human is able to generalize a task/object after encountering one (or few) example(s) \parencite{ravi_optimization_2016, chen_closer_2018}. Therefore, besides having to perform on a variety of tasks, a system would also need to excel at that using sparse amounts of data.
+The rationale for investing time and energy into meta-learning is that we cannot capture the essence of learning simply by relying on a small number of algorithms, but rather a bunch of context-dependent learning strategies that would enable us to properly capture domain specific information \parencite{schmidhuber_evolutionary_1987}. Given the complexities of each learning strategy, \textcite{schmidhuber_evolutionary_1987} argues that an obvious way to tackle this initiative is to give a system the ability to learn how to learn. A simplistic way to do this would be to train a system on different tasks (e.g, image classification, text classification, etc.). However, this approach entails training on a dataset that is much larger than what current hardware can withstand. Furthermore, this approach would stray away from the idea of building general-purpose A.I. architectures as generalizing over a task would require more data points that what a human would need. To be more concrete, a human is able to generalize a task/object after encountering one (or few) example(s) \parencite{ravi_optimization_2016, chen_closer_2018}. Therefore, besides having to perform on a variety of tasks, a system would also need to excel at that using sparse amounts of data.
 
-Although ideas of meta-learning can go as far as Schmidhuber's thesis in 1987, it seems that training a model using a handful of examples did not get much traction until \textcite{lake_human-level_2015} successfully designed a probabilistic learning framework capable of generalizing and learning a large number of concepts from a single class example (i.e., one-shot learning). For clarity, such a problem is typically defined as a $n$-shot $k$-way problem, where $n$ stands for the number of examples per class, and $k$ is the number of classes to be used in the training process.
+Although ideas of meta-learning can go as far as Schmidhuber's thesis in 1987, it seems that training a model using a handful of examples did not get much traction until \textcite{lake_human-level_2015} successfully designed a probabilistic learning framework capable of generalizing and learning a large number of concepts from a single class example (i.e., one-shot learning). For clarity, such a problem is typically defined as a $n$-shot $k$-way problem, where $n$ stands for the number of examples per class, and $k$ is the number of classes.
 
-Initially, it was thought that ANNs are incompatible with few-shot learning since the iterative nature of gradient-based optimization algorithms do not work well in the context of a set number of updates \parencite{ravi_optimization_2016} - and even more so when there are only a few examples to work with. Having said that, \textcite{rezende_one-shot_2016} were among the first to provide a solution to the one-shot problem in the context of a neural network by implementing Bayesian reasoning into a deep network embedded within hierarchical latent variable models. Since that, numerous efforts were made to develop an algorithm that enables an ANN to perform with strictly limited datasets. Probably the most popular algorithm at the time of writing is the Model-Agnostic Meta-Learning (MAML) algorithm \parencite{finn_model-agnostic_2017}. One of MAML's core mechanics is that the parameters of the model are trained with a small number of gradient steps on with little training data to arrive at a good generalization on that task. However, this procedure requires calculating second-order derivatives which implies a substantial computational penalty - something which the authors did note. Therefore, they developed a first-order variant of MAML (FOMAML) which is able to perform similarly, if only with a small performance hit \parencite{finn_model-agnostic_2017}.
+Initially, it was thought that ANNs are incompatible with few-shot learning since the iterative nature of gradient-based optimization algorithms do not work well in the context of a set number of updates \parencite{ravi_optimization_2016} - and even more so when there are only a few examples to work with. Having said that, \textcite{rezende_one-shot_2016} were among the first to provide here a solution to the one-shot problem by implementing Bayesian reasoning into a deep network embedded within hierarchical latent variable models. Since that, numerous efforts were made to develop an algorithm that enables an ANN to perform with strictly limited datasets. Probably the most popular approach at the time of writing is the Model-Agnostic Meta-Learning (MAML) algorithm \parencite{finn_model-agnostic_2017}. One of MAML's core mechanics is that the parameters of the model are trained with a small number of gradient steps with little training data to arrive at a good generalization of that task. However, this procedure requires calculating second-order derivatives which implies a substantial computational penalty - something which the authors did note. Therefore, they developed a first-order variant of MAML (FOMAML) which is able to perform similarly, if only with a small performance hit \parencite{finn_model-agnostic_2017}.
 
 This seemed to be the case until \textcite{nichol_first-order_2018} showed that FOMAML tends to be somewhat unstable. In response to that, they developed Reptile, a first-order meta-learning algorithm that rivals the performance of both MAML and FOMAML \parencite{nichol_first-order_2018}. Just like MAML, it counteracts the shortcomings of gradient-optimization algorithms by learning the model's initial parameters in order to maximize performance on novel tasks, it allows for any type of network to be used, and does not place any restrictions on the type of loss function that can be used \parencite{nichol_first-order_2018}. The difference between the two, however, lies in the way the parameters are updated. 
 
@@ -452,45 +422,32 @@ Initialize $\theta$, the vector of initial parameters
 \end{algorithm}
 \DecMargin{1em}
 
-In essence, Reptile works (see Algorithm \ref{alg:reptile}) as follows. A model with parameters $\theta$ is initialized, and a meta-loop (or meta-epochs) of $i$ iterations starts. Within it, a task $\tau$ (e.g, image classification, text classification, etc.) is sampled, along with its corresponding loss function $L_{\tau}$ (for clarity, we assume that each type of task uses a different loss function). Then we compute the updated parameters $\tilde \theta$ in an inner-loop with $k$ iterations on task $\tau$ (or in other words, once we sampled our task $\tau$, we train our model $k$ times on it using the $\theta$ as parameters so we can get $\tilde \theta$). Finally, we update our initial parameters $\theta$ using this formula: $\theta \leftarrow \theta + \epsilon (\tilde{\theta} - \theta)$. Then the algorithm continues to the next iteration of the meta-loop carrying over our updated parameters $\theta$.
+In essence, Reptile (see Algorithm \ref{alg:reptile}) works as follows. A model with parameters $\theta$ is initialized, and a meta-loop (or meta-epochs) of $i$ iterations starts. Within it, a task $\tau$ (e.g, image classification, text classification, etc.) is sampled, along with its corresponding loss function $L_{\tau}$ (for clarity, we assume that each type of task uses a different loss function). Then we compute the updated parameters $\tilde \theta$ in an inner-loop with $k$ iterations on task $\tau$ (or in other words, once we sampled our task $\tau$, we train our model $k$ times on it using the $\theta$ as parameters so we can get $\tilde \theta$). Finally, we update our initial parameters $\theta$ using this formula: $\theta \leftarrow \theta + \epsilon (\tilde{\theta} - \theta)$. Then the algorithm continues to the next iteration of the meta-loop carrying over our updated parameters $\theta$.
 
 The explanation above is fairly verbose however, the algorithm itself is fairly simplistic and achieves similar performances to FOMAML \parencite{nichol_first-order_2018}. This forms a compelling reason to use Reptile as the few-shot learning method of choice for this paper.
 
 \chapter{Methods}\label{chap:methods}
 
-To reiterate from Section \ref{sec:thesis_goal}, the purpose of this paper is to establish (1) the extent to which the music generated under a few-shot learning algorithm is comparable to that of a model trained on the entire dataset, and (2) the extent to which the music from such a model is comparable to that of real musical performances. For these purposes, Performance-RNN and C-RNN-GAN were adapted to the Reptile training procedure (Algorithm \ref{alg:reptile}) and evaluated against the (1) songs generated by the baseline proposed in \textcite{larochelle_few-shot_2017} - a single layer LSTM with 256 units - and (2) actual musical performances from the dataset (Section \ref{sec:dataset}). For an in-depth explanation on the steps required to develop a model that is able to generate new data points refer to Section \ref{sec:how_to_gen} and to Section \ref{sec:reptile_train} for details on the training procedure. The evaluation of the models' performances will be based on the number of statistically different bins \parencite[NDB;][]{richardson_gans_2018} and several domain specific measurements adapted from \textcite{mogren_c-rnn-gan_2016}: polyphony, scale consistency, repetitions, tone span. Refer to Section \ref{sec:evaluation} for more details on these metrics.
+To reiterate from Section \ref{sec:thesis_goal}, the purpose of this paper is to establish (1) the extent to which the music generated under a few-shot learning algorithm is comparable to that of a model trained on the entire dataset, and (2) the extent to which the music from such a model is comparable to that of real musical performances. For these purposes, Performance-RNN and C-RNN-GAN were adapted to the Reptile training procedure (Algorithm \ref{alg:reptile}) and evaluated against (1) the songs generated by the baseline proposed in \textcite{larochelle_few-shot_2017} - a single layer LSTM with 256 units - and (2) actual musical performances from the dataset (Section \ref{sec:dataset}), after the data has been transformed into a more suitable format (Section \ref{sec:data_proc}). For an in-depth explanation on the steps required to develop a model that is able to generate new data points refer to Section \ref{sec:how_to_gen} and to Section \ref{sec:reptile_train} for details on the training procedure. The evaluation of the models' performances will be based on the number of statistically different bins \parencite[NDB;][]{richardson_gans_2018} and several domain specific measurements adapted from \textcite{mogren_c-rnn-gan_2016}: polyphony, scale consistency, repetitions, tone span. Refer to Section \ref{sec:evaluation} for more details on these metrics.
 
 \section{Dataset} \label{sec:dataset}
 
-The dataset for this research will be similar to that of \parencite{oore_this_2018} namely, the MAESTRO Dataset \parencite{hawthorne_enabling_2018}. It consists of recorded MIDI data collected from each installment of the International Piano-e-Competition. All performances were done by piano experts on a Yamaha Disklavier, instrument which integrates a highly precise MIDI capture and playback system. The claim is that the recorded MIDI events are of sufficient fidelity to allow judges to remotely listen to the contestant's performance (also on a Disklavier).
+The dataset for this research will be similar to that of \textcite{oore_this_2018} namely, the MAESTRO Dataset \parencite{hawthorne_enabling_2018}. It consists of recorded MIDI data collected from each installment of the International Piano-e-Competition. All performances were done by piano experts on a Yamaha Disklavier, instrument which integrates a highly precise MIDI capture and playback system. The claim is that the recorded MIDI events are of sufficient fidelity to allow judges to remotely listen to the contestant's performance (also on a Disklavier).
 
 The dataset contains MIDI recordings from nine years of the International Piano-e-Competition. This amounts to 1,184 piano performances, approximately 430 compositions, 6.18 million notes played, and approximately 172 hours of playback. There is also a recommended train/validation/test split (954, 105, 125 songs respectively) created on the following criteria \parencite{hawthorne_enabling_2018}:
 
 \begin{itemize}
-    \item No composition should appear in more than one split
+    \item No composition should appear in more than one split.
     \item Training set is approx 80\% of the dataset (in time), and the remaining is split equally on between the validation and test sets. Where possible, these proportions are true also within each composer.
-    \item Popular compositions are in the training set
-    \item The validation and test splits should maintain a variety of compositions
+    \item Popular compositions are in the training set.
+    \item The validation and test splits should maintain a variety of compositions.
 \end{itemize}
 
-Moreover, each performance comes with additional metadata: the name of the composer, the title of the performance, the suggested train, validation, test splits, year of the performance, name of the file, and duration in seconds of the performance. Having said that, the dataset lacks clearly defined classes. The canonical composer could be used as a substitute however, the author strongly believes that there is a better way to categorize music: by genre.
+Moreover, each performance comes with additional metadata: the name of the composer, the title of the performance, the suggested train, validation, test splits, year of the performance, name of the file, and duration in seconds of the performance. Having said that, the dataset lacks clearly defined classes. Although not entirely necessary, having them in the dataset should enable the Reptile models to generate samples that are more analogous to a specific class instead of a mixture. Given what the dataset metadata provides, the canonical composer could be used. However, the author strongly believes that there is a better way to categorize music: by genre.
 
 Broadly speaking, Western classical music can be segregated into a number of genres based on the year of the composition and style of the piece. For this we can use the Concise Oxford Dictionary of Music \parencite{kennedy_concise_2007} which indicates to the following classical genres: baroque (1600 - 1750), classical (1750 - 1820), romanticism (1780 - 1910), modernism (1890 - 1930), and impressionism (circa 1890 - 1925). Granted, there are far more genres, but these are the ones that are covered by the dataset. As such, given the definitions of \textcite{kennedy_concise_2007} on said genres and artists, each individual piece from our dataset was manually assigned a genre. Concretely, the style of music was firstly determined by the period in which the composer has lived (in baroque, classical, etc.) or - if the time period of the genres would overlap (the case of modernism and impressionism) - the composer's primary style of music would be chosen according to the definition given by \textcite{kennedy_concise_2007}. Said labelling can be found in Appendix \ref{appendix:labelling}.
 
 \section{Data Processing} \label{sec:data_proc}
-
-\begin{figure}[t]
-    \centering
-    \begin{verbatim}
-<note_on note=69 velocity=73 time=33>
-<note_on note=71 velocity=78 time=15>
-<control_change control=64 value=83 time=27>
-<note_off note=69 velocity=0 time=6>
-<note_off note=71 velocity=0 time=3>
-    \end{verbatim}
-    \caption{Example of MIDI messages in the dataset, as printed by the Python library Mido \parencite{bjorndalen_mido_2018}. At 33 ticks since the last event, the player pressed an A4 (note 69), followed by a B4 (note 71), 15 ticks later. Next, the pedal (Control Change message with a value of 64) is pressed 27 ticks later, and the keys are released 6 and 3 tick later.}
-    \label{fig:midi_examples}
-\end{figure}
 
 The dataset consists of MIDI files which would require some processing in order to be ready for a LSTM network. Here, the approach of \textcite{oore_this_2018} was adopted where MIDI midi messages are transformed into a sequence of one-hot encoded events. More specifically, MIDI excerpts are represented as a sequence of events from a vocabulary of 416 different events - similar to \textcite{oore_this_2018}, but with one extra events in the vocabulary:
 \begin{itemize}
@@ -501,11 +458,25 @@ The dataset consists of MIDI files which would require some processing in order 
     \item 2 Pedal events: triggers or releases the pedal
 \end{itemize}
 
-A glance over the MIDI documentation \parencite{midi_association_official_2019} shows how complex and granular the standard is. Luckily however, we do not need to implement all of the messages into our model in order to make it work. We only need three: \texttt{note\_on}, \texttt{note\_off}, and \texttt{pedal\_on/off}. Figure \ref{fig:midi_examples} show an example of how the midi messages look like. It should be noted that in this figure, the time is represented in ticks, MIDI's smallest unit of time, who's value is usually a third of a beat \parencite{midi_association_official_2019}.
+A glance over the MIDI documentation \parencite{midi_association_official_2019} shows how complex and granular the standard is. However, we do not need to implement all of the messages into our model in order to make it work. We only need three: \texttt{note\_on}, \texttt{note\_off}, and \texttt{pedal\_on/off}. Figure \ref{fig:midi_examples} show an example of what the MIDI messages look like. It should be noted that in this figure, the time is represented in ticks, MIDI's smallest unit of time \parencite{midi_association_official_2019}, which in the dataset is between one 384$^{th}$ and one 480$^{th}$ of a beat.
 
 As it can be seen in Figure \ref{fig:midi_examples}, each message contains multiple pieces of information such as the message type, the note/value of the message, the delta time (time elapsed since last message and the current message, measured in ticks), and velocity (if applicable). To one-hot encode this stream of messages, it is necessary to separate it so it contains only one type of information per input. Thus, the sequence can be further broken down such that the first message that the system encounters is the delta time, followed by the velocity, and the note/pedal event (and their respective values). An example of how the MIDI sequences are broken down into singular pieces of information can be found in Figure \ref{fig:representation_midi}.
 
-\begin{figure}[t]
+\begin{figure}
+    \centering
+    \begin{verbatim}
+<note_on note=69 velocity=73 time=33>
+<note_on note=71 velocity=78 time=15>
+<control_change control=64 value=83 time=27>
+<note_off note=69 velocity=0 time=6>
+<note_off note=71 velocity=0 time=3>
+    \end{verbatim}
+    \caption{Example of how MIDI messages are printed on the screen. At 33 ticks since the last event, the player pressed an A4 (note 69), followed by a B4 (note 71), 15 ticks later. Next, the pedal (Control Change message with a value of 64) is pressed 27 ticks later, and the keys are released 6 and 3 tick later.}
+    \label{fig:midi_examples}
+    \vspace{1em}
+%\end{figure}
+
+%\begin{figure}[h]
     \begin{tikzpicture}
         \draw[step=1cm,base01,very thin] (0,0) grid (6,6);
         \filldraw[fill=base01, draw=base01] (0,1) rectangle (1,2);
@@ -539,39 +510,37 @@ Having said these, it should be mentioned that the one-hot representation of MID
 
 Knowing what we know about RNNs and LSTMs from Section \ref{sec:rnn}, one can devise a method where the network can generate a sequence of events. All that is needed is to present the system with an event to kickstart the generative process. Namely, an input $x^t$ is fed to the network in order to output the next likely event $x^{t+1}$, which in turn is fed back to generate $x^{t+2}$. This process is repeated until we have a sequence of events of a desired length.
 
-An alternative to this would be to define a noise vector $z^t$ of an arbitrary size (e.g., 100), and a random input $x^t$ selected from our events vocabulary. The noise vector is passed through a linear layer that output a tensor that would serve as the network's hidden state $h^{t}$ at time $t$. It is then that $x^t$ and $h^{t}$ are fed into the LSTM layer to generate $x^{t+1}$ and $h^{t+1}$. The reason for pre-defining the hidden state for the first input is to increase the number of possible outcomes coming from the network.
+An alternative to this would be to define a noise vector $z^t$ of an arbitrary size (e.g., 100), and a random input $x^t$ selected from our events vocabulary. The noise vector is passed through a linear layer that outputs a tensor that would serve as the network's hidden state $h^{t}$ at time $t$. It is then that $x^t$ and $h^{t}$ are fed into the LSTM layer to generate $x^{t+1}$ and $h^{t+1}$. The reason for pre-defining the hidden state for the first input is to increase the number of possible outcomes coming from the network.
 
-To be more precise, if we were to present the network with only $x^t$ then the network would mark the input sequence as the beginning of the song. With that information, it is possible that the network would affix itself to following a specific pattern. For instance, if the first input would be a C\#, the network could learn to always output E as the next note. Using a random hidden state is a measure that was placed to ensure some diversity in the process of generating samples (granted, it should be admitted the possibility of this scenario being unlikely, and that the regular method described at the beginning of this section would still work just as good).
+To be more precise, if we were to present the network with only $x^t$ then the network would mark the input sequence as the beginning of the song. With that information, it is possible that the network would affix itself to following a specific pattern. For instance, if the first input would be a C\#, the network could learn to always output E as the next note. Using a random hidden state is a measure that was implemented to ensure some diversity in the process of generating samples (granted, it should be admitted the possibility of this scenario being unlikely, and that the regular method described at the beginning of this section would still work just as well).
 
 Having said this, diversity is not the only reason for including a noise vector $z$ into the training process. The reader might recall that this is part of the generation process in the framework of a GAN respectively, how the generator $G$ would create samples. As such, all three models implemented in this paper feature the architecture of a GAN generator.
 
 Moreover, in terms of generating the next event, \textcite{oore_this_2018} have defined a parameter $\lambda$ called temperature \parencite{google_magenta_performance_2017}. It is a value which uses the model's predicted events distribution to control the randomness of the output samples. In other words, let $\phi$ be the output of a LSTM network (for clarity, we ignore the hidden state $h$). Then, the next sequence $x^{t+1}$ is defined as 
 \begin{equation}
-    x^{t+1} = X(\omega)
+    x^{t+1} \sim X
 \end{equation}
-where
+where $X$ is the predicted event distribution given by the network's output divided by our temperature $\lambda$:
 \begin{equation}
     X = \text{softmax}(\phi / \lambda).
 \end{equation}
-$X$ is the predicted event distribution of the network's output divided by our temperature $\lambda$. Thus, $x^{t+1}$ is actually a random sample from our defined categorical distribution $X$. In this paper we train our models with a temperature of 1.0, and generate samples with temperatures ranging from 0.8 to 1.2, with an increment of 0.1.
+Thus, $x^{t+1}$ is actually a random sample from our defined categorical distribution $X$. In this paper we train our models with a temperature of 1.0, and generate samples with temperatures ranging from 0.8 to 1.2, with an increment of 0.1.
 
 \section{Training procedure} \label{sec:reptile_train}
 
-With the generative process outlined in the previous section, training the generative networks presented in this papers is somewhat straightforward. A batch of songs is sampled from the training set, the model generates as many songs as there are in the batch, and then compute the loss between the network's output and the real samples. This statement is essentially true for the baseline and Performance-RNN (in spite of the Reptile training procedure, inner-loop training is similar to the standard procedure). In contrast, the GAN model requires training two models simultaneously, where the generator's loss function is based on whether the discriminator is fooled by the fake samples (i.e., classifies them as real), and the discriminator's loss is based on whether it can distinguish between real and fake samples (it should be mentioned that both components of the GAN would use binary cross-entropy as their loss function; in contrast the baseline and Performance-RNN are based on cross entropy). However, there are still several items that we haven't touched upon.
+With the generative process outlined in the previous section, training the generative networks presented in this papers is somewhat straightforward. A batch of songs is sampled from the training set, the model generates as many songs as there are in the batch, and then computes the loss between the network's output and the real samples. This statement is essentially true for the baseline and Performance-RNN (in spite of the Reptile training procedure, inner-loop training is similar to the standard procedure). In contrast, the GAN model requires training two models simultaneously, where the generator's loss function is based on whether the discriminator is fooled by the fake samples (i.e., classifies them as real), and the discriminator's loss is based on whether it can distinguish between real and fake samples. It is worthwhile mentioning that both the baseline and Performance-RNN use cross-entropy as the loss function whereas the GAN components use binary cross-entropy. The reason for this difference is because the aim of $D$ is to correctly classify input samples $x$ and $G(z)$ as "real" and "fake", whereas $G$ must minimize the probability of $D$ classifying $G(z)$ as "fake" (and this is done by accessing $D(G(z))$). Having said all of these, there are still several items that we haven't touched upon.
 
-Firstly, all three networks have been trained with teacher forcing, a procedure in which during training the model receives the ground truth $y^t$ as input at time $t+1$. Adopting this measure allows the model to create hidden-to-hidden connections and capture the necessary information from the history of input sequences \parencite{goodfellow_deep_2016}.
+Firstly, all three networks have been trained with teacher forcing, a procedure where - during training - the model receives the ground truth $y^t$ as input at time $t+1$. Adopting this measure allows the model to create hidden-to-hidden connections and capture the necessary information from the history of input sequences \parencite{goodfellow_deep_2016}.
 
 Secondly, \textcite{goodfellow_generative_2014} mention a couple issues that can arise when training a GAN. One is synchronizing the generator with the discriminator (it's possible that one of the models gets too strong, leaving the other unable to catch up), and the generator collapsing too many values of $z$ to the same value of $x$ (which would ultimately hurt the generator's diversity; this issue is known in the literature as mode collapse).
 
 A solution to the issue of synchronicity would be to freeze the training of one of the models when the loss is below a predefined threshold \parencite{mogren_c-rnn-gan_2016}. In this paper, we stop training one of the models if its training loss is less than half the loss of the other's.
 
-To combat mode collapse, \textcite{salimans_improved_2016} propose a technique called feature matching, where we change the objective of the generator to generate real data that matches the statistics of the real data. Specifically, we train the generator to match the expected value of those features \parencite{salimans_improved_2016}. However, this measure was not implemented in this paper as early tests caused both the loss of both the generator and discriminator to drop at zero, causing both models to stop learning.
-
-It should be noted that now, the loss functions of both the generator and discriminator differ in scale, meaning that we can no longer compare them to freeze training of either models: the generator uses MSE, whereas the discriminator use binary cross-entropy. A workaround to this is to calculate the both losses, but use MSE for backpropagation and optimization, whilst binary cross-entropy is used to compare our models.
+To combat mode collapse, \textcite{salimans_improved_2016} propose a technique called feature matching, where we change the objective of the generator to generate real data that matches the statistics of the real data. Specifically, we train the generator to match the expected value of those features \parencite{salimans_improved_2016}. However, this measure was not implemented in this paper as early tests caused both the loss of both the generator and discriminator to drop at zero, causing either models to stop learning.
 
 Moving forward, there is an aspect pertaining to the Reptile training framework which needs to be addressed: the training data. Normally, Reptile assumes that the training takes place in the $n$-shot $k$-way setting, meaning that our model is trained with $k$ classes and $n$ samples per class. Given that we have 954 samples in the training set, we adopted the same training procedure as \textcite{nichol_first-order_2018} and \textcite{clouatre_figr_2019}. Respectively, at each meta-loop we sample from our split $n$ examples for each $k$ class. For this paper, our $n=1$ and $k=5$ corresponding to a 5-way 1-shot experiment.
 
-Another aspect that needs addressing is the number of epochs. All models were trained for 250 epochs each however, when looking at the way training is handled in Reptile (see Algorithm \ref{alg:reptile}), this statement is inconclusive. Because the algorithm presents us with a meta-loop and an inner-loop, epochs is defined in this setting as the number of times parameters $\theta$ have been updated. Thus, the number of steps we have taken to compute $\tilde \theta$ is ignored. If this claim causes any skepticism about whether the models trained under Reptile would outperform simply because they "are trained much more", the reader should be reminded by the fact that the baseline is presented with 954 songs per epoch, whereas these models are trained with five.
+Another aspect that needs addressing is the number of epochs. All models were trained for 250 epochs each. However, when looking at the way training is handled in Reptile (see Algorithm \ref{alg:reptile}), this statement is inconclusive. Because the algorithm presents us with a meta-loop and an inner-loop, epochs is defined in this setting as the number of times parameters $\theta$ have been updated. Thus, the number of steps we have taken to compute $\tilde \theta$ is ignored. If this claim causes any skepticism about whether the models trained under Reptile would outperform simply because they "are trained much more", the reader should be reminded by the fact that the baseline is presented with 954 songs per epoch, whereas these models are trained with five.
 
 With these in mind, it should be mentioned that neither of the three models was presented with a full song during training, but rather with each song split into fixed-size chunks. This decision was made to better accommodate the memory limits of the hardware (an Nvidia T4 GPU). A full explanation of the limitations is found in Appendix \ref{appendix:memory}. It suffices to say that our dataset won't fit in memory. As such, each song was split into chunks of 200 events (i.e., window size of 200), starting from the beginning and moving towards the end of the song at a rate of 50 events per chunk (i.e, stride size of 50). Thus, a song of, say, 800 events would be transformed into 13 chunks, which leads us to the topic of batch size.
 
@@ -581,9 +550,9 @@ Finally, another aspect that needs addressing is the learning rate. The baseline
 
 A summary of the parameters used in the training procedures is found in Table \ref{tab:params}.
 
-\begin{table}[ht]
+\begin{table}[hb]
     \centering
-    \begin{tabular}{l|c|c|c}
+    \begin{tabular}{l|r|r|r}
                     &\bf Baseline   &\bf Performance RNN&\bf C-RNN-GAN  \\ \hline
     Num. Layers     &   1           &   3               &   2           \\
     Num. Units      &   256         &   512             &   350         \\
@@ -644,9 +613,9 @@ The pooled sample proportion $P_B$ is the proportion of samples (from the joined
 
 The test statistic is a $z$-score $z = \frac{P_B^p - P_B^q}{SE_B}$ where $P_B^p$ and $P_B^q$ are the proportions of each sample that fall into $B$. If $z$ is smaller than a threshold (a significance level such as $\alpha = 0.05$), then the samples within that bin are statistically different. This whole process is repeated for each bin, and the number of statistically different bins is reported. The selection of bins is done through a $K$-means clustering performed on the $\mathbf{x}^p$ samples. Each of the generated samples $\mathbf{x}^q$ is by assigned to the nearest $L_2$ $K$ centroid \parencite{richardson_gans_2018}.
 
-The more domain-specific evaluation measures are adapted from \textcite{mogren_c-rnn-gan_2016}. Polyphony measures how often a minimum of two tones are played simultaneously (when the start time is the same). It should be noted that this is a restrictive metric: it can give a low score to music where the two notes start at different times. Scale consistency is the fraction of notes that are part of a standard scale (e.g., major, minor, lydian, etc.; see Appendix \ref{appendix:scales} for a complete list with examples), and reporting the results for the best matching scale. Repetitions counts consecutive subsequences of notes, and tone span is the difference between the lowest note and highest note \parencite[counted in semi-tones;][]{mogren_c-rnn-gan_2016}.
+The more domain-specific evaluation measures are adapted from \textcite{mogren_c-rnn-gan_2016}. Polyphony measures how often a minimum of two tones are played simultaneously. Because playing two notes at the exact same time would be rare occurrence, this metric would consider as played simultaneously notes which are at most 20.7 milliseconds apart; which is the mean time needed to construct a three-notes chord, as measured by \textcite{sandnes_human_2015}. It should be noted that this is a restrictive metric: it can give a low score to music where the two notes start at different times. Scale consistency is the fraction of notes that are part of a standard scale (e.g., major, minor, lydian, etc.; see Appendix \ref{appendix:scales} for a complete list with examples), and reporting the results for the best matching scale. Repetitions counts when the same note is played consecutively, and tone span is the difference between the lowest note and highest note \parencite[counted in semi-tones;][]{mogren_c-rnn-gan_2016}.
 
-The choice of NDB comes from the fact that it is good at detecting overfitting \parencite{borji_pros_2018}, whereas the domain-specific metrics should favor models that generate high fidelity samples. In addition, these evaluation metrics have the benefit of being model-agnostic; they do not require a specific type of generative model.
+The choice of NDB comes from the fact that it is good at detecting overfitting \parencite[i.e., when NDB is low;][]{borji_pros_2018}, whereas the domain-specific metrics should favor models that generate high fidelity samples. In addition, these evaluation metrics have the benefit of being model-agnostic; they do not require a specific type of generative model.
 
 \section{Utilities}
 
@@ -658,36 +627,48 @@ To establish the degree to which the music of a Reptile-based model is comparabl
 
 Afterwards, the three have been tasked to generate 125 songs of variable lengths - between 90\% and 110\% of the median length (34,222) of songs in the training set - with five different temperature settings ranging from 0.8 to 1.2. The generating process took approximately 1 hour per model per temperature. The resulting samples were then evaluated against the samples in the test set using the metrics described in Section \ref{sec:evaluation}: polyphony, repetitions, tone span, scale consistency, and number of statistically different bins ($N_{bins} = 20$; arbitrary choice).
 
-The results in Table \ref{tab:results} underline several things about the trained models, the most important one being that all three lack the concept of motif (the presence of a dominant/recurring theme within a piece). The clear giveaway sign is the substantial lack of repetition in the generated samples. This is enforced by the larger levels of polyphony in the three models when compared to the test set. In addition, all models seems to be unrestrained with respect to using the whole gamut of notes they have available, but considering that a piano keyboard has 88 keys and the MIDI standard allows for 128 values (notes), it seems that our models might be heading into the right direction. When it comes to playing in a scale, all models show are equal across the board, with extremely minor variations. Having said these, the domain-specific evaluation metrics indicate that the models are fairly close to eachother but that should not change the fact that there is still room for improvement when compared to the real samples.
+The results in Table \ref{tab:results} underline several aspects about the trained models, the most important one being that all three produce somewhat disorganized music. The clear giveaway sign is the substantial lack of repetition in the generated samples. This is enforced by the larger levels of polyphony in the three models when compared to the test set. In addition, all models seems to be unrestrained with respect to using the whole gamut of notes available, but considering that a piano keyboard has 88 keys and the MIDI standard allows for 128 values (notes), it seems that our models might be heading into the right direction. When it comes to playing in a scale, all models show that they are equal across the board, with extremely minor variations in their adherence. In light of these, the domain-specific evaluation metrics indicate that the models are fairly close to eachother but that should not change the fact that there is still room for improvement when compared to the real samples. Having said that, the landscape changes a bit when looking at NDB, our other evaluation metric. With seven to eleven bins statistically different (out of 20), our models seem to display a great deal of disparity from the test samples.
 
-Having said that, the landscape changes a bit when looking at NDB, our other evaluation metric. With seven to ten bins statistically different (out of 20), our models seem to display a great deal of disparity form the test samples, even though they somewhat agree between themselves - i.e., they don't seem to be very different from each other.
-
-With these result we have gathered enough information to answer our research questions, and claim that the baseline still produces some of the best results (as it scores best on 4/5 metrics). However, a deep-dive into the performance at training time would shed some more light to these results.
+With these result we have gathered enough information to answer our research questions, and claim that the baseline still produces some of the best results (as it scores best on 4/5 metrics). However, a deep-dive into the performance at training time would shed some light as to why this is happening.
 
 \begin{landscape}
 \begin{table}[t]
     \centering
-\begin{tabular}{l|l|l|l|l|l|l}
+\begin{tabular}{l|r|r|r|r|r|r}
     Model             & Temperature & Polyphony (\%)  & Repetitions       & Tone Span        & Scale Consistency (\%) & NDB     \\ \hline
-\textit{Test Set} & N/A         & \textit{49.15} & \textit{814.33} & \textit{66.9440} & \textit{68.27}   & N/A     \\
-Baseline          & 0.8         & 57.07          & \textbf{\color{base0D}388.02}    & \textbf{\color{base0D}78.45}          & \textbf{\color{base0D}67.70}            & 11      \\
-Baseline          & 0.9         & 60.54          & 373.06          & 81.31          & 67.47            & 10      \\
-Baseline          & 1.0         & 61.12          & 347.36          & 83.06          & 67.28            & 10      \\
-Baseline          & 1.1         & 62.92          & 334.42          & 84.44          & 67.22            & \textbf{\color{base0D}7} \\
-Baseline          & 1.2         & 60.60          & 316.82          & 85.05          & 67.26            & 9       \\
-Performance-RNN   & 0.8         & 56.84          & \textbf{\color{base0A}377.82}          & 78.84          & 67.60            & 9       \\
-Performance-RNN   & 0.9         & 58.52          & 364.97          & 81.49          & 67.57            & 8       \\
-Performance-RNN   & 1.0         & 62.19          & 354.08          & 83.24          & 67.30            & 9       \\
-Performance-RNN   & 1.1         & 63.42          & 343.22          & 84.46          & 67.21            & 9       \\
-Performance-RNN   & 1.2         & 60.61          & 312.25          & 85.24          & 67.23            & 10      \\
-C-RNN-GAN         & 0.8         & \textbf{\color{base0E}56.59}    & 375.25          & \textbf{\color{base0A}78.82}    & \textbf{\color{base0A}67.63}      & 9       \\
-C-RNN-GAN         & 0.9         & 58.41          & 365.19          & 81.22          & 67.50            & 9       \\
-C-RNN-GAN         & 1.0         & 61.25          & 351.02          & 83.00          & 67.40            & \textbf{\color{base0A}8}       \\
-C-RNN-GAN         & 1.1         & 63.49          & 338.39          & 84.66          & 67.29            & 11      \\
-C-RNN-GAN         & 1.2         & 60.57          & 316.35          & 85.30          & 67.19            & 10     
+\textit{Test Set} & N/A         & \textit{41.94} & \textit{814.33} & \textit{66.9440} & \textit{68.27}   & N/A     \\
+Baseline          & 0.8         & 49.65          & \textbf{\color{base0D}388.02}    & \textbf{\color{base0D}78.45}          & \textbf{\color{base0D}67.70}            & 11      \\
+Baseline          & 0.9         & 52.19          & 373.06          & 81.31          & 67.47            & 10      \\
+Baseline          & 1.0         & 51.91          & 347.36          & 83.06          & 67.28            & 10      \\
+Baseline          & 1.1         & 52.59          & 334.42          & 84.44          & 67.22            & \textbf{\color{base0D}7} \\
+Baseline          & 1.2         & 49.71          & 316.82          & 85.05          & 67.26            & 9       \\
+Performance-RNN   & 0.8         & 49.59          & \textbf{\color{base0A}377.82}          & 78.84          & 67.60            & 9       \\
+Performance-RNN   & 0.9         & 50.24          & 364.97          & 81.49          & 67.57            & 8       \\
+Performance-RNN   & 1.0         & 52.86          & 354.08          & 83.24          & 67.30            & 9       \\
+Performance-RNN   & 1.1         & 53.05          & 343.22          & 84.46          & 67.21            & 9       \\
+Performance-RNN   & 1.2         & 49.73          & 312.25          & 85.24          & 67.23            & 10      \\
+C-RNN-GAN         & 0.8         & \textbf{\color{base0E}49.17}    & 375.25          & \textbf{\color{base0A}78.82}    & \textbf{\color{base0A}67.63}      & 9       \\
+C-RNN-GAN         & 0.9         & 50.23          & 365.19          & 81.22          & 67.50            & 9       \\
+C-RNN-GAN         & 1.0         & 51.99          & 351.02          & 83.00          & 67.40            & \textbf{\color{base0A}8}       \\
+C-RNN-GAN         & 1.1         & 53.12          & 338.39          & 84.66          & 67.29            & 11      \\
+C-RNN-GAN         & 1.2         & 49.73          & 316.35          & 85.30          & 67.19            & 10     
 \end{tabular}
-\caption{Results of the evaluation process of the generated sample. For comparison, relevant statistics of the test samples have been included. Important values are in bold. The values which are closest to the test sample are in green. Values which are closest to the baseline's best score are in red. Values which are both close to the baseline's best and the test sample are in purple.}
+\caption{Evaluation results of the generated samples. Test set statistics are in italics. Values closest to the test set are in green. Values closest to the baseline's best score are in red. Values which match both the baseline's best and the test sample are in purple.}
 \label{tab:results}
+\end{table}
+
+\begin{table}[b]
+    \centering
+\begin{tabular}{l|r|r|r|r|r|r}
+    Model             & Temperature & Polyphony (\%)  & Repetitions       & Tone Span        & Scale Consistency (\%) & NDB     \\ \hline
+Baseline (50) & 0.8 & 37.75 & 599.94 & \textbf{\color{base0D}73.72} & \textbf{\color{base0D}68.06} & 10 \\
+Baseline (50) & 0.9 & 46.02 & 897.23 & 77.43 & 67.69 & \textbf{\color{base0D}7}  \\
+Baseline (50) & 1.0 & 43.63 & \textbf{\color{base0D}790.02} & 79.67 & 67.54 & 10 \\
+Baseline (50) & 1.1 & 43.79 & 630.93 & 80.95 & 67.48 & 9  \\
+Baseline (50) & 1.2 & \textbf{\color{base0D}40.33} & 536.90 & 82.12 & 67.32 & 10
+\end{tabular}
+\caption{Results of the baseline model after 50 epochs. Values in green closely match the the test set (Table \ref{tab:results})}
+\label{tab:base50}
 \end{table}
 \end{landscape}
 
@@ -723,9 +704,9 @@ C-RNN-GAN         & 1.2         & 60.57          & 316.35          & 85.30      
     \label{fig:loss}
 \end{figure}
 
-When looking at Figure \ref{fig:loss} we gain an insight on how well the training has gone. First and foremost, the loss of Performance-RNN is as one would expect: the model starts somewhat poorly, and then incrementally tunes itself to perform better (Figure \ref{fig:loss_performancernn}). Then, we have the losses of the GAN (Figure \ref{fig:loss_crnngan}) which portrays the adversarial training the generator and discriminator. Although on a first glance one might think that the loss is subject to high variance, it should be noted that a different function was used in this scenario and that the plot is on a much smaller scale than all others. Nevertheless, it does hint that the generator was slowly getting better at tricking the discriminator.
+When looking at Figure \ref{fig:loss} we gain an insight into the training. First and foremost, the loss of Performance-RNN is as expected: the model starts somewhat poorly, and then incrementally tunes itself to perform better (Figure \ref{fig:loss_performancernn}). Then, we have the losses of the GAN (Figure \ref{fig:loss_crnngan}) which portrays the adversarial training of the generator and discriminator. Although on a first glance one might think that the loss is subject to high variance, it should be noted that a different function was used in this scenario and that the plot is on a much smaller scale than all others. Nevertheless, it does hint that the generator was slowly getting better at tricking the discriminator.
 
-Figure \ref{fig:loss_baseline} is somewhat perplexing at first glance. The loss drops quickly, only to jump back to its starting position after $\approx$50 epochs. A simple - and most likely true - explanation is that the learning rate is too big for the model. Considering the granularity with which all models have been trained, it could be that the model has escaped a good local minima due to the high learning rate. This should not be cause for any concern as further training would bring back the network to a similar position (it should probably reminded to the reader that the experiments in this papers are done with only 250 iterations, whereas more sophisticated DL experiments are somewhere in the order of thousands of iterations). 
+Figure \ref{fig:loss_baseline} is somewhat perplexing at first glance. The loss drops quickly, only to jump back to its starting position after $\approx$50 epochs. A simple - and most likely true - explanation is that the learning rate is too big for the model; it could be that the model has escaped a good local minima due to the high learning rate. This should not be cause for any concern as further training would bring back the network to a similar position (it should probably reminded to the reader that the experiments in this papers are done with only 250 iterations, whereas more sophisticated DL experiments are somewhere in the order of thousands of iterations). But, to be sure that the model did not miss a good local minima, the baseline was retrained for 50 epochs - the results of which can be found in Table \ref{tab:base50}. It seems that the 50 epochs baseline performs much better now, significant gains being in polyphony and repetitions.
 
     \newlength\heatheight
     \newlength\heatwidth
@@ -772,27 +753,29 @@ Figure \ref{fig:loss_baseline} is somewhat perplexing at first glance. The loss 
     \label{fig:acts_scaled}
 \end{figure}
 
-To add another layer of validation to the results in Table \ref{tab:results}, Softmax activations of the last (or only) LSTM layer for each of our models was plotted on a heatmap. These activations take place when the model is tasked with generating a song. When accounting for the fact that the scale of the X-axis of the neuron activation plot differs for each model (because each one has a different hidden size), a couple of things become concrete. Firstly, that the generating process of Performance-RNN (Figure \ref{fig:performancernn_activations}) is sparse but still similar to that of the baseline (Figure \ref{fig:baseline_activations}). To better illustrate this, Figure \ref{fig:acts_scaled} shows the two applications on the same scale. Secondly, that C-RNN-GAN (Figure \ref{fig:crnngan_activations}) still has a long way to go until it can be considered adequate at generating a song; in other words, C-RNN-GAN generates songs mostly at random, claim enforced by the fact that almost all neurons are activated and that the pattern of generating a sequence has no order.
+To add another layer of validation to the results in Table \ref{tab:results}, Softmax activations of the last (or only) LSTM layer for each of our models was plotted on a heatmap. These activations take place when the model is tasked with generating a song. When accounting for the fact that the scale of the X-axis of the neuron activation plot differs for each model (because each one has a different hidden size), a couple of things become concrete. Firstly, that the generating process of Performance-RNN (Figure \ref{fig:performancernn_activations}) is sparse but still similar to that of the baseline (Figure \ref{fig:baseline_activations}). To better illustrate this, Figure \ref{fig:acts_scaled} shows the two applications on the same scale. Secondly, that C-RNN-GAN (Figure \ref{fig:crnngan_activations}) still has a long way to go until it can be considered adequate at generating a song; to be more precise, C-RNN-GAN generates songs mostly at random, claim enforced by the fact that almost all neurons are activated and that the pattern of generating a sequence has no order.
 
 With these in mind, the data suggests that models trained under Reptile can be competitive with a model that has been trained under regular circumstances. However, this does not mean that they are all "good enough". When compared to our test samples, the songs generated by the Reptile models fail to reach the same level of quality, a limitation likely imposed by the number of training iterations.
 
 \chapter{Discussion}\label{chap:discussion}
 
-From the lens of mainstream media, we are at a point where we will soon create what is commonly known as "Artificial Intelligence" \parencite{levy_ai_2010}. This claim, of course, ignores the popularity cycles of conectionism dating back to the fifties \parencite[e.g.,][]{rosenblatt_perceptron_1957}, or the over-inflated expectations for autonomous human-made systems that were made ever since \parencite{marcus_is_2012}. However, even after suffering waves of funding-cuts, masses of criticism, and regressions into obscurity, develpments were still being made \parencite{knight_ai_2016, minsky_perceptrons_1988} - albeit at a smaller pace. With the reemergence of ANNs, we are now seeing even stronger developments towards creating general-purpose Artificial Intelligence \parencite[e.g.,][]{vinyals_starcraft_2017}, but that should not cause any relaxation or distress; "we are not there yet".
+From the lens of mainstream media, we are at a point where we will soon create what is commonly known as "Artificial Intelligence" \parencite{levy_ai_2010}. This claim, of course, ignores the popularity cycles of conectionism dating back to the fifties, or the over-inflated expectations for autonomous human-made systems that were made ever since \parencite{marcus_is_2012}. However, even after suffering waves of funding-cuts, masses of criticism, and regressions into obscurity, significant developments in A.I. were still being made \parencite{knight_ai_2016, minsky_perceptrons_1988}. With the reemergence of ANNs, we are now taking even bigger steps towards creating general-purpose Artificial Intelligence \parencite[e.g.,][]{vinyals_starcraft_2017}. But that should not cause any relaxation or distress as we are not "there" yet.
 
-In Chapter \ref{chap:intro}, I pointed out a couple of shortcomings that current ANN systems have (reliance on massive amounts of data, and inability to perform separate tasks) along with two exciting trends in Deep Learning: the resurgence of generative networks and successfully infusing a system with meta-learning capabilities). Acknowledging the initial attempts at intersecting these two fields, this paper proposed expanding those efforts to the musical domain. It set to develop two generative models by modelling the training procedure to be more akin to that of a human learning, and evaluated their performances against a baseline proposed by \textcite{larochelle_few-shot_2017} and their resemblance to real samples. Concretely, Performance-RNN \parencite{oore_this_2018} and C-RNN-GAN \parencite{mogren_c-rnn-gan_2016} were trained under the Reptile learning framework \parencite{nichol_first-order_2018}, and then evaluated against a LSTM network with one layer and 256 hidden units as well as expert piano performances extracted from the MAESTRO dataset \parencite{hawthorne_enabling_2018}.
+In Chapter \ref{chap:intro}, I pointed out a couple of shortcomings that current ANN systems have (reliance on massive amounts of data, and inability to perform separate tasks) along with two exciting trends in Deep Learning: the resurgence of generative networks and successfully infusing a system with meta-learning capabilities. Acknowledging the initial attempts at intersecting these two fields, this paper proposed expanding those efforts to the musical domain. It set to develop two generative models by modelling the training procedure to be more akin to that of human learning, and evaluated their performances against a baseline proposed by \textcite{larochelle_few-shot_2017} and their resemblance to real samples. Concretely, Performance-RNN \parencite{oore_this_2018} and C-RNN-GAN \parencite{mogren_c-rnn-gan_2016} were trained under the Reptile learning framework \parencite{nichol_first-order_2018}, and then evaluated against a LSTM network with one layer and 256 hidden units as well as expert piano performances extracted from the MAESTRO dataset \parencite{hawthorne_enabling_2018}.
 
-In general, the baseline recorded the best performance. However, this does not change the fact that it was closely followed by the Reptile models. More appropriately is to point that, in spite of being trained to generate music using a handful of examples, the Reptile models closely matched the performance of the baseline. This especially holds true for this paper's reimplementation of Performance-RNN whose neuron activations show that it has indeed learned how to generate music, even though its samples scored somewhere in the middle. The adversarial model showed that it is still somewhere in the early stages of learning, which would explain why almost all of its neurons were fired but, the fact that it performed reasonably in its evaluation should not be ignored either. Having said these, I say with confidence that when tasked with making music, Reptile-based generative models can be quite competitive.
+In general, the baseline recorded the best performance. However, this does not change the fact that it was closely followed by the Reptile models. More appropriately is to point that in spite of being trained to generate music using a handful of examples, the Reptile models closely matched the performance of the baseline. This especially holds true for this paper's reimplementation of Performance-RNN whose neuron activations show that it has indeed learned how to generate samples, even though it scored somewhere in the middle. The adversarial model showed that it is still somewhere in the early stages of learning, which would explain why almost all of its neurons fired but, the fact that it performed reasonably well should not be ignored either. Having said these, I say with confidence that when tasked with making music, the Reptile-based generative models can be quite competitive.
 
-As well as they perform, both few-shot models failed to produce samples that could be passed as real. However, neither did the baseline, which would indicate that with more time invested into training, all three models could generate samples that are both novel and high fidelity.
+As well as they perform, both few-shot models failed to produce samples that could be passed as real. However, neither did the original baseline, whereas the adjusted baseline has shown impressive boosts in performance. This finding indicates that with proper hyperparameter tuning, either models could generate songs which are both novel and high fidelity.
 
-Which leads to one of the first limitations of this paper, namely the training procedure. Optimally, all models should be trained for over 1,000 epochs however, time and hardware constrains meant taking some shortcuts. This constraint is especially seen in the case of the baseline which has been trained with a batch size 32 times larger than the Reptile models (to drive down the training time from 250 hours to 27). In addition, it is likely that the training of the GAN model suffered from the fact that a measure for combating mode-collapse was not implemented. Had it been done so, then it's possible that the model would have had better activations and consequently, better samples.
+Which leads to one of the first limitations of this paper, namely the training procedure. Optimally, all models should be trained for over 1,000 epochs however, time and hardware constrains meant taking some shortcuts. This is especially visible in the baseline which has been trained with a batch size 32 times larger than the Reptile models (to drive down the training time from 250 hours to 27, at the risk of making the models incomparable). In addition, it is likely that the training of the GAN model suffered from the fact that a measure for combating mode-collapse was not implemented. Had it been done so, then it's possible that the model would have had more thorough activations and consequently, better samples.
 
-Next, the generating process from which we sample with temperature to generate the next likely event is a somewhat greedy process \parencite{holtzman_curious_2019}. Assuming that the probability distribution of how humans make music borrows some of its characteristics from how we create language - which is likely since both tasks share a significant portion of brain activations \parencite{brown_music_2006} -, then greedy sampling or beam search (another sampling method) would completely fail to generate human-like music. Specifically, they are not ideal and nor adequate for a high entropy task \parencite{holtzman_curious_2019}. This could explain why the models in this paper lacked the concept of motif. Curiously enough, two recent solutions for sampling tokens have been shown to be better candidates: top-$k$ sampling \parencite{fan_hierarchical_2018} and nucleus sampling \parencite[also known as top-$p$ sampling;][]{holtzman_curious_2019}. Future work could incorporate either of these proposed sampling methods and evaluate them against the more traditional sampling methods in the context of generating music with a meta-learning algorithm.
+Secondly, this paper adopts a quantitative evaluation of the generated samples. Considering that this is a highly debated topic \parencite{borji_pros_2018} it is likely that the metrics in this paper are not sufficient. Moreover, given the nature of the topic, a qualitative appraisal of the generated samples is crucial to a better understanding of the quality of the samples.
+
+Next, the generating process from which we sample with temperature to generate the next likely event is a greedy procedure \parencite{holtzman_curious_2019}. Assuming that the probability distribution of how humans make music borrows some of its characteristics from how we create language - which is likely since both tasks share a significant portion of brain activations \parencite{brown_music_2006} -, then greedy sampling or beam search (another sampling method) would completely fail to generate human-like music. Specifically, they are not ideal nor adequate for a high entropy task \parencite{holtzman_curious_2019}. This could explain why the models in this paper scored low in repetitions. Curiously enough, two recent solutions for sampling tokens have been shown to be better candidates: top-$k$ sampling \parencite{fan_hierarchical_2018} and nucleus sampling \parencite[also known as top-$p$ sampling;][]{holtzman_curious_2019}. Future work could incorporate either of these proposed sampling methods and evaluate them against the more traditional ones in the context of generating music with a meta-learning algorithm.
 
 Which brings me to a final limitation. Performance-RNN and C-RNN-GAN are using Reptile, a first-order meta-learning algorithm. \textcite{nichol_first-order_2018} have provided clear evidence that this algorithm is more stable than MAML's first-order variant. However, their results also point that vanilla MAML is still superior. Having said that, these algorithms encompass only one approach to meta-learning (initialisation-based learning) whereas hallucination or distance metric methods could paint a different picture \parencite{chen_closer_2018}. Thus, future work could experiment not only with MAML, but also other types of algorithms.
 
-Nevertheless, the results in this paper are intriguing in and of themselves. They not only point towards neural networks as a viable infrastructure for music generation, but also towards training such a system in a manner that is (loosely) more akin to the way a human being would. By this I exclusively refer to the quantity of examples involved in the generative process. More importantly, these results outline the possibility of integrating generative networks and few-shot learning into the production process of a musician. To be more precise, \textcite{larochelle_few-shot_2017} indicate that instead of training a model on various types of music to influence the style of the generated samples, a musician could substitute the data from a support set with music of their own choice and obtain a new generative model for that particular style of music (admittedly, after a few more hours of training).
+Nevertheless, the results in this paper are intriguing in and of themselves. They not only point towards neural networks as a viable infrastructure for music generation, but also towards the viability of training such a system in a manner that is (loosely) more akin to the way a human being would. By this I exclusively refer to the quantity of examples involved in the learning process. Most importantly, these results outline the possibility of integrating generative networks and few-shot learning into the production process of a musician. To be more precise, \textcite{larochelle_few-shot_2017} indicate that instead of training a model on various types of music to influence the style of the generated samples, a musician could substitute the data from a support set with music of their own choice and obtain a new generative model for that particular style of music (admittedly, after a few more hours of training).
 
 \chapter{Conclusion}\label{chap:conclusion}
 
@@ -805,7 +788,7 @@ This section aims to provide a clear and concise answer to the research question
 
 The answers to both questions are summarized in Table \ref{tab:results}. Specifically, the evaluation of the Reptile models indicates that samples from these models are not exactly as strong as those of the baseline. However, the majority of the Reptile samples seem to lag only slightly, reason for which they could be aptly described as competitive and functionally equivalent.
 
-With regards to the performances of expert pianists, the Reptile samples failed to reach the same levels of mastery. However, it should be noted that the baseline showed similar shortcomings. It was hypothesized that the reason for this is the short training which the models had undergone. In this light, a tentative answer to the second research question is that the Reptile models can be similar to real music. Here, a significant area of improvement lies in embedding a sense of motif into the models (since this is what the models have show to lack the most).
+With regards to the performances of expert pianists, the Reptile samples failed to reach the same levels of mastery. However, it should be noted that the baseline showed similar shortcomings. It was hypothesized that the reason for this is the short training which the models had undergone. In this light, a tentative answer to the second research question is that the Reptile models can be similar to real music. Here, a significant area of improvement lies in embedding a sense of musical structure into the models (since this is what the models have shown to lack the most).
 
 \sloppy
 \printbibliography
