@@ -42,11 +42,19 @@ chmod +x download_data.sh
 ./download_data.sh
 ```
 
-## Dependencies
+## Training Dependencies
 
 **Python**: `pytorch numpy mido pandas pretty_midi sklearn matplotlib`
 
 **Shell**: `curl unzip`
+
+## Extra Dependencies for the Demo
+
+**Python**: `wxPython`
+
+**Shell**: `fluidsynth alsa`
+
+In addition, you need some soundfonts. I recommend [Nice Keys](https://sites.google.com/site/soundfonts4u/)
 
 ## To-Do
 
