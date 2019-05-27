@@ -125,9 +125,7 @@ if __name__ == '__main__':
     DATA_DIR = '../data/'
     MODELS_DIR = '../models/'
     PLOTS_DIR = '../plots/'
-    MODELS = [
-        'performance_rnn_1_5', 'c_rnn_gan_1_5', 'baseline', 'baseline_50'
-    ]
+    MODELS = ['performance_rnn_1_5', 'c_rnn_gan_1_5', 'baseline']
 
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
@@ -309,7 +307,6 @@ if __name__ == '__main__':
             save=PLOTS_DIR + model + '-acts-transposed',
             colors='binary')
 
-        # TODO: Plot LSTM activations, not linear outs
         heatmap(
             gen,
             y_label='Event Sequences',

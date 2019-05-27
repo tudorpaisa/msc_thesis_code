@@ -22,9 +22,7 @@ if __name__ == '__main__':
     greed = False
     temperatures = [0.8, 0.9, 1.0, 1.1, 1.2]
 
-    models = [
-        'baseline_50', 'baseline', 'performance_rnn_1_5', 'c_rnn_gan_1_5'
-    ]
+    models = ['baseline', 'performance_rnn_1_5', 'c_rnn_gan_1_5']
 
     make_folder('../generated')
     for model in models:

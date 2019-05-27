@@ -1,6 +1,7 @@
 #!/bin/bash
 unzip baseline.zip -d ../models/
-unzip baseline_50.zip -d ../models/
+unzip 2048_baseline_50.zip -d ../models/
+unzip 2048_baseline.zip -d ../models/
 
 cat performance_rnn_part_* > performance_rnn.zip
 unzip performance_rnn.zip -d ../models/
